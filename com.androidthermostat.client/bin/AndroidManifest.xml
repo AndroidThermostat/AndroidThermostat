@@ -1,0 +1,32 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.androidthermostat.client" android:versionCode="1" android:versionName="0.2">
+
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="15" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+	
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:theme="@style/Theme.HoloEverywhereDark">
+		
+		<activity android:name="ServerSelectActivity" android:screenOrientation="landscape" android:label="Select Server" android:theme="@style/Theme.HoloEverywhereDark.Sherlock" >
+		    
+	    </activity>
+		
+		<activity android:name="MainActivity" android:screenOrientation="landscape" >
+		    <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+	    </activity>
+        <activity android:name="SetTemperatureActivity" android:screenOrientation="landscape" android:label="Set Temperature" android:theme="@style/Theme.HoloEverywhereDark.Sherlock" />
+        <activity android:name="SettingsActivity" android:screenOrientation="landscape" android:label="Settings" android:theme="@style/Theme.HoloEverywhereDark.Sherlock" />
+        <activity android:name="SchedulesActivity" android:screenOrientation="landscape" android:label="Schedules" android:theme="@style/Theme.HoloEverywhereDark.Sherlock" />
+		<activity android:name="ScheduleActivity" android:screenOrientation="landscape" android:label="Edit Schedule" android:theme="@style/Theme.HoloEverywhereDark.Sherlock.ForceOverflow" />
+		<activity android:name="ScheduleTabsFragment" android:screenOrientation="landscape" android:label="Edit Schedule" android:theme="@style/Theme.HoloEverywhereDark.Sherlock"  />
+
+		<activity android:name="CopyScheduleActivity" android:screenOrientation="landscape" android:label="Copy this day's schedule to..." android:theme="@style/Theme.HoloEverywhereDark.Sherlock" />
+		<activity android:name="ScheduleEntryEditActivity" android:screenOrientation="landscape" android:label="Edit Schedule Entry" android:theme="@style/Theme.HoloEverywhereDark.Sherlock" />
+		
+		
+    </application>
+
+</manifest>

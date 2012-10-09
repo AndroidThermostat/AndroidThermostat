@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp"  >
+	    	    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Status Change Urls:"  />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="The thermostat can ping an outside tracking service such as ThermostatMonitor.com to monitor your usage history.  If you would like to enable this, sign up with a service and enter the url they provide here." android:paddingTop="5sp" />
+	    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Base Url:" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/baseUrl" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textUri" />    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Cycle Complete Parameters:" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/cycleCompleteParams" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textUri" />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Inside Temperature Change Parameters:" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/insideTempParams" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textUri" />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Outside Temperature Change Parameters:" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/outsideTempParams" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textUri" />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="View Stats Parameters:" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/viewStatsParams" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textUri" />
+	    
+  	</LinearLayout>
+</ScrollView>

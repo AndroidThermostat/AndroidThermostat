@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="5sp"  >
+
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
+    	<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical"  >
+		    <CheckBox android:id="@+id/sundayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Sunday" />
+		    <CheckBox android:id="@+id/mondayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Monday" />
+		    <CheckBox android:id="@+id/tuesdayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Tuesday" />
+		    <CheckBox android:id="@+id/wednesdayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Wednesday" />
+		    <CheckBox android:id="@+id/thursdayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Thursday" />
+		    <CheckBox android:id="@+id/fridayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Friday" />
+		    <CheckBox android:id="@+id/saturdayCheck" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Saturday" />
+		</LinearLayout>
+    </ScrollView>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="bottom|right" >
+        <Button android:id="@+id/copyButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Copy" />
+        <Button android:id="@+id/cancelButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cancel" />
+    </LinearLayout>
+
+</LinearLayout>
+

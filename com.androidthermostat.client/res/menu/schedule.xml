@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_sunday" android:title="Sun." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_monday" android:title="Mon." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_tuesday" android:title="Tue." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_wednesday" android:title="Wed." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_thursday" android:title="Thu." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_friday" android:title="Fri." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_saturday" android:title="Sat." android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_settings" android:title="Settings" android:showAsAction="ifRoom|withText" />
+</menu>

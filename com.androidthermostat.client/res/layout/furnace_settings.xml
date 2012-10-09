@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp"  >
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Minimum Minutes Between Cool Cycles" android:paddingTop="5sp"/>
+	    <EditText android:id="@+id/minCoolInterval" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="number" />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="To avoid short cycling your air conditioner, it is recommended you wait 5 minutes between A/C cycles to allow the refridgeration system to equalize." android:paddingTop="5sp" />
+  	</LinearLayout>
+</ScrollView>

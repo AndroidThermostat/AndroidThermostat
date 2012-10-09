@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp" >
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Mode"   android:layout_weight="70"  />
+	    <RadioGroup android:layout_width="fill_parent"	android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/modeRadio"   android:layout_weight="30" >
+			<RadioButton android:id="@+id/modeOff" android:layout_width="wrap_content" android:layout_height="40sp" android:text="Off" />
+			<RadioButton android:id="@+id/modeFan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fan" />
+			<RadioButton android:id="@+id/modeHeat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heat" />
+	    	<RadioButton android:id="@+id/modeCool" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cool" />
+		</RadioGroup>
+	</LinearLayout>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Target Temperature" android:layout_weight="70" />
+	    <Spinner android:id="@+id/temperatureList" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="30" />
+	</LinearLayout>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Schedule" android:layout_weight="70" />
+	    <Spinner android:id="@+id/scheduleList" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="30" />
+	</LinearLayout>
+</LinearLayout>
