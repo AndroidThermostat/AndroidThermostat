@@ -2,6 +2,7 @@ package com.androidthermostat.server;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +13,6 @@ import com.androidthermostat.server.data.Conditions;
 import com.androidthermostat.server.data.Schedules;
 import com.androidthermostat.server.data.Settings;
 import com.androidthermostat.server.utils.FurnaceController;
-import com.androidthermostat.server.utils.IOIOHelper;
 import com.androidthermostat.server.utils.MulticastListener;
 import com.androidthermostat.server.utils.Utils;
 import com.androidthermostat.server.utils.WebServer;
@@ -20,7 +20,7 @@ import com.androidthermostat.server.utils.WebServer;
 
 public class MainActivity extends Activity {
 
-	WebServer webServer;
+	
 	Handler refreshHandler;
 	TextView debugText;
 
@@ -35,30 +35,17 @@ public class MainActivity extends Activity {
         debugText  = (TextView) findViewById(R.id.debugText);
         refreshHandler= new Handler();
         refreshHandler.postDelayed(refreshRunnable, 1000);
-        
-        Settings.load(this);
-        Schedules.load(this);
+     
+        Intent i = new Intent(this, MainService.class);
+        startService(i);
         
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         
-        FurnaceController.getCurrent().init(this);
-        
-        
-        Conditions.getCurrent().init(this);
-        webServer = new WebServer();
-        webServer.init(this);
-        
-        new Thread(new Runnable() {
-		    public void run() {
-		      MulticastListener.listen(MainActivity.this);
-		    }
-		  }).start();
-     
-        Intent i = new Intent(this, IOIOServiceHelper.class);
-		//startServiceForResult(i, 100);
-        startService(i);
+
         
 	}
+	
+	
 	
 	
 	public void updateScreen()

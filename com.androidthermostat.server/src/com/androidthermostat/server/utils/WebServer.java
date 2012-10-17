@@ -36,7 +36,7 @@ import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 import org.apache.http.util.EntityUtils;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.androidthermostat.server.data.Conditions;
 import com.androidthermostat.server.data.Schedules;
@@ -47,17 +47,20 @@ import com.google.gson.GsonBuilder;
 
 public class WebServer {
 
-    private static Activity activity;
+    private static Context context;
     
-    public void init(Activity activity)
+    public void init(Context context)
     {
-    	this.activity = activity;
+    	WebServer.context = context;
     	try{
 	    	Thread t = new RequestListenerThread(8080);
 	    	
 	        t.setDaemon(false);
 	        t.start();
-    	} catch (IOException ex) {}
+    	} catch (IOException ex) {
+    		Utils.debugText = "Error starting web server - " + ex.toString();
+    		
+    	}
     }
 
     static class HttpFileHandler implements HttpRequestHandler  {
@@ -127,13 +130,13 @@ public class WebServer {
         	
         	if (target.equals("/api/settings")) {
         		Settings.load(json);
-        		Settings.getCurrent().save(activity);
+        		Settings.getCurrent().save(context);
         	} else if (target.equals("/api/conditions")) {
         		//Conditions.getCurrent().load(json);
         		//catch change conditions remotely
         	} else if (target.equals("/api/schedules")) {
         		Schedules.load(json);
-        		Schedules.getCurrent().save(activity);
+        		Schedules.getCurrent().save(context);
         	}
         	StringEntity body = new StringEntity("[]");
             body.setContentType("application/json");

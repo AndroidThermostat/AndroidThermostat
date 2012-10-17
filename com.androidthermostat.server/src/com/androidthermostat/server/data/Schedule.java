@@ -3,7 +3,7 @@ package com.androidthermostat.server.data;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.androidthermostat.server.utils.Utils;
 
@@ -50,7 +50,7 @@ public class Schedule {
 		if (delPos>-1) entries.remove(delPos);
 	}
 	
-	public void check(Activity activity)
+	public void check(Context context)
 	{
 		Utils.debugText = "Checking " + this.getName();
 		int currentDayOfWeek = Utils.getDayOfWeek(new Date());
@@ -67,7 +67,7 @@ public class Schedule {
 				s.setMode(entry.getMode());
 				s.setTargetHigh(entry.getTargetHigh());
 				s.setTargetLow(entry.getTargetLow());
-				s.save(activity);
+				s.save(context);
 				Utils.debugText = "Changing thermostat to " + String.valueOf(s.getTargetHigh()) + " per schedule: " + this.getName();
 			
 			}

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -34,7 +34,7 @@ public class Conditions {
 	public int insideTempRaw=0;
 	public String debugMessage = "";
 
-	private Activity activity;
+	private Context context;
 	
 	
 	public double getInsideTemperature() { return insideTemperature; }
@@ -62,9 +62,9 @@ public class Conditions {
 	}
 	
 	
-	public void init(Activity activity)
+	public void init(Context context)
 	{
-		this.activity=activity;
+		this.context=context;
 		
 		arduinoTimer = new Timer();
 		arduinoTimer.schedule(new ConditionsTimerTask(), 5000, 5000);
@@ -226,7 +226,7 @@ public class Conditions {
             int scheduleId = s.getSchedule();
             if (scheduleId>-1 && scheduleId<Schedules.getCurrent().size())
             {
-            	Schedules.getCurrent().get(scheduleId).check(activity);
+            	Schedules.getCurrent().get(scheduleId).check(context);
             }
             		
         }

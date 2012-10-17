@@ -2,8 +2,9 @@ package com.androidthermostat.server.data;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
@@ -50,21 +51,21 @@ public class Schedules extends ArrayList<Schedule> {
 		}
 	}
 
-	public void save(Activity activity)
+	public void save(Context context)
 	{
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		
-		SharedPreferences prefs = activity.getSharedPreferences("schedules", 0);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	    SharedPreferences.Editor editor = prefs.edit();
-	    editor.putString("json", json);
+	    editor.putString("schedules", json);
 	    editor.commit();
 	}
 	
-	public static void load(Activity activity)
+	public static void load(Context context)
 	{
-		SharedPreferences prefs = activity.getSharedPreferences("schedules", 0);
-	    String json = prefs.getString("json","");
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+	    String json = prefs.getString("schedules","");
 	    if (!json.equals("") && !json.equals("[]"))
 	    {
 	    	Gson gson = new Gson();

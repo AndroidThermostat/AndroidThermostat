@@ -1,8 +1,9 @@
 package com.androidthermostat.server.data;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.preference.PreferenceManager;
 
 import com.androidthermostat.server.utils.Utils;
 import com.google.gson.Gson;
@@ -75,21 +76,25 @@ public class Settings {
 		return current;
 	}
 	
-	public void save(Activity activity)
+	public void save(Context context)
 	{
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		
-		SharedPreferences prefs = activity.getSharedPreferences("settings", 0);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		//SharedPreferences prefs = activity.getSharedPreferences("settings", 0);
 	    SharedPreferences.Editor editor = prefs.edit();
-	    editor.putString("json", json);
+	    //editor.putString("json", json);
+	    editor.putString("settings", json);
 	    editor.commit();
 	}
 	
-	public static void load(Activity activity)
+	public static void load(Context context)
 	{
-		SharedPreferences prefs = activity.getSharedPreferences("settings", 0);
-	    String json = prefs.getString("json","");
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		//SharedPreferences prefs = activity.getSharedPreferences("settings", 0);
+	    //String json = prefs.getString("json","");
+		String json = prefs.getString("settings","");
 	    if (!json.equals(""))
 	    {
 	    	Gson gson = new Gson();

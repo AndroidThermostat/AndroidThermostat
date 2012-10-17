@@ -6,7 +6,7 @@ import java.util.Date;
 import com.androidthermostat.server.data.Conditions;
 import com.androidthermostat.server.data.Settings;
 
-import android.app.Activity;
+
 
 public class FurnaceController {
 	public boolean coolOn = false;
@@ -31,7 +31,7 @@ public class FurnaceController {
 			current = new FurnaceController();
 			//current.arduinoHelper = new ArduinoHelper();
 			//current.ioioHelper = new IOIOHelper();
-			Utils.debugText = "Created IOIOHelper";
+			//Utils.debugText = "Created IOIOHelper";
 			
 		}
 		return current;
@@ -118,9 +118,8 @@ public class FurnaceController {
 		//return 0;
 	}
 
-	public void init(Activity activity)
+	public void init()
 	{
-		//arduinoHelper.init(activity);
 	}
 	
 
