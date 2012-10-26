@@ -14,6 +14,10 @@ public class FurnaceController {
 	public boolean fanOn = false;
 	private Date cycleStartTime;
 	private Calendar lastCoolTime;
+	private Calendar lastHeatTime;
+	private Calendar offTime;
+	private Calendar forcedFanTime;
+	private boolean forcingFan = false;
 	//private ArduinoHelper arduinoHelper;
 	//private IOIOHelper ioioHelper;
 	
@@ -23,6 +27,17 @@ public class FurnaceController {
 	{
 		lastCoolTime = Calendar.getInstance();
 		lastCoolTime.add(Calendar.YEAR, -1);
+		
+		lastHeatTime = Calendar.getInstance();
+		lastHeatTime.add(Calendar.YEAR, -1);
+		
+		offTime = Calendar.getInstance();
+		
+		forcedFanTime = Calendar.getInstance();
+		forcedFanTime.add(Calendar.YEAR, -1);
+		
+		
+		
 	}
 	
 	public static FurnaceController getCurrent()
@@ -49,27 +64,76 @@ public class FurnaceController {
 		return result;
 	}
 	
+	private boolean forceFanOn()
+	{
+		
+		Settings s = Settings.getCurrent();
+		//Exit if the fan is still on or the fan cycling is disabled
+		if (s.getCycleFan())
+		{
+			if (!fanOn)
+			{
+				int minutes = (int)(new Date().getTime() - offTime.getTime().getTime()) / 1000 / 60;
+				if (minutes>=s.getCycleFanOffMinutes()) {
+					forcedFanTime = Calendar.getInstance();
+					return true;
+				}
+			} else {
+				int minutes = (int)(new Date().getTime() - forcedFanTime.getTime().getTime()) / 1000 / 60;
+				if (minutes>=s.getCycleFanOnMinutes()) {
+					return false;
+				} else return true;
+			}
+		}
+		return false;
+	}
 
 	public void setMode(String mode)
 	{
+		
+		
 		if (mode.equals("Off")) {
-			//Utils.debugText = "Setting Mode to Off";
-			Conditions.getCurrent().setMessage("Off");
-			if (fanOn) toggleFan(false);
-			if (heatOn) toggleHeat(false);
-			if (coolOn) toggleCool(false);
+			
+			if (forceFanOn())
+			{
+				forcingFan = true;
+				toggleFan(true);
+				int minutes = (int)(new Date().getTime() - forcedFanTime.getTime().getTime()) / 1000 / 60;
+				int remaining = Settings.getCurrent().getCycleFanOnMinutes() - minutes;
+				String message = "Cycling fan - " + String.valueOf(remaining) + " minute(s) remaining.";
+				Conditions.getCurrent().setMessage(message);
+			} else {
+				forcingFan = false;
+				//Utils.debugText = "Setting Mode to Off";
+				Conditions.getCurrent().setMessage("Off");
+				if (fanOn) toggleFan(false);
+				if (heatOn) toggleHeat(false);
+				if (coolOn) toggleCool(false);
+			}
 		} else if (mode.equals("Heat")) {
-			//Utils.debugText = "Setting Mode to Heat";
-			Conditions.getCurrent().setMessage("Heating");
-			if (!fanOn) toggleFan(true);
-			if (!heatOn) toggleHeat(true);
-			if (coolOn) toggleCool(false);
+			int minutes = (int)(new Date().getTime() - lastHeatTime.getTime().getTime()) / 1000 / 60;
+			if (minutes > Settings.getCurrent().getMinHeatInterval())
+			{
+				//Utils.debugText = "Setting Mode to Heat";
+				Conditions.getCurrent().setMessage("Heating");
+				forcingFan = false;
+				if (!fanOn) toggleFan(true);
+				if (!heatOn) toggleHeat(true);
+				if (coolOn) toggleCool(false);
+			} else {
+				int remaining = Settings.getCurrent().getMinHeatInterval() - minutes;
+				String message = "Waiting to heat - " + String.valueOf(remaining) + " minute(s) remaining.";
+				Utils.debugText = message;
+				Conditions.getCurrent().setMessage(message);
+			}
+			
 		} else if (mode.equals("Cool")) {
 			int minutes = (int)(new Date().getTime() - lastCoolTime.getTime().getTime()) / 1000 / 60;
 			if (minutes > Settings.getCurrent().getMinCoolInterval())
 			{
 				//Utils.debugText = "Setting Mode to Cool";
 				Conditions.getCurrent().setMessage("Cooling");
+				forcingFan = false;
 				if (!fanOn) toggleFan(true);
 				if (heatOn) toggleHeat(false);
 				if (!coolOn) toggleCool(true);
@@ -82,6 +146,7 @@ public class FurnaceController {
 		} else if (mode.equals("Fan")) {
 			//Utils.debugText = "Setting Mode to Fan";
 			Conditions.getCurrent().setMessage("Running fan");
+			forcingFan = false;
 			if (!fanOn) toggleFan(true);
 			if (heatOn) toggleHeat(false);
 			if (coolOn) toggleCool(false);
@@ -92,6 +157,7 @@ public class FurnaceController {
 	private void toggleFan(boolean on)
 	{
 		//arduinoHelper.toggleFan(on);
+		if (!on && fanOn) this.offTime = Calendar.getInstance();
 		IOIOHelper.getCurrent().toggleFan(on);
 		this.fanOn=on;
 	}
@@ -99,6 +165,7 @@ public class FurnaceController {
 	public void toggleHeat(boolean on)
 	{
 		//arduinoHelper.toggleHeat(on);
+		if (!on && heatOn) this.lastHeatTime = Calendar.getInstance();
 		IOIOHelper.getCurrent().toggleHeat(on);
 		this.heatOn=on;
 	}

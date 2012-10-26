@@ -1,13 +1,15 @@
 package com.androidthermostat.client;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +24,6 @@ import com.androidthermostat.client.data.Server;
 import com.androidthermostat.client.data.Servers;
 import com.androidthermostat.client.data.Settings;
 import com.androidthermostat.utils.SnmpHelper;
-import com.androidthermostat.utils.Utils;
 
 public class ServerSelectActivity extends SherlockActivity {
 
@@ -33,6 +34,33 @@ public class ServerSelectActivity extends SherlockActivity {
 	Handler refreshHandler=null;
 	ListView serverList;
 
+	private static final int MY_PASSWORD_DIALOG_ID = 4;
+	
+
+	@Override
+    protected Dialog onCreateDialog(int id) {
+     
+	    // This example shows how to add a custom layout to an AlertDialog
+	    LayoutInflater factory = LayoutInflater.from(this);
+	    final View textEntryView = factory.inflate(R.layout.dialog_password, null);
+	    return new AlertDialog.Builder(ServerSelectActivity.this)
+	        .setTitle("Enter Password")
+	        .setView(textEntryView)
+	        .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int whichButton) {
+	            	EditText passwordText = (EditText) textEntryView.findViewById(R.id.passwordText);
+	            	Servers.getCurrent().getSelectedServer().setPassword(passwordText.getText().toString());
+	            	connect();
+	            }
+	        })
+	        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int whichButton) {
+	            }
+	        })
+	        .create();
+    }
+	
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,9 +150,24 @@ public class ServerSelectActivity extends SherlockActivity {
 		//Utils.setRemoteServer("http://" + serverIp.getText().toString() + ":8080");
 		
 		Server s = new Server();
-		s.setIpAddress(serverIp.getText().toString());
+		
+		String ipAddress = serverIp.getText().toString();
+		int port = 8080;
+		if (ipAddress.contains(":"))
+		{
+			String[] parts = ipAddress.split(":");
+			ipAddress=parts[0];
+			port=Integer.parseInt(parts[1]);
+		}
+		
+		s.setIpAddress(ipAddress);
+		s.setPort(port);
 		s.setName("Manual");
+		
+		if (Servers.getCurrent().getByIpPort(s.getIpAddress(), s.getPort()) == null ) Servers.getCurrent().add(s);
+		
 		Servers.getCurrent().setSelectedServer(s);
+		
 		connect();
 	}
 	
@@ -133,15 +176,25 @@ public class ServerSelectActivity extends SherlockActivity {
 		new Thread(new Runnable() {
 		    public void run() {
 		    	Servers.getCurrent().save(ServerSelectActivity.this);
-		    	Schedules.load();
-		    	Settings.load();
-		    	Conditions.getCurrent().load();
+		    	
+		    	if (Conditions.getCurrent().load())
+		    	{
+			    	Schedules.load();
+			    	Settings.load();
+			    	finish();
+		    	} else {
+		    		
+		    	}
 		    }
 		  }).start();
 
-		finish();
+		showPasswordDialog();
 	}
 	
+	private void showPasswordDialog()
+	{
+		showDialog(1);
+	}
 	
 	private Runnable refreshRunnable = new Runnable() {
 	   public void run() {

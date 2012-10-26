@@ -21,16 +21,23 @@
 			<RadioButton android:id="@+id/modeFan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fan" />
 			<RadioButton android:id="@+id/modeHeat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heat" />
 	    	<RadioButton android:id="@+id/modeCool" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cool" />
+	    	<RadioButton android:id="@+id/modeAuto" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Auto" />
 		</RadioGroup>
 	</LinearLayout>
 	
 	
-	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="5dp" android:layout_weight="1" >
+	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="5dp" android:layout_weight="1"  android:id="@+id/singleTemperatureHolder" >
 	    <TextView android:textStyle="bold" android:textSize="20sp" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Temperature" android:layout_weight="70" />
-	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="30" android:layout_gravity="left" >
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="30" android:layout_gravity="left" >
 	    	<Spinner android:id="@+id/tempList" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left" />
 	    </LinearLayout>
-	</LinearLayout>	   
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  android:id="@+id/temperatureRangeHolder" >
+	    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Temperature Range" android:layout_weight="30" />
+	    <Spinner android:id="@+id/minTemperatureList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35" />
+	    <Spinner android:id="@+id/maxTemperatureList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35" />
+	</LinearLayout>
 	
 	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="5dp" android:gravity="right" >
 	    <Button android:id="@+id/saveButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Save"   />

@@ -2,7 +2,6 @@ package com.androidthermostat.server;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,12 +9,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.androidthermostat.server.data.Conditions;
-import com.androidthermostat.server.data.Schedules;
-import com.androidthermostat.server.data.Settings;
 import com.androidthermostat.server.utils.FurnaceController;
-import com.androidthermostat.server.utils.MulticastListener;
+import com.androidthermostat.server.utils.SimpleEula;
 import com.androidthermostat.server.utils.Utils;
-import com.androidthermostat.server.utils.WebServer;
 
 
 public class MainActivity extends Activity {
@@ -31,6 +27,8 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        new SimpleEula(this).show();
         
         debugText  = (TextView) findViewById(R.id.debugText);
         refreshHandler= new Handler();

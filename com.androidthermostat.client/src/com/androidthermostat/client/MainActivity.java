@@ -19,6 +19,7 @@ import com.androidthermostat.client.data.Conditions;
 import com.androidthermostat.client.data.Schedules;
 import com.androidthermostat.client.data.Servers;
 import com.androidthermostat.client.data.Settings;
+import com.androidthermostat.utils.SimpleEula;
 import com.androidthermostat.utils.Utils;
 
 
@@ -49,6 +50,7 @@ public class MainActivity extends ActivityBase {
         
         
         setContentView(R.layout.main);
+        new SimpleEula(this).show();
         
         insideTempText  = (TextView) findViewById(R.id.insideTempText);
         outsideTempText  = (TextView) findViewById(R.id.outsideTempText);

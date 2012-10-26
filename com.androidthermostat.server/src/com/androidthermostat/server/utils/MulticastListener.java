@@ -17,11 +17,12 @@ public class MulticastListener {
 
 	private static MulticastSocket ms;
 	
-	public static void listen(Activity activity)
+	public static void listen(Context context)
 	{
 		//Utils.debugText = "listening";
 		
-		WifiManager wm = (WifiManager)activity.getSystemService(Context.WIFI_SERVICE); 
+		//WifiManager wm = (WifiManager)activity.getSystemService(Context.WIFI_SERVICE); 
+		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 		int ip = wm.getConnectionInfo().getIpAddress();
 		String ipAddress = Formatter.formatIpAddress(ip); 
 		

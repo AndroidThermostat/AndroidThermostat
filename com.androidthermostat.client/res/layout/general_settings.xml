@@ -12,21 +12,16 @@
 		    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"  android:gravity="left" android:text="Zip Code"  android:layout_weight="70" />
 		    <EditText android:id="@+id/zipText" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="number"  android:layout_weight="30" />
 	    </LinearLayout>
-	    
-	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="15sp" >
-	    	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Temperature Swing"  android:layout_weight="70" />
-		    <RadioGroup android:layout_width="fill_parent"	android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/swingRadio" android:layout_weight="30">
-				<RadioButton android:id="@+id/swing0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="O" />
-				<RadioButton android:id="@+id/swing1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" />
-				<RadioButton android:id="@+id/swing2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" />
-			</RadioGroup>
-		</LinearLayout>
-	    
-	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="15sp" >
-	    	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Temp. Calibration"  android:layout_weight="70" />
-		    <EditText android:id="@+id/temperatureCalibration" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="numberSigned" android:layout_weight="30" />
-		</LinearLayout>
-	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold pockets where the thermostat is placed.  Enter a possitive number to increase the reported temperature or negative to decrease it." android:paddingTop="5sp" />
-	    
+
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  >
+		    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"  android:gravity="left" android:text="Password"  android:layout_weight="70" />
+		    <EditText android:id="@+id/passwordText" android:layout_width="fill_parent" android:layout_height="wrap_content" android:password="true"  android:layout_weight="30" />
+	    </LinearLayout>
+
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  >
+		    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"  android:gravity="left" android:text="Forecast Url"  android:layout_weight="70" />
+		    <EditText android:id="@+id/forecastUrlText" android:layout_width="fill_parent" android:layout_height="wrap_content"  android:layout_weight="30" />
+	    </LinearLayout>
+	    	    
 	</LinearLayout>
 </ScrollView>

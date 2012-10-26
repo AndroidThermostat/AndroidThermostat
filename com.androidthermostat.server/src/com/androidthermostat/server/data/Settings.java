@@ -7,34 +7,49 @@ import android.preference.PreferenceManager;
 
 import com.androidthermostat.server.utils.Utils;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+
 
 public class Settings {
 
-	private String mode = "Off";
-	private int targetLow = 75;
-	private int targetHigh = 75;
-	private double swing = 0.0;
-	private static Settings current;
-	private int zipCode = 90210;
-	private int openWeatherMapStation = 5328041;
-	private int schedule = -1;
-	private int minCoolInterval = 5;
-	private int temperatureCalibration = 0;
-	private String name = "Android Thermostat";
-	private String pingOutUrl = "";
-	private String cycleCompleteParams = "&a=cycle&m=[mode]&d=[duration]";
-	private String insideTempChangeParams = "&a=temp&t=[insideTemp]";
-	private String outsideTempChangeParams = "&a=conditions&t=[outsideTemp]";
-	private String viewStatsParams = "&a=stats";
+	@Expose private String mode = "Off";
+	@Expose private int targetLow = 74;
+	@Expose private int targetHigh = 78;
+	@Expose private int awayLow = 70;
+	@Expose private int awayHigh = 80;
+	@Expose private boolean isAway = false;
+	@Expose private double swing = 1.0;
+	@Expose private static Settings current;
+	@Expose private int zipCode = 90210;
+	@Expose private int openWeatherMapStation = 5328041;
+	@Expose private int schedule = -1;
+	@Expose private int minCoolInterval = 5;
+	@Expose private int minHeatInterval = 2;
+	@Expose private int temperatureCalibration = 0;
+	@Expose private String name = "Android Thermostat";
+	@Expose private String pingOutUrl = "";
+	@Expose private String cycleCompleteParams = "&a=cycle&m=[mode]&d=[duration]";
+	@Expose private String insideTempChangeParams = "&a=temp&t=[insideTemp]";
+	@Expose private String outsideTempChangeParams = "&a=conditions&t=[outsideTemp]";
+	@Expose private String viewStatsParams = "&a=stats";
+	@Expose private String password = "";
+	@Expose private String forecastUrl = "http://www.weather.com/weather/right-now/[postalCode]";
+	@Expose private boolean cycleFan = false;
+	@Expose public int cycleFanOnMinutes = 5;
+	@Expose public int cycleFanOffMinutes = 25;
 	
 	public int getTargetHigh() { return targetHigh; }
 	public int getTargetLow() { return targetLow; }
+	public int getAwayHigh() { return awayHigh; }
+	public int getAwayLow() { return awayLow; }
+	public boolean getIsAway() { return isAway; }
 	public double getSwing() { return swing; }
 	public String getMode() { return mode; }
 	public int getZipCode() { return zipCode; }
 	public int getOpenWeatherMapStation() { return openWeatherMapStation; }
 	public int getSchedule() { return schedule; }
 	public int getMinCoolInterval() { return minCoolInterval; }
+	public int getMinHeatInterval() { return minHeatInterval; }
 	public int getTemperatureCalibration() { return temperatureCalibration; }
 	public String getName() { return name; }
 	public String getPingOutUrl() { return pingOutUrl; }
@@ -42,15 +57,24 @@ public class Settings {
 	public String getInsideTempChangeParams() { return insideTempChangeParams; }
 	public String getOutsideTempChangeParams() { return outsideTempChangeParams; }
 	public String getViewStatsParams() { return viewStatsParams; }
+	public String getPassword() { return password; }
+	public String getForecastUrl() { return forecastUrl; }
+	public boolean getCycleFan() { return cycleFan; }
+	public int getCycleFanOnMinutes() { return cycleFanOnMinutes; }
+	public int getCycleFanOffMinutes() { return cycleFanOffMinutes; }
 	
 	public void setTargetHigh(int value) { targetHigh = value; }
 	public void setTargetLow(int value) { targetLow = value; }
+	public void setAwayHigh(int value) { awayHigh = value; }
+	public void setAwayLow(int value) { awayLow = value; }
+	public void setIsAway(boolean value) { isAway = value; }
 	public void setSwing(double value) { swing = value; }
 	public void setMode(String value) { mode = value; }
 	public void setZipCode(int value) { zipCode = value; }
 	public void setOpenWeatherMapStation(int value) { openWeatherMapStation = value; }
 	public void setSchedule(int value) { schedule = value; }
 	public void setMinCoolInterval(int value) { minCoolInterval = value; }
+	public void setMinHeatInterval(int value) { minHeatInterval = value; }
 	public void setTemperatureCalibration(int value) { temperatureCalibration = value; }
 	public void setName(String value) { this.name = value; }
 	public void setPingOutUrl(String pingOutUrl) { this.pingOutUrl = pingOutUrl; }
@@ -58,15 +82,25 @@ public class Settings {
 	public void setInsideTempChangeParams(String insideTempChangeParams) { this.insideTempChangeParams = insideTempChangeParams; }
 	public void setOutsideTempChangeParams(String outsideTempChangeParams) { this.outsideTempChangeParams = outsideTempChangeParams; }
 	public void setViewStatsParams(String viewStatsParams) { this.viewStatsParams = viewStatsParams; }
-	
+	public void setPassword(String password) { this.password = password; }
+	public void setForecastUrl(String forecastUrl) { this.forecastUrl = forecastUrl; }
+	public void setCycleFan(boolean cycleFan) { this.cycleFan = cycleFan; }
+	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
+	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }
 	
 	
 	public String getSummary()
 	{
 		String result="";
 		result = mode;
-		if (mode.equals("Cool")) result += " - " + String.valueOf(targetLow) + "° F";
-		if (mode.equals("Heat")) result += " - " + String.valueOf(targetHigh) + "° F";
+		if (isAway)
+		{
+			result = "Away: " + String.valueOf(awayLow) + " - " + String.valueOf(awayHigh) + "° F";
+		} else {
+			if (mode.equals("Cool")) result += ": " + String.valueOf(targetLow) + "° F";
+			if (mode.equals("Heat")) result += ": " + String.valueOf(targetHigh) + "° F";
+			if (mode.equals("Auto")) result += ": " + String.valueOf(targetLow) + " - " + String.valueOf(targetHigh) + "° F";
+		}
 		return result;
 	}
 	
@@ -92,8 +126,6 @@ public class Settings {
 	public static void load(Context context)
 	{
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		//SharedPreferences prefs = activity.getSharedPreferences("settings", 0);
-	    //String json = prefs.getString("json","");
 		String json = prefs.getString("settings","");
 	    if (!json.equals(""))
 	    {

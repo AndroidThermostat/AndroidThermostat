@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp"  >
-	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Minimum Minutes Between Cool Cycles" android:paddingTop="5sp"/>
+
+	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="15sp" >
+	    	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Temperature Swing"  android:layout_weight="70" />
+		    <RadioGroup android:layout_width="fill_parent"	android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/swingRadio" android:layout_weight="30">
+				<RadioButton android:id="@+id/swing1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" />
+				<RadioButton android:id="@+id/swing2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" />
+				<RadioButton android:id="@+id/swing3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" />
+			</RadioGroup>
+		</LinearLayout>
+	    
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="15sp" >
+	    	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Temp. Calibration"  android:layout_weight="70" />
+		    <EditText android:id="@+id/temperatureCalibration" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="numberSigned" android:layout_weight="30" />
+		</LinearLayout>
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold pockets where the thermostat is placed.  Enter a possitive number to increase the reported temperature or negative to decrease it." android:paddingTop="5sp" />
+	    
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="20sp" >
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:gravity="left" android:text="Fan circulation"  android:layout_weight="30" />
+	    	<LinearLayout android:layout_width="0px" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="70" >
+	    	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" >
+	    	    	<ToggleButton android:id="@+id/cycleFanSwitch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOn="On" android:textOff="Off" />
+	    	    	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+			    	    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Turn on for " />
+				    	<EditText android:id="@+id/cycleFanOnText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes"/>
+				    </LinearLayout>
+					<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="then off for "/>
+				    	<EditText android:id="@+id/cycleFanOffText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes. "/>
+			    	</LinearLayout>
+	    	    </LinearLayout>
+	    	</LinearLayout>
+		</LinearLayout>
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="20sp" >
+	    	
+		</LinearLayout>
+	    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="This is useful if your upstairs heater doesn't turn on frequently in the winter, but you want to circuilate air to evenly warm each room." android:paddingTop="5sp" />
+	    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Minimum Minutes Between Cool Cycles" android:paddingTop="20sp"/>
 	    <EditText android:id="@+id/minCoolInterval" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="number" />
 	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="To avoid short cycling your air conditioner, it is recommended you wait 5 minutes between A/C cycles to allow the refridgeration system to equalize." android:paddingTop="5sp" />
+	    
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="left" android:text="Minimum Minutes Between Heat Cycles" android:paddingTop="20sp"/>
+	    <EditText android:id="@+id/minHeatInterval" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="number" />
+	    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="italic" android:gravity="left" android:text="Gas furnaces have a safety lockout in case the burner fails to ignite.  On some models turning the heater off and back on will reset this lockout.  It's recommended you keep the cycle interval above 2 minutes to avoid to allow any unignited gas to dissipate before trying again." android:paddingTop="5sp" />
   	</LinearLayout>
 </ScrollView>

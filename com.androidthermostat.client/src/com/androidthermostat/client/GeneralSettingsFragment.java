@@ -9,14 +9,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.androidthermostat.client.data.Servers;
 import com.androidthermostat.client.data.Settings;
 
 public class GeneralSettingsFragment extends SherlockFragment {
 
 	EditText nameText;
 	EditText zipText;
-	EditText temperatureCalibration;
-	RadioGroup swingRadio;
+	EditText passwordText;
+	EditText forecastUrlText;
 	View root;
 
 	@Override
@@ -25,18 +26,16 @@ public class GeneralSettingsFragment extends SherlockFragment {
 		
 		nameText = (EditText) root.findViewById(R.id.nameText);
 		zipText = (EditText) root.findViewById(R.id.zipText);
-		swingRadio = (RadioGroup) root.findViewById(R.id.swingRadio);
-		temperatureCalibration = (EditText) root.findViewById(R.id.temperatureCalibration);
+		passwordText = (EditText) root.findViewById(R.id.passwordText);
+		forecastUrlText = (EditText) root.findViewById(R.id.forecastUrlText);
+		
 		
 		Settings s = Settings.getCurrent();
 		
 		nameText.setText( s.getName() );
 		zipText.setText( String.valueOf(s.getZipCode()) );
-		temperatureCalibration.setText( String.valueOf(s.getTemperatureCalibration() ) );
-		
-		if (s.getSwing()==0) swingRadio.check(R.id.swing0);
-		else if (s.getSwing()==1) swingRadio.check(R.id.swing1);
-		else if (s.getSwing()==2) swingRadio.check(R.id.swing2);
+		passwordText.setText( String.valueOf(s.getPassword()) );
+		forecastUrlText.setText( s.getForecastUrl() );
 		
 		return root;
 	}
@@ -58,21 +57,13 @@ public class GeneralSettingsFragment extends SherlockFragment {
 	private void saveData()
 	{
 		Settings s = Settings.getCurrent();
-		
 		s.setName( nameText.getText().toString() );
 		s.setZipCode( Integer.parseInt(zipText.getText().toString()) );
-		s.setTemperatureCalibration( Integer.parseInt(temperatureCalibration.getText().toString()) );
-		
-		RadioButton b = (RadioButton) root.findViewById(swingRadio.getCheckedRadioButtonId());
-		try{
-			s.setSwing( Double.parseDouble(b.getText().toString()) );
-		} catch (Exception ex)
-		{
-			//for some reason parseDouble throws an exception with 0
-			s.setSwing( 0 );
-		}
-		
+		s.setForecastUrl ( forecastUrlText.getText().toString());
+		s.setPassword(passwordText.getText().toString());
 		s.save();
+		
+		Servers.getCurrent().getSelectedServer().setPassword(s.getPassword());
 		
 	}
 	

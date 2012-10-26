@@ -56,13 +56,13 @@ public class Conditions {
 		current = value;
 	}
 	
-	public void load()
+	public boolean load()
 	{
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		
 		try {
-	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/conditions");
-	        if (json!=null && json!="")
+	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/conditions" + Servers.getBaseParams());
+	        if (json!=null && json!="" && !json.contains("\"error\":"))
 	        {
 				Conditions result = gson.fromJson(json, Conditions.class);
 				
@@ -75,11 +75,12 @@ public class Conditions {
 				}
 				this.weatherForecastUrl = result.weatherForecastUrl;
 				this.setMessage(result.message);
+				return true;
 	        }
-
 		} catch (Exception e) {
 			Utils.debugText = "Conditions.load - " + e.toString();
 		}
+		return false;
 	}
 	
 	/*

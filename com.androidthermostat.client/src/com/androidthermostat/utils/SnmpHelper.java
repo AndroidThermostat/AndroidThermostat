@@ -78,7 +78,7 @@ public class SnmpHelper {
 					Server s = new Server();
 					s.setIpAddress(ipAddress);
 					s.setName(name);
-					servers.add(s);
+					if (servers.getByIpPort(ipAddress, 8080)==null) servers.add(s);
 				}
 			}
 

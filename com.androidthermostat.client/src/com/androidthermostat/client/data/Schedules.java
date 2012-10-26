@@ -60,7 +60,7 @@ public class Schedules extends ArrayList<Schedule> {
 	{
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
-		Utils.jsonPost(Servers.getBaseUrl() + "/api/schedules", json);
+		Utils.jsonPost(Servers.getBaseUrl() + "/api/schedules" + Servers.getBaseParams(), json);
 	}
 	
 	public static void load()
@@ -70,9 +70,12 @@ public class Schedules extends ArrayList<Schedule> {
 		
 		Gson gson = new Gson();
 		try {
-	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/schedules");
-			Schedules result = gson.fromJson(json, Schedules.class);
-			current = result;
+	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/schedules" + Servers.getBaseParams());
+	        if (json!=null && json!="" && !json.contains("\"error\":"))
+	        {
+				Schedules result = gson.fromJson(json, Schedules.class);
+				current = result;
+	        }
 		} catch (Exception e) {
 			Utils.debugText = "Schedules.load - " + e.toString();
 		}

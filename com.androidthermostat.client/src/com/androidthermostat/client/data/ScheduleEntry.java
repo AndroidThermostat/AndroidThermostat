@@ -32,6 +32,7 @@ public class ScheduleEntry {
 		else if (mode.equals("Fan")) result += "turn the thermostat fan on.";
 		else if (mode.equals("Heat")) result += "heat to " + String.valueOf(targetLow) + "° F.";
 		else if (mode.equals("Cool")) result += "cool to " + String.valueOf(targetHigh) + "° F.";
+		else if (mode.equals("Auto")) result += "auto maintain " + String.valueOf(targetLow) + "° F - " + String.valueOf(targetHigh) + "° F.";
 		return result;
 	}
 	

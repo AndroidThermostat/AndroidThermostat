@@ -15,6 +15,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import com.androidthermostat.server.data.Conditions;
 
@@ -23,8 +26,13 @@ public class Utils {
 	public static String debugText = "";
 
 	public static String getUrlContents(String url) {
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+		HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+		
 		StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
+		//HttpClient client = new DefaultHttpClient();
+		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 		HttpGet httpGet = new HttpGet(url);
 		try {
 			HttpResponse response = client.execute(httpGet);

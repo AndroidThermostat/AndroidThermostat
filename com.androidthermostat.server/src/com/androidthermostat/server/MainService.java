@@ -1,13 +1,5 @@
 package com.androidthermostat.server;
 
-import com.androidthermostat.server.data.Conditions;
-import com.androidthermostat.server.data.Schedules;
-import com.androidthermostat.server.data.Settings;
-import com.androidthermostat.server.utils.FurnaceController;
-import com.androidthermostat.server.utils.MulticastListener;
-import com.androidthermostat.server.utils.Utils;
-import com.androidthermostat.server.utils.WebServer;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,9 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.androidthermostat.server.data.Conditions;
+import com.androidthermostat.server.data.Schedules;
+import com.androidthermostat.server.data.Settings;
+import com.androidthermostat.server.utils.FurnaceController;
+import com.androidthermostat.server.utils.MulticastListener;
+import com.androidthermostat.server.utils.Utils;
+import com.androidthermostat.server.web.WebServer;
+
 public class MainService extends Service {
 	private NotificationManager mNM;
 	WebServer webServer;
+	Context context;
+	
 	
 	private int NOTIFICATION = 1;
 	
@@ -67,7 +69,7 @@ public class MainService extends Service {
 	private void init()
 	{
 		Utils.debugText = "init";
-		Context context = getApplicationContext();
+		context = getApplicationContext();
         Settings.load(context);
         Schedules.load(context);
         FurnaceController.getCurrent().init();
@@ -76,13 +78,13 @@ public class MainService extends Service {
         webServer.init(context);
         Utils.debugText = "started web server";
         
-        /*
+        
         new Thread(new Runnable() {
 		    public void run() {
-		      MulticastListener.listen(MainActivity.this);
+		      MulticastListener.listen(context);
 		    }
 		  }).start();
-     */
+     
         Intent i = new Intent(this, IOIOServiceHelper.class);
         startService(i);
 	}

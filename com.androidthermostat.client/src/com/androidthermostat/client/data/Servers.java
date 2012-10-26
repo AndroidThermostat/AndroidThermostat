@@ -24,6 +24,16 @@ public class Servers extends ArrayList<Server> {
 	};
 	
 	
+	public Server getByIpPort(String ipAddress, int port)
+	{
+		for (Server server : this)
+		{
+			if (server.getIpAddress().equals(ipAddress) && server.getPort()==port) return server;
+		}
+		return null;
+	}
+	
+	
 	public void setSelectedServer(Server selectedServer) { this.selectedServer = selectedServer; }
 	public static void setCurrent(Servers current) { Servers.current = current; }
 
@@ -31,6 +41,7 @@ public class Servers extends ArrayList<Server> {
 
 	
 	public static String getBaseUrl() { return Servers.getCurrent().getSelectedServer().getBaseUrl(); }
+	public static String getBaseParams() { return Servers.getCurrent().getSelectedServer().getBaseParams(); }
 	
 	public String[] toStringArray()
 	{
