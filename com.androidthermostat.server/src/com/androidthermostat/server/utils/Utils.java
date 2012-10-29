@@ -12,12 +12,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+
+import android.content.Context;
+import android.content.res.Resources;
 
 import com.androidthermostat.server.data.Conditions;
 
@@ -72,5 +74,22 @@ public class Utils {
 			Utils.debugText="Utils.pingout - " + e.toString();
 		}
 	}
+	
+	public static String readRawResource(Context context, int resourceId)
+	{
+		String result = "";
+	
+        try {
+    		Resources res = context.getResources();
+            InputStream in_s = res.openRawResource(resourceId);
+        	byte[] b = new byte[in_s.available()];
+        	in_s.read(b);
+        	in_s.close();
+        	result = new String(b);
+        } catch (IOException e) { }
+        
+        return result;
+	}
+	
 	
 }

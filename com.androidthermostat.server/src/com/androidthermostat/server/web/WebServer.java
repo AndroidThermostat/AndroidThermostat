@@ -96,10 +96,11 @@ public class WebServer {
 	            if (url.startsWith("/api/")) JsonApi.handleGet(url, params, response, context);
 	            else if (url.startsWith("/utils/away")) Away.handleGet(url, params, response, context);
 	            else {
-	            	response.setStatusCode(HttpStatus.SC_OK);
+	            	Static.handleGet(url, params, response, context);
+	            	/*response.setStatusCode(HttpStatus.SC_OK);
 	                StringEntity body = new StringEntity("<html><body><h1>Hello World</h1>" + url + "</body></html>");
 	                body.setContentType("text/html");
-	                response.setEntity(body);            	
+	                response.setEntity(body);*/            	
 	            }
             }
             

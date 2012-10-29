@@ -1,0 +1,233 @@
+<html>
+<head>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="main.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+        var baseurl = '/api/';
+
+        var password = '';
+
+        $.ajaxSetup({
+            error: function (xhr, status, errorobj) {
+                alert('status: ' + status + ' error: ' + errorobj);
+            },
+            success: function ( data, text, jqXhr ) {
+                alert('success: ' + text)
+            }
+        });
+
+        // set default tabs to display, counting starts at zero
+        $(function() {
+            $("#tabs").tabs(); // {active: 3}
+            $("#tabs-settings").tabs(); // {active: 2}
+        });
+    </script>
+
+    <script src="main.js" type="text/javascript"></script>
+</head>
+<body>
+<button onclick="saveSettings()">save settings</button>
+<button onclick="saveSchedules()">save schedules</button>
+<div>
+    <div id="tabs">
+        <ul>
+            <li><a href="#conditionstab">Conditions</a></li>
+            <li><a href="#settemptab">Set Temperature</a></li>
+            <li><a href="#settingstab">Settings</a></li>
+            <li><a href="#schedulestab">Schedules</a></li>
+        </ul>
+
+        <div id="conditionstab">
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td valign="top" align="center">
+                        Inside Conditions<br />
+                        <span id="insideTemperature"></span><br />
+                        <span id="message"></span>
+                    </td>
+                    <td valign="top" align="center">
+                        Outside Conditions<br />
+                        <a id="weatherForecastLink" target="_blank"><img src="http://placehold.it/60x50" id="weatherImageUrl" width="60" height="50" alt="Weather Conditions Graphic" border="0" /></a><br />
+                        <span id="outsideTemperature"></span><br />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="settemptab">
+            <table border="0">
+                <tr>
+                    <td>Location:</td>
+                    <td>
+                        <input type="radio" class="settings" id="isaway-home" name="isAway" value="0" /><label for="isaway-home">Home</label>
+                        <input type="radio" class="settings" id="isaway-away" name="isAway" value="1" /><label for="isaway-away">Away</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mode:</td>
+                    <td>
+                        <input type="radio" class="settings" id="mode-off"  name="mode" value="Off"  /><label for="mode-off">Off</label>
+                        <input type="radio" class="settings" id="mode-fan"  name="mode" value="Fan"  /><label for="mode-fan">Fan</label>
+                        <input type="radio" class="settings" id="mode-heat" name="mode" value="Heat" /><label for="mode-heat">Heat</label>
+                        <input type="radio" class="settings" id="mode-cool" name="mode" value="Cool" /><label for="mode-cool">Cool</label>
+                        <input type="radio" class="settings" id="mode-auto" name="mode" value="Auto" /><label for="mode-auto">Auto</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Target High:</td>
+                    <td><input type="text" class="settings" id="targetHigh" /></td>
+                </tr>
+                <tr>
+                    <td>Target Low:</td>
+                    <td><input type="text" class="settings" id="targetLow" /></td>
+                </tr>
+                <tr>
+                    <td>Schedule:</td>
+                    <td>
+                        <select class="settings" name="schedule">
+                            <option value="-1">(None)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>OpenWeatherMapStation:</td>
+                    <td><input type="text" class="settings" id="openWeatherMapStation" /></td>
+                </tr>
+                <tr>
+                    <td>awayLow:</td>
+                    <td><input type="text" class="settings" id="awayLow" /></td>
+                </tr>
+                <tr>
+                    <td>awayHigh:</td>
+                    <td><input type="text" class="settings" id="awayHigh" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="schedulestab">
+            <!-- Don't forget to populate #schedule in SetTempTab -->
+            <!--<span id="schedules-json"></span>-->
+            <span id="schedules"></span>
+        </div>
+
+        <div id="settingstab">
+            <span id="settings-json"></span>
+            <div id="tabs-settings">
+                <ul>
+                    <li class="active"><a href="#settingstab-general">General</a></li>
+                    <li><a href="#settingstab-usage">Usage</a></li>
+                    <li><a href="#settingstab-furnace">Furnace</a></li>
+                </ul>
+                <div id="settingstab-general">
+                    <table border="0">
+                        <tr>
+                            <td>Name:</td>
+                            <td><input type="text" class="settings longtext" id="name" /></td>
+                        </tr>
+                        <tr>
+                            <td>Zipcode:</td>
+                            <td><input type="text" class="settings longtext" id="zipCode" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="text" class="settings longtext" id="password" /></td>
+                        </tr>
+                        <tr>
+                            <td>Forecast URL:</td>
+                            <td><input type="text" class="settings longtext" id="forecastUrl" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="settingstab-usage">
+                    <h1>Status Change URLs:</h1>
+                    <em>
+                        The thermostat can ping an outside tracking service such as ThermostatMonitor.com to monitor your usage history.
+                        If you would like to enable this, sign up with a service and enter the URL they provide here.
+                    </em><br />
+                    <br />
+                    Base URL:<br />
+                    <input type="text" class="settings longtext" id="pingOutUrl" /><br />
+                    <br />
+                    Cycle Complete Parameters:<br />
+                    <input type="text" class="settings longtext" id="cycleCompleteParams" /><br />
+                    <br />
+                    Inside Temperature Change Parameters:<br />
+                    <input type="text" class="settings longtext" id="insideTempChangeParams" /><br />
+                    <br />
+                    Outside Temperature Change Parameters:<br />
+                    <input type="text" class="settings longtext" id="outsideTempChangeParams" /><br />
+                    <br />
+                    View State Parameters:<br />
+                    <input type="text" class="settings longtext" id="viewStatsParams" /><br />
+                </div>
+                <div id="settingstab-furnace">
+                    <table border="0">
+                        <tr>
+                            <td>Temperature Swing:</td>
+                            <td>
+                                <input type="radio" class="settings" name="swing" value="1" /> 1
+                                <input type="radio" class="settings" name="swing" value="2" /> 2
+                                <input type="radio" class="settings" name="swing" value="3" /> 3
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Temperature Calibration:</td>
+                            <td><input type="text" class="settings shorttext" id="temperatureCalibration" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <em>
+                                    It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold
+                                    pockets where the thermostat is placed.  Enter a positive number to increase the reported temperature or negative to
+                                    decrease it.
+                                </em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Fan circulation
+                                <button id="cycleFan" class="ui-button settings" value="">n/a</button>
+                                Turn on for
+                                <input type="text" class="settings shorttext" id="cycleFanOnMinutes" />
+                                minutes, then turn off for
+                                <input type="text" class="settings shorttext" id="cycleFanOffMinutes" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <em>This is useful if your upstairs heater doesn't turn on frequently in the winter, but you want to circulate air to evenly warm each room.</em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Minimum Minutes Between Cool Cycles<br />
+                                <input type="text" class="settings shorttext" id="minCoolInterval" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Minimum Minutes Between Heat Cycles<br />
+                                <input type="text" class="settings shorttext" id="minHeatInterval" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <em>
+                                    Gas furnaces have a safety lockout in case the burner fails to ignite.  On some models, turning the heather off and back on will reset this lockout.
+                                    It's recommended that you keep the cycle interval above 2 minutes to allow any unignited gas to dissipate before trying again.
+                                </em>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
