@@ -35,6 +35,7 @@ public class Settings {
 	private boolean cycleFan = false;
 	public int cycleFanOnMinutes = 5;
 	public int cycleFanOffMinutes = 25;
+	private String json;
 	
 	
 
@@ -86,6 +87,11 @@ public class Settings {
 	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
 	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }
 	
+	public String getJson()
+	{
+		return json;
+	}
+	
 	public String getSummary()
 	{
 		String result="";
@@ -94,9 +100,9 @@ public class Settings {
 		{
 			result = "Away: " + String.valueOf(awayLow) + " - " + String.valueOf(awayHigh) + "° F";
 		} else {
-			if (mode.equals("Cool")) result += ": " + String.valueOf(targetLow) + "° F";
-			if (mode.equals("Heat")) result += ": " + String.valueOf(targetHigh) + "° F";
-			if (mode.equals("Auto")) result += ": " + String.valueOf(targetLow) + " - " + String.valueOf(targetHigh) + "° F";
+			if ("Cool".equals(mode)) result += ": " + String.valueOf(targetHigh) + "° F";
+			if ("Heat".equals(mode)) result += ": " + String.valueOf(targetLow) + "° F";
+			if ("Auto".equals(mode)) result += ": " + String.valueOf(targetLow) + " - " + String.valueOf(targetHigh) + "° F";
 		}
 		return result;
 	}
@@ -117,14 +123,20 @@ public class Settings {
 	
 	public static void load()
 	{
-		Gson gson = new Gson();
+		
 		
 		try {
 	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/settings" + Servers.getBaseParams());
-	        if (json!=null && json!="" && !json.contains("\"error\":"))
+	        if (!json.equals(Settings.getCurrent().getJson()))
 	        {
-	        	Settings result = gson.fromJson(json, Settings.class);
-	        	Settings.current=result;
+		        Gson gson = new Gson();
+		        if (json!=null && !"".equals(json) && !json.contains("\"error\":"))
+		        {
+		        	Settings result = gson.fromJson(json, Settings.class);
+		        	result.json = json;
+		        	Settings.current=result;
+		        	
+		        }
 	        }
 		} catch (Exception e) {
 			Utils.debugText = "Settings.load - " + e.toString();

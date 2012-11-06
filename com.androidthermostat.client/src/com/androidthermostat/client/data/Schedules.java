@@ -71,7 +71,7 @@ public class Schedules extends ArrayList<Schedule> {
 		Gson gson = new Gson();
 		try {
 	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/schedules" + Servers.getBaseParams());
-	        if (json!=null && json!="" && !json.contains("\"error\":"))
+	        if (json!=null && json.equals("") && !json.contains("\"error\":"))
 	        {
 				Schedules result = gson.fromJson(json, Schedules.class);
 				current = result;

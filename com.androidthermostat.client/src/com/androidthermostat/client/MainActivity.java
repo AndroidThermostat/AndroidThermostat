@@ -37,6 +37,9 @@ public class MainActivity extends ActivityBase {
 	Timer conditionsTimer;
 	Timer settingsTimer;
 	
+	String previousConditionsJson = "";
+	String previousSettingsJson = "";
+	String previousDebugText = "";
 	
 	
     
@@ -68,6 +71,9 @@ public class MainActivity extends ActivityBase {
         
         Servers.load(this);
         
+        Utils.debugText = "Loading";
+        initScreen();
+        
         
         new Thread(new Runnable() {
 	        public void run() {
@@ -92,9 +98,11 @@ public class MainActivity extends ActivityBase {
 	
 	public void showWeatherDetails()
 	{
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse( Conditions.getCurrent().getWeatherForecastUrl() ));
-		startActivity(i);
+		try{
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse( Conditions.getCurrent().getWeatherForecastUrl() ));
+			startActivity(i);
+		} catch (Exception ex) {}
 	}
 
 
@@ -105,17 +113,36 @@ public class MainActivity extends ActivityBase {
 		Settings.load();
 	}
 	
+	public void initScreen()
+	{
+		insideTempText.setText( "" );
+		outsideTempText.setText( "" );
+		targetTempText.setText( "Not Connected to Server" );
+		debugText.setText(Utils.debugText);
+	}
+
 	public void updateScreen()
 	{
+		
 		Conditions conditions = Conditions.getCurrent();
-		
-		
-		insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
-		outsideTempText.setText( String.valueOf(conditions.getOutsideTemperature()) + "° F" );
-		targetTempText.setText(Settings.getCurrent().getSummary());
+		Settings settings = Settings.getCurrent();
 
-		if (conditions.getWeatherImage()!=null) weatherImage.setImageBitmap(conditions.getWeatherImage());
-		debugText.setText(Utils.debugText);
+		//Updating these fields every second creates unnecessary processor usage.  Only update the fields
+		//if the values have changed.
+		
+		if (!conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson) || !Utils.debugText.equals(previousDebugText))
+		{
+		
+			insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
+			outsideTempText.setText( String.valueOf(conditions.getOutsideTemperature()) + "° F" );
+			targetTempText.setText(settings.getSummary());
+			if (conditions.getWeatherImage()!=null) weatherImage.setImageBitmap(conditions.getWeatherImage());
+			debugText.setText(Utils.debugText);
+			
+			previousConditionsJson = conditions.getJson();
+			previousSettingsJson = settings.getJson();
+			previousDebugText = Utils.debugText;
+		}
 		
 	}
 	
@@ -137,7 +164,9 @@ public class MainActivity extends ActivityBase {
 	
 	private Runnable refreshRunnable = new Runnable() {
 	   public void run() {
-		   updateScreen();
+		   try {
+			   updateScreen();
+		   } catch (Exception e) {}
 		   refreshHandler.postDelayed(this, 1000);
 	    }
 	};

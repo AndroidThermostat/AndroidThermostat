@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
 	private Runnable refreshRunnable = new Runnable() {
 	   public void run() {
 		   updateScreen();
-		   refreshHandler.postDelayed(this, 1000);
+		   refreshHandler.postDelayed(this, 3000);
 	    }
 	};
 	

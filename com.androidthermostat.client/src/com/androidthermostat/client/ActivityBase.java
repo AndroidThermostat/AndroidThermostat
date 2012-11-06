@@ -93,9 +93,11 @@ public class ActivityBase extends Activity {
     
     private void viewStats()
     {
-    	String url = Settings.getCurrent().getPingOutUrl() + Settings.getCurrent().getViewStatsParams();
-    	Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-    	startActivityForResult(i, ACTIVITY_VIEW_STATS);
+    	try{
+    		String url = Settings.getCurrent().getPingOutUrl() + Settings.getCurrent().getViewStatsParams();
+    		Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    		startActivityForResult(i, ACTIVITY_VIEW_STATS);
+    	} catch (Exception e) {}
     }
 	
 }

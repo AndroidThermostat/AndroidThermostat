@@ -33,7 +33,8 @@ public class ServerSelectActivity extends SherlockActivity {
 	Button connectButton;
 	Handler refreshHandler=null;
 	ListView serverList;
-
+	String[] previousServers = new String[0];
+	
 	private static final int MY_PASSWORD_DIALOG_ID = 4;
 	
 
@@ -136,11 +137,13 @@ public class ServerSelectActivity extends SherlockActivity {
 	{		
 		String[] availableServers = Servers.getCurrent().toStringArray();
 		
-		if (availableServers!=null)
+		//Rebinding is CPU intensive.  Only do it when there's new data.
+		if (availableServers!=null && !availableServers.equals(previousServers))
 		{
 			
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, availableServers);
 		    serverList.setAdapter(adapter);
+		    previousServers = availableServers;
 		}	
 	}
 	

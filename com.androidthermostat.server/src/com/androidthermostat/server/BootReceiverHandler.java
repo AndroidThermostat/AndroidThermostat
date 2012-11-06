@@ -13,6 +13,8 @@ public class BootReceiverHandler extends BroadcastReceiver  {
             //startService(i);
         	
             Intent serviceIntent = new Intent(context, MainService.class);
+            
+            //serviceIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             //Intent serviceIntent = new Intent("MainService");
             context.startService(serviceIntent);
         }

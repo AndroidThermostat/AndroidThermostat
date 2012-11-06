@@ -25,11 +25,17 @@ public class Conditions {
 	@Expose private String weatherImageUrl = "";
 	@Expose private String weatherForecastUrl = "";
 	@Expose private String message = "";
+	private String json = "";
 	
 	private Bitmap weatherImage = null;
 	Timer timer;
 
 
+	
+	public String getJson()
+	{
+		return json;
+	}
 	
 	public double getInsideTemperature() { return insideTemperature; }
 	public double getOutsideTemperature() { return outsideTemperature; }
@@ -58,23 +64,28 @@ public class Conditions {
 	
 	public boolean load()
 	{
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		
 		
 		try {
 	        String json = Utils.getUrlContents(Servers.getBaseUrl() + "/api/conditions" + Servers.getBaseParams());
-	        if (json!=null && json!="" && !json.contains("\"error\":"))
+	        if (json!=null && !"".equals(json) && !json.contains("\"error\":"))
 	        {
-				Conditions result = gson.fromJson(json, Conditions.class);
-				
-				this.insideTemperature = result.insideTemperature;
-				this.outsideTemperature = result.outsideTemperature;
-				if (!this.weatherImageUrl.equals(result.weatherImageUrl))
-				{
-					this.weatherImageUrl = result.weatherImageUrl;
-					if (this.weatherImageUrl!=null && this.weatherImageUrl!="") this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
-				}
-				this.weatherForecastUrl = result.weatherForecastUrl;
-				this.setMessage(result.message);
+	        	if (!json.equals(this.json))
+	        	{
+	        		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		        	this.json = json;
+					Conditions result = gson.fromJson(json, Conditions.class);
+					
+					this.insideTemperature = result.insideTemperature;
+					this.outsideTemperature = result.outsideTemperature;
+					if (!this.weatherImageUrl.equals(result.weatherImageUrl))
+					{
+						this.weatherImageUrl = result.weatherImageUrl;
+						if (this.weatherImageUrl!=null && this.weatherImageUrl!="") this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
+					}
+					this.weatherForecastUrl = result.weatherForecastUrl;
+					this.setMessage(result.message);
+	        	}
 				return true;
 	        }
 		} catch (Exception e) {

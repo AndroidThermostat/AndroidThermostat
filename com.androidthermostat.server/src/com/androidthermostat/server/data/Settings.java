@@ -137,11 +137,17 @@ public class Settings {
 	public static void load(String json)
 	{
 		int previousZip = current.zipCode; 
+		int previousWeatherStation = current.openWeatherMapStation;
+		
 		Gson gson = new Gson();
 		Settings result = gson.fromJson(json, Settings.class);
+		
+		//prevents a client from posting back blank settings if it failed to load them first
 		if (!result.getName().equals(""))
 		{
-			//prevents a client from posting back blank settings if it failed to load them first
+			//the weather station isn't posted back.  Override it.
+			result.openWeatherMapStation = previousWeatherStation;
+
 			Settings.current=result;
 			if (current.zipCode != previousZip) updateOpenWeatherStation();
 		}
