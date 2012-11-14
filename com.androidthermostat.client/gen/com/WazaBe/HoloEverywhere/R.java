@@ -360,6 +360,14 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int logo=0x7f01003f;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int message_id=0x7f010052;
         /**  The type of navigation to use. 
          <p>Must be one of the following constant values.</p>
 <table>
@@ -483,6 +491,14 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int titleTextStyle=0x7f010000;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int title_id=0x7f010051;
         /**  Default vertical divider between menu items. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -893,113 +909,114 @@ containing a value of this type.
         public static final int edit_text_holo_light=0x7f0200bc;
         public static final int ic_action_search=0x7f0200bd;
         public static final int ic_launcher=0x7f0200be;
-        public static final int list_focused_holo=0x7f0200bf;
-        public static final int list_longpressed_holo=0x7f0200c0;
-        public static final int list_pressed_holo_dark=0x7f0200c1;
-        public static final int list_pressed_holo_light=0x7f0200c2;
-        public static final int list_selector_background_transition_holo_dark=0x7f0200c3;
-        public static final int list_selector_background_transition_holo_light=0x7f0200c4;
-        public static final int list_selector_disabled_holo_dark=0x7f0200c5;
-        public static final int list_selector_disabled_holo_light=0x7f0200c6;
-        public static final int list_selector_holo_dark=0x7f0200c7;
-        public static final int list_selector_holo_light=0x7f0200c8;
-        public static final int menu_dropdown_panel_holo_dark=0x7f0200c9;
-        public static final int menu_dropdown_panel_holo_light=0x7f0200ca;
-        public static final int progress_bg_holo_dark=0x7f0200cb;
-        public static final int progress_bg_holo_light=0x7f0200cc;
-        public static final int progress_horizontal_holo_dark=0x7f0200cd;
-        public static final int progress_horizontal_holo_light=0x7f0200ce;
-        public static final int progress_indeterminate_horizontal_holo=0x7f0200cf;
-        public static final int progress_large_holo=0x7f0200d0;
-        public static final int progress_medium_holo=0x7f0200d1;
-        public static final int progress_primary_holo_dark=0x7f0200d2;
-        public static final int progress_primary_holo_light=0x7f0200d3;
-        public static final int progress_secondary_holo_dark=0x7f0200d4;
-        public static final int progress_secondary_holo_light=0x7f0200d5;
-        public static final int progress_small_holo=0x7f0200d6;
-        public static final int progressbar_indeterminate1=0x7f0200d7;
-        public static final int progressbar_indeterminate2=0x7f0200d8;
-        public static final int progressbar_indeterminate3=0x7f0200d9;
-        public static final int progressbar_indeterminate_holo1=0x7f0200da;
-        public static final int progressbar_indeterminate_holo2=0x7f0200db;
-        public static final int progressbar_indeterminate_holo3=0x7f0200dc;
-        public static final int progressbar_indeterminate_holo4=0x7f0200dd;
-        public static final int progressbar_indeterminate_holo5=0x7f0200de;
-        public static final int progressbar_indeterminate_holo6=0x7f0200df;
-        public static final int progressbar_indeterminate_holo7=0x7f0200e0;
-        public static final int progressbar_indeterminate_holo8=0x7f0200e1;
-        public static final int rate_star_big_half_holo_dark=0x7f0200e2;
-        public static final int rate_star_big_half_holo_light=0x7f0200e3;
-        public static final int rate_star_big_off_holo_dark=0x7f0200e4;
-        public static final int rate_star_big_off_holo_light=0x7f0200e5;
-        public static final int rate_star_big_on_holo_dark=0x7f0200e6;
-        public static final int rate_star_big_on_holo_light=0x7f0200e7;
-        public static final int ratingbar_full_empty_holo_dark=0x7f0200e8;
-        public static final int ratingbar_full_empty_holo_light=0x7f0200e9;
-        public static final int ratingbar_full_filled_holo_dark=0x7f0200ea;
-        public static final int ratingbar_full_filled_holo_light=0x7f0200eb;
-        public static final int ratingbar_full_holo_dark=0x7f0200ec;
-        public static final int ratingbar_full_holo_light=0x7f0200ed;
-        public static final int ratingbar_holo_dark=0x7f0200ee;
-        public static final int ratingbar_holo_light=0x7f0200ef;
-        public static final int scrubber_control_disabled_holo=0x7f0200f0;
-        public static final int scrubber_control_focused_holo=0x7f0200f1;
-        public static final int scrubber_control_normal_holo=0x7f0200f2;
-        public static final int scrubber_control_pressed_holo=0x7f0200f3;
-        public static final int scrubber_control_selector_holo=0x7f0200f4;
-        public static final int scrubber_primary_holo=0x7f0200f5;
-        public static final int scrubber_progress_horizontal_holo_dark=0x7f0200f6;
-        public static final int scrubber_progress_horizontal_holo_light=0x7f0200f7;
-        public static final int scrubber_secondary_holo=0x7f0200f8;
-        public static final int scrubber_track_holo_dark=0x7f0200f9;
-        public static final int scrubber_track_holo_light=0x7f0200fa;
-        public static final int spinner_16_inner_holo=0x7f0200fb;
-        public static final int spinner_16_outer_holo=0x7f0200fc;
-        public static final int spinner_20_inner_holo=0x7f0200fd;
-        public static final int spinner_20_outer_holo=0x7f0200fe;
-        public static final int spinner_48_inner_holo=0x7f0200ff;
-        public static final int spinner_48_outer_holo=0x7f020100;
-        public static final int spinner_76_inner_holo=0x7f020101;
-        public static final int spinner_76_outer_holo=0x7f020102;
-        public static final int spinner_background_holo_dark=0x7f020103;
-        public static final int spinner_background_holo_light=0x7f020104;
-        public static final int spinner_default_holo_dark=0x7f020105;
-        public static final int spinner_default_holo_light=0x7f020106;
-        public static final int spinner_disabled_holo_dark=0x7f020107;
-        public static final int spinner_disabled_holo_light=0x7f020108;
-        public static final int spinner_focused_holo_dark=0x7f020109;
-        public static final int spinner_focused_holo_light=0x7f02010a;
-        public static final int spinner_pressed_holo_dark=0x7f02010b;
-        public static final int spinner_pressed_holo_light=0x7f02010c;
-        public static final int textfield_activated_holo_dark=0x7f02010d;
-        public static final int textfield_activated_holo_light=0x7f02010e;
-        public static final int textfield_bg_activated_holo_dark=0x7f02010f;
-        public static final int textfield_bg_default_holo_dark=0x7f020110;
-        public static final int textfield_bg_disabled_focused_holo_dark=0x7f020111;
-        public static final int textfield_bg_disabled_holo_dark=0x7f020112;
-        public static final int textfield_bg_focused_holo_dark=0x7f020113;
-        public static final int textfield_default=0x7f020114;
-        public static final int textfield_default_holo_dark=0x7f020115;
-        public static final int textfield_default_holo_light=0x7f020116;
-        public static final int textfield_disabled=0x7f020117;
-        public static final int textfield_disabled_focused_holo_dark=0x7f020118;
-        public static final int textfield_disabled_focused_holo_light=0x7f020119;
-        public static final int textfield_disabled_holo_dark=0x7f02011a;
-        public static final int textfield_disabled_holo_light=0x7f02011b;
-        public static final int textfield_disabled_selected=0x7f02011c;
-        public static final int textfield_focused_holo_dark=0x7f02011d;
-        public static final int textfield_focused_holo_light=0x7f02011e;
-        public static final int textfield_multiline_activated_holo_dark=0x7f02011f;
-        public static final int textfield_multiline_activated_holo_light=0x7f020120;
-        public static final int textfield_multiline_default_holo_dark=0x7f020121;
-        public static final int textfield_multiline_default_holo_light=0x7f020122;
-        public static final int textfield_multiline_disabled_focused_holo_dark=0x7f020123;
-        public static final int textfield_multiline_disabled_focused_holo_light=0x7f020124;
-        public static final int textfield_multiline_disabled_holo_dark=0x7f020125;
-        public static final int textfield_multiline_disabled_holo_light=0x7f020126;
-        public static final int textfield_multiline_focused_holo_dark=0x7f020127;
-        public static final int textfield_multiline_focused_holo_light=0x7f020128;
-        public static final int toast_frame=0x7f020129;
+        public static final int ic_menu_help=0x7f0200bf;
+        public static final int list_focused_holo=0x7f0200c0;
+        public static final int list_longpressed_holo=0x7f0200c1;
+        public static final int list_pressed_holo_dark=0x7f0200c2;
+        public static final int list_pressed_holo_light=0x7f0200c3;
+        public static final int list_selector_background_transition_holo_dark=0x7f0200c4;
+        public static final int list_selector_background_transition_holo_light=0x7f0200c5;
+        public static final int list_selector_disabled_holo_dark=0x7f0200c6;
+        public static final int list_selector_disabled_holo_light=0x7f0200c7;
+        public static final int list_selector_holo_dark=0x7f0200c8;
+        public static final int list_selector_holo_light=0x7f0200c9;
+        public static final int menu_dropdown_panel_holo_dark=0x7f0200ca;
+        public static final int menu_dropdown_panel_holo_light=0x7f0200cb;
+        public static final int progress_bg_holo_dark=0x7f0200cc;
+        public static final int progress_bg_holo_light=0x7f0200cd;
+        public static final int progress_horizontal_holo_dark=0x7f0200ce;
+        public static final int progress_horizontal_holo_light=0x7f0200cf;
+        public static final int progress_indeterminate_horizontal_holo=0x7f0200d0;
+        public static final int progress_large_holo=0x7f0200d1;
+        public static final int progress_medium_holo=0x7f0200d2;
+        public static final int progress_primary_holo_dark=0x7f0200d3;
+        public static final int progress_primary_holo_light=0x7f0200d4;
+        public static final int progress_secondary_holo_dark=0x7f0200d5;
+        public static final int progress_secondary_holo_light=0x7f0200d6;
+        public static final int progress_small_holo=0x7f0200d7;
+        public static final int progressbar_indeterminate1=0x7f0200d8;
+        public static final int progressbar_indeterminate2=0x7f0200d9;
+        public static final int progressbar_indeterminate3=0x7f0200da;
+        public static final int progressbar_indeterminate_holo1=0x7f0200db;
+        public static final int progressbar_indeterminate_holo2=0x7f0200dc;
+        public static final int progressbar_indeterminate_holo3=0x7f0200dd;
+        public static final int progressbar_indeterminate_holo4=0x7f0200de;
+        public static final int progressbar_indeterminate_holo5=0x7f0200df;
+        public static final int progressbar_indeterminate_holo6=0x7f0200e0;
+        public static final int progressbar_indeterminate_holo7=0x7f0200e1;
+        public static final int progressbar_indeterminate_holo8=0x7f0200e2;
+        public static final int rate_star_big_half_holo_dark=0x7f0200e3;
+        public static final int rate_star_big_half_holo_light=0x7f0200e4;
+        public static final int rate_star_big_off_holo_dark=0x7f0200e5;
+        public static final int rate_star_big_off_holo_light=0x7f0200e6;
+        public static final int rate_star_big_on_holo_dark=0x7f0200e7;
+        public static final int rate_star_big_on_holo_light=0x7f0200e8;
+        public static final int ratingbar_full_empty_holo_dark=0x7f0200e9;
+        public static final int ratingbar_full_empty_holo_light=0x7f0200ea;
+        public static final int ratingbar_full_filled_holo_dark=0x7f0200eb;
+        public static final int ratingbar_full_filled_holo_light=0x7f0200ec;
+        public static final int ratingbar_full_holo_dark=0x7f0200ed;
+        public static final int ratingbar_full_holo_light=0x7f0200ee;
+        public static final int ratingbar_holo_dark=0x7f0200ef;
+        public static final int ratingbar_holo_light=0x7f0200f0;
+        public static final int scrubber_control_disabled_holo=0x7f0200f1;
+        public static final int scrubber_control_focused_holo=0x7f0200f2;
+        public static final int scrubber_control_normal_holo=0x7f0200f3;
+        public static final int scrubber_control_pressed_holo=0x7f0200f4;
+        public static final int scrubber_control_selector_holo=0x7f0200f5;
+        public static final int scrubber_primary_holo=0x7f0200f6;
+        public static final int scrubber_progress_horizontal_holo_dark=0x7f0200f7;
+        public static final int scrubber_progress_horizontal_holo_light=0x7f0200f8;
+        public static final int scrubber_secondary_holo=0x7f0200f9;
+        public static final int scrubber_track_holo_dark=0x7f0200fa;
+        public static final int scrubber_track_holo_light=0x7f0200fb;
+        public static final int spinner_16_inner_holo=0x7f0200fc;
+        public static final int spinner_16_outer_holo=0x7f0200fd;
+        public static final int spinner_20_inner_holo=0x7f0200fe;
+        public static final int spinner_20_outer_holo=0x7f0200ff;
+        public static final int spinner_48_inner_holo=0x7f020100;
+        public static final int spinner_48_outer_holo=0x7f020101;
+        public static final int spinner_76_inner_holo=0x7f020102;
+        public static final int spinner_76_outer_holo=0x7f020103;
+        public static final int spinner_background_holo_dark=0x7f020104;
+        public static final int spinner_background_holo_light=0x7f020105;
+        public static final int spinner_default_holo_dark=0x7f020106;
+        public static final int spinner_default_holo_light=0x7f020107;
+        public static final int spinner_disabled_holo_dark=0x7f020108;
+        public static final int spinner_disabled_holo_light=0x7f020109;
+        public static final int spinner_focused_holo_dark=0x7f02010a;
+        public static final int spinner_focused_holo_light=0x7f02010b;
+        public static final int spinner_pressed_holo_dark=0x7f02010c;
+        public static final int spinner_pressed_holo_light=0x7f02010d;
+        public static final int textfield_activated_holo_dark=0x7f02010e;
+        public static final int textfield_activated_holo_light=0x7f02010f;
+        public static final int textfield_bg_activated_holo_dark=0x7f020110;
+        public static final int textfield_bg_default_holo_dark=0x7f020111;
+        public static final int textfield_bg_disabled_focused_holo_dark=0x7f020112;
+        public static final int textfield_bg_disabled_holo_dark=0x7f020113;
+        public static final int textfield_bg_focused_holo_dark=0x7f020114;
+        public static final int textfield_default=0x7f020115;
+        public static final int textfield_default_holo_dark=0x7f020116;
+        public static final int textfield_default_holo_light=0x7f020117;
+        public static final int textfield_disabled=0x7f020118;
+        public static final int textfield_disabled_focused_holo_dark=0x7f020119;
+        public static final int textfield_disabled_focused_holo_light=0x7f02011a;
+        public static final int textfield_disabled_holo_dark=0x7f02011b;
+        public static final int textfield_disabled_holo_light=0x7f02011c;
+        public static final int textfield_disabled_selected=0x7f02011d;
+        public static final int textfield_focused_holo_dark=0x7f02011e;
+        public static final int textfield_focused_holo_light=0x7f02011f;
+        public static final int textfield_multiline_activated_holo_dark=0x7f020120;
+        public static final int textfield_multiline_activated_holo_light=0x7f020121;
+        public static final int textfield_multiline_default_holo_dark=0x7f020122;
+        public static final int textfield_multiline_default_holo_light=0x7f020123;
+        public static final int textfield_multiline_disabled_focused_holo_dark=0x7f020124;
+        public static final int textfield_multiline_disabled_focused_holo_light=0x7f020125;
+        public static final int textfield_multiline_disabled_holo_dark=0x7f020126;
+        public static final int textfield_multiline_disabled_holo_light=0x7f020127;
+        public static final int textfield_multiline_focused_holo_dark=0x7f020128;
+        public static final int textfield_multiline_focused_holo_light=0x7f020129;
+        public static final int toast_frame=0x7f02012a;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f040022;
@@ -1031,104 +1048,105 @@ containing a value of this type.
         public static final int abs__title=0x7f04001b;
         public static final int abs__titleDivider=0x7f04001c;
         public static final int abs__up=0x7f04000b;
-        public static final int addButton=0x7f040057;
+        public static final int addButton=0x7f040058;
         public static final int alertTitle=0x7f04002c;
-        public static final int awayHolder=0x7f040078;
-        public static final int baseUrl=0x7f04007b;
+        public static final int awayHolder=0x7f040079;
+        public static final int baseUrl=0x7f04007c;
         public static final int cancelButton=0x7f04003e;
-        public static final int connectButton=0x7f040071;
+        public static final int connectButton=0x7f040072;
         public static final int contentPanel=0x7f04002e;
         public static final int copyButton=0x7f04003d;
         public static final int customPanel=0x7f040031;
-        public static final int cycleCompleteParams=0x7f04007c;
-        public static final int cycleFanOffText=0x7f040047;
-        public static final int cycleFanOnText=0x7f040046;
-        public static final int cycleFanSwitch=0x7f040045;
-        public static final int dayOfWeekText=0x7f040054;
-        public static final int debugText=0x7f040052;
-        public static final int deleteButton=0x7f040059;
+        public static final int cycleCompleteParams=0x7f04007d;
+        public static final int cycleFanOffText=0x7f040049;
+        public static final int cycleFanOnText=0x7f040048;
+        public static final int cycleFanSwitch=0x7f040047;
+        public static final int dayOfWeekText=0x7f040055;
+        public static final int debugText=0x7f040053;
+        public static final int deleteButton=0x7f04005a;
         public static final int disableHome=0x7f040009;
-        public static final int displayBox=0x7f040056;
-        public static final int entryList=0x7f040055;
+        public static final int displayBox=0x7f040057;
+        public static final int entryList=0x7f040056;
         public static final int forecastUrlText=0x7f04004c;
-        public static final int fragmentHolder=0x7f040053;
+        public static final int fragmentHolder=0x7f040054;
         public static final int fridayCheck=0x7f04003b;
+        public static final int helpButton=0x7f04004d;
         public static final int homeAsUp=0x7f040006;
-        public static final int homeHolder=0x7f040075;
-        public static final int hourList=0x7f04005a;
+        public static final int homeHolder=0x7f040076;
+        public static final int hourList=0x7f04005b;
         public static final int icon=0x7f04002b;
-        public static final int insideTempParams=0x7f04007d;
-        public static final int insideTempText=0x7f04004e;
+        public static final int insideTempParams=0x7f04007e;
+        public static final int insideTempText=0x7f04004f;
         public static final int listMode=0x7f040002;
-        public static final int locationAway=0x7f040074;
-        public static final int locationHome=0x7f040073;
-        public static final int locationRadio=0x7f040072;
-        public static final int maxAwayList=0x7f04007a;
-        public static final int maxTemperatureList=0x7f040069;
-        public static final int menu_friday=0x7f040085;
-        public static final int menu_furnace=0x7f04008a;
-        public static final int menu_general=0x7f040088;
-        public static final int menu_monday=0x7f040081;
-        public static final int menu_saturday=0x7f040086;
-        public static final int menu_settings=0x7f040087;
-        public static final int menu_sunday=0x7f040080;
-        public static final int menu_thursday=0x7f040084;
-        public static final int menu_tuesday=0x7f040082;
-        public static final int menu_usage=0x7f040089;
-        public static final int menu_wednesday=0x7f040083;
+        public static final int locationAway=0x7f040075;
+        public static final int locationHome=0x7f040074;
+        public static final int locationRadio=0x7f040073;
+        public static final int maxAwayList=0x7f04007b;
+        public static final int maxTemperatureList=0x7f04006a;
+        public static final int menu_friday=0x7f040086;
+        public static final int menu_furnace=0x7f04008b;
+        public static final int menu_general=0x7f040089;
+        public static final int menu_monday=0x7f040082;
+        public static final int menu_saturday=0x7f040087;
+        public static final int menu_settings=0x7f040088;
+        public static final int menu_sunday=0x7f040081;
+        public static final int menu_thursday=0x7f040085;
+        public static final int menu_tuesday=0x7f040083;
+        public static final int menu_usage=0x7f04008a;
+        public static final int menu_wednesday=0x7f040084;
         public static final int message=0x7f040030;
-        public static final int minAwayList=0x7f040079;
-        public static final int minCoolInterval=0x7f040048;
-        public static final int minHeatInterval=0x7f040049;
-        public static final int minTemperatureList=0x7f040068;
-        public static final int minuteList=0x7f04005b;
-        public static final int modeAuto=0x7f040064;
-        public static final int modeCool=0x7f040063;
-        public static final int modeFan=0x7f040061;
-        public static final int modeHeat=0x7f040062;
-        public static final int modeList=0x7f040076;
-        public static final int modeOff=0x7f040060;
-        public static final int modeRadio=0x7f04005f;
+        public static final int minAwayList=0x7f04007a;
+        public static final int minCoolInterval=0x7f040045;
+        public static final int minHeatInterval=0x7f040046;
+        public static final int minTemperatureList=0x7f040069;
+        public static final int minuteList=0x7f04005c;
+        public static final int modeAuto=0x7f040065;
+        public static final int modeCool=0x7f040064;
+        public static final int modeFan=0x7f040062;
+        public static final int modeHeat=0x7f040063;
+        public static final int modeList=0x7f040077;
+        public static final int modeOff=0x7f040061;
+        public static final int modeRadio=0x7f040060;
         public static final int mondayCheck=0x7f040037;
-        public static final int name=0x7f04006b;
+        public static final int name=0x7f04006c;
         public static final int nameText=0x7f04004a;
         public static final int normal=0x7f040001;
-        public static final int outsideTempParams=0x7f04007e;
-        public static final int outsideTempText=0x7f040051;
+        public static final int outsideTempParams=0x7f04007f;
+        public static final int outsideTempText=0x7f040052;
         public static final int parentPanel=0x7f040027;
         public static final int passwordText=0x7f04003f;
-        public static final int periodAM=0x7f04005d;
-        public static final int periodPM=0x7f04005e;
-        public static final int periodRadio=0x7f04005c;
+        public static final int periodAM=0x7f04005e;
+        public static final int periodPM=0x7f04005f;
+        public static final int periodRadio=0x7f04005d;
         public static final int progress=0x7f040032;
         public static final int progress_number=0x7f040034;
         public static final int progress_percent=0x7f040033;
         public static final int realtabcontent=0x01010000;
         public static final int saturdayCheck=0x7f04003c;
-        public static final int saveButton=0x7f04006a;
-        public static final int scanButton=0x7f04006e;
-        public static final int scheduleAddButton=0x7f04006d;
-        public static final int scheduleList=0x7f04006c;
-        public static final int scheduleNameText=0x7f040058;
-        public static final int screenLayout=0x7f04004d;
+        public static final int saveButton=0x7f04006b;
+        public static final int scanButton=0x7f04006f;
+        public static final int scheduleAddButton=0x7f04006e;
+        public static final int scheduleList=0x7f04006d;
+        public static final int scheduleNameText=0x7f040059;
+        public static final int screenLayout=0x7f04004e;
         public static final int scrollView=0x7f04002f;
-        public static final int serverIp=0x7f040070;
-        public static final int serverList=0x7f04006f;
+        public static final int serverIp=0x7f040071;
+        public static final int serverList=0x7f040070;
         public static final int showCustom=0x7f040008;
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
-        public static final int singleTemperatureHolder=0x7f040065;
+        public static final int singleTemperatureHolder=0x7f040066;
         public static final int sundayCheck=0x7f040036;
         public static final int swing1=0x7f040041;
         public static final int swing2=0x7f040042;
         public static final int swing3=0x7f040043;
         public static final int swingRadio=0x7f040040;
         public static final int tabMode=0x7f040003;
-        public static final int targetTempText=0x7f040050;
-        public static final int tempList=0x7f040066;
+        public static final int targetTempText=0x7f040051;
+        public static final int tempList=0x7f040067;
         public static final int temperatureCalibration=0x7f040044;
-        public static final int temperatureList=0x7f040077;
-        public static final int temperatureRangeHolder=0x7f040067;
+        public static final int temperatureList=0x7f040078;
+        public static final int temperatureRangeHolder=0x7f040068;
         public static final int thursdayCheck=0x7f04003a;
         public static final int titleDivider=0x7f04002d;
         public static final int titleDividerTop=0x7f040029;
@@ -1137,8 +1155,8 @@ containing a value of this type.
         public static final int topPanel=0x7f040028;
         public static final int tuesdayCheck=0x7f040038;
         public static final int useLogo=0x7f040004;
-        public static final int viewStatsParams=0x7f04007f;
-        public static final int weatherImage=0x7f04004f;
+        public static final int viewStatsParams=0x7f040080;
+        public static final int weatherImage=0x7f040050;
         public static final int wednesdayCheck=0x7f040039;
         public static final int wrap_content=0x7f040000;
         public static final int zipText=0x7f04004b;
@@ -1177,28 +1195,29 @@ containing a value of this type.
         public static final int dialog_password=0x7f03001b;
         public static final int furnace_settings=0x7f03001c;
         public static final int general_settings=0x7f03001d;
-        public static final int main=0x7f03001e;
-        public static final int progress_horizontal_holo_dark=0x7f03001f;
-        public static final int progress_horizontal_holo_light=0x7f030020;
-        public static final int progress_indeterminate_horizontal=0x7f030021;
-        public static final int progress_indeterminate_horizontal_holo=0x7f030022;
-        public static final int progress_large_holo=0x7f030023;
-        public static final int progress_medium_holo=0x7f030024;
-        public static final int progress_small_holo=0x7f030025;
-        public static final int schedule=0x7f030026;
-        public static final int schedule_day_tab=0x7f030027;
-        public static final int schedule_details_tab=0x7f030028;
-        public static final int schedule_entry_edit=0x7f030029;
-        public static final int schedule_entry_row=0x7f03002a;
-        public static final int schedule_row=0x7f03002b;
-        public static final int schedule_tabs=0x7f03002c;
-        public static final int schedules=0x7f03002d;
-        public static final int server_select=0x7f03002e;
-        public static final int set_temperature=0x7f03002f;
-        public static final int settings=0x7f030030;
-        public static final int sherlock_spinner_dropdown_item=0x7f030031;
-        public static final int sherlock_spinner_item=0x7f030032;
-        public static final int usage_settings=0x7f030033;
+        public static final int help_control=0x7f03001e;
+        public static final int main=0x7f03001f;
+        public static final int progress_horizontal_holo_dark=0x7f030020;
+        public static final int progress_horizontal_holo_light=0x7f030021;
+        public static final int progress_indeterminate_horizontal=0x7f030022;
+        public static final int progress_indeterminate_horizontal_holo=0x7f030023;
+        public static final int progress_large_holo=0x7f030024;
+        public static final int progress_medium_holo=0x7f030025;
+        public static final int progress_small_holo=0x7f030026;
+        public static final int schedule=0x7f030027;
+        public static final int schedule_day_tab=0x7f030028;
+        public static final int schedule_details_tab=0x7f030029;
+        public static final int schedule_entry_edit=0x7f03002a;
+        public static final int schedule_entry_row=0x7f03002b;
+        public static final int schedule_row=0x7f03002c;
+        public static final int schedule_tabs=0x7f03002d;
+        public static final int schedules=0x7f03002e;
+        public static final int server_select=0x7f03002f;
+        public static final int set_temperature=0x7f030030;
+        public static final int settings=0x7f030031;
+        public static final int sherlock_spinner_dropdown_item=0x7f030032;
+        public static final int sherlock_spinner_item=0x7f030033;
+        public static final int usage_settings=0x7f030034;
     }
     public static final class menu {
         public static final int schedule=0x7f0b0000;
@@ -1236,6 +1255,16 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f090009;
         public static final int app_name=0x7f09000a;
+        public static final int fan_circulation=0x7f09000f;
+        public static final int fan_circulation_help=0x7f090010;
+        public static final int min_cool=0x7f090011;
+        public static final int min_cool_help=0x7f090012;
+        public static final int min_heat=0x7f090013;
+        public static final int min_heat_help=0x7f090014;
+        public static final int temp_calibration=0x7f09000b;
+        public static final int temp_calibration_help=0x7f09000c;
+        public static final int temp_swing=0x7f09000d;
+        public static final int temp_swing_help=0x7f09000e;
     }
     public static final class style {
         public static final int AlertDialogHoloDark=0x7f0a0062;
@@ -1364,6 +1393,49 @@ containing a value of this type.
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0a0032;
     }
     public static final class styleable {
+        /** Attributes that can be used with a HelpControl.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #HelpControl_message_id com.androidthermostat.client:message_id}</code></td><td></td></tr>
+           <tr><td><code>{@link #HelpControl_title_id com.androidthermostat.client:title_id}</code></td><td></td></tr>
+           </table>
+           @see #HelpControl_message_id
+           @see #HelpControl_title_id
+         */
+        public static final int[] HelpControl = {
+            0x7f010051, 0x7f010052
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.androidthermostat.client.R.attr#message_id}
+          attribute's value can be found in the {@link #HelpControl} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:message_id
+        */
+        public static final int HelpControl_message_id = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.androidthermostat.client.R.attr#title_id}
+          attribute's value can be found in the {@link #HelpControl} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:title_id
+        */
+        public static final int HelpControl_title_id = 0;
         /**  Attributes used to style the Action Bar. 
            <p>Includes the following attributes:</p>
            <table>

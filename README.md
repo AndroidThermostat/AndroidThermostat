@@ -1,14 +1,13 @@
-Android Thermostat
-=================
+Android Thermostat Firmware Modifications
+=========================================
 
-An Android based home thermostat project.  For full details see AndroidThermostat.com
+A modified version of the IOIO firmware that adds safeguards to maintain a safe temperature range of 45F to 90F regardless of the commands received from Android
 
+## Setup
 
-## Components
-
-* com.androidthermostat.server - Run on the thermostat itself and is responsible for all communication with the relays that turn on/off the heater, air condition and fan.  It monitors the inside conditions and executes the schedule.  It has no real interface of it's own, but exposes a JSON interface that a client can connect to in order to check the state and send commands.
-
-* com.androidthermostat.client - Provides the interface for the thermostat.  This program runs directly on the thermostat itself and connects to the JSON API to interface with the server component.  It can also be run an another Android device to provide a remote interface to the thermostat.
+* Download the base IOIO firmware from https://github.com/ytai/ioio
+* Follow the instructions here to get the IOIO Manager app and install the Blink firmware as a test.
+* Copy the app_layer_thermostat project to the firmware folder and compile using MPLAB and deploy to the IOIO
 
 ## License
 

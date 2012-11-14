@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.androidthermostat.client.controls.HelpControl;
 import com.androidthermostat.client.data.Settings;
 
 public class FurnaceSettingsFragment extends SherlockFragment {
@@ -26,6 +27,10 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 
 	View root;
 
+	
+	
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		root = inflater.inflate(R.layout.furnace_settings, null);

@@ -24,7 +24,7 @@ public class Conditions {
 	Timer scheduleTimer;
 	
 	private static Conditions current;
-	@Expose private double insideTemperature = 0;
+	@Expose public double insideTemperature = 0;
 	@Expose private double outsideTemperature = 65;
 	@Expose private String weatherImageUrl = "";
 	@Expose private String weatherForecastUrl = "";

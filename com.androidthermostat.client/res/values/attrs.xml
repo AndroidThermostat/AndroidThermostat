@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<declare-styleable name="HelpControl">
+		<attr name="title_id" format="integer"/>
+		<attr name="message_id" format="integer"/>
+	</declare-styleable>
+
+</resources>

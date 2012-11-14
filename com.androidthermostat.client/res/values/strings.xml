@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Android Thermostat Client</string>
+    <string name="temp_calibration">Temperature Calibration</string>
+    <string name="temp_calibration_help">It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold pockets where the thermostat is placed.  Enter a possitive number to increase the reported temperature or negative to decrease it.</string>
+    <string name="temp_swing">Temperature Swing</string>
+    <string name="temp_swing_help">The temperature swing indicates how many degrees to allow the temperature to rise or fall below the set point before the air conditioner or heater turns on to return the temperature to the set point.  Larger swings are generally more energy efficient.</string>
+    <string name="fan_circulation">Fan Circulation</string>
+    <string name="fan_circulation_help">This sets how often the fan will circulate the air in your house regardless of other heat and cool settings.  One scenario where this is useful is if your upstairs heater doesn\'t turn on frequently in the winter.  You casn have the upstair fan circulate periodically to evenly distribute the heat rising from downstairs to each room.</string>
+    <string name="min_cool">Minimum Coooling Interval</string>
+    <string name="min_cool_help">The minimum number of minutes between cooling cycles. To avoid short cycling your air conditioner it is recommended that you wait 5 minutes between air conditioning cycles to allow the refridgeration system to equalize.</string>
+    <string name="min_heat">Minimum Heating Interval</string>
+    <string name="min_heat_help">Minimum number of minutes between heat cycles.  Gas furnaces have a safety lockout in case the burner fails to ignite.  On some models turning the heater off and back on will reset this lockout.  It\'s recommended you keep the cycle interval above 2 minutes to avoid to allow any unignited gas to dissipate before trying again.</string>
 </resources>

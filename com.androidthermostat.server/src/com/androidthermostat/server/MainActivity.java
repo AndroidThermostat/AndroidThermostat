@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 		String output = "Fan: " + String.valueOf(fc.fanOn) + "\n";
 		output += "Cool: " + String.valueOf(fc.coolOn) + "\n";
 		output += "Heat: " + String.valueOf(fc.heatOn) + "\n";
-		output += "Temp: " + Conditions.getCurrent().insideTempRaw + "\n";
+		output += "Temp: " + String.valueOf(Conditions.getCurrent().insideTemperature) + "\n";
 		
 		debugText.setText(output + Utils.debugText);
 	}
