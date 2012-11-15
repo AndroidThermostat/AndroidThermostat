@@ -15,7 +15,7 @@ import com.androidthermostat.client.data.Settings;
 public class GeneralSettingsFragment extends SherlockFragment {
 
 	EditText nameText;
-	EditText zipText;
+	EditText locationText;
 	EditText passwordText;
 	EditText forecastUrlText;
 	View root;
@@ -25,15 +25,14 @@ public class GeneralSettingsFragment extends SherlockFragment {
 		root = inflater.inflate(R.layout.general_settings, null);
 		
 		nameText = (EditText) root.findViewById(R.id.nameText);
-		zipText = (EditText) root.findViewById(R.id.zipText);
+		locationText = (EditText) root.findViewById(R.id.locationText);
 		passwordText = (EditText) root.findViewById(R.id.passwordText);
 		forecastUrlText = (EditText) root.findViewById(R.id.forecastUrlText);
-		
 		
 		Settings s = Settings.getCurrent();
 		
 		nameText.setText( s.getName() );
-		zipText.setText( String.valueOf(s.getZipCode()) );
+		locationText.setText( s.getLocation() );
 		passwordText.setText( String.valueOf(s.getPassword()) );
 		forecastUrlText.setText( s.getForecastUrl() );
 		
@@ -58,7 +57,7 @@ public class GeneralSettingsFragment extends SherlockFragment {
 	{
 		Settings s = Settings.getCurrent();
 		s.setName( nameText.getText().toString() );
-		s.setZipCode( Integer.parseInt(zipText.getText().toString()) );
+		s.setLocation( locationText.getText().toString() );
 		s.setForecastUrl ( forecastUrlText.getText().toString());
 		s.setPassword(passwordText.getText().toString());
 		s.save();

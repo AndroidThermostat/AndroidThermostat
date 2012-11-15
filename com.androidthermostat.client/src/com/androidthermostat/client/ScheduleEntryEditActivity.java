@@ -2,6 +2,7 @@ package com.androidthermostat.client;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -35,7 +36,7 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 	Button cancelButton;
 	
 	int selectedHourIndex=-1;
-	int selectedMinuteIndex=-1;
+	int selectedMinuteIndex=0;
 	
 	int dayOfWeek;
 	int scheduleIndex;
@@ -166,6 +167,8 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 		
 		hourList.setSelection(selectedHourIndex);
 		minuteList.setSelection(selectedMinuteIndex);
+		
+				
 				
 		
 		if (newMode.equals("Off")) modeRadio.check(R.id.modeOff);

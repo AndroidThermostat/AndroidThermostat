@@ -17,7 +17,7 @@ import com.androidthermostat.client.data.Schedules;
 public class ScheduleActivity extends SherlockFragmentActivity {
 
 	private int scheduleIndex;
-	
+	private boolean showSettings=false;
 	Fragment currentFragment;
 	
 	@Override
@@ -32,8 +32,14 @@ public class ScheduleActivity extends SherlockFragmentActivity {
 		Bundle extras = getIntent().getExtras(); 
 		if (extras != null) {
 		    scheduleIndex = extras.getInt("SCHEDULE_INDEX");
+		    showSettings = extras.getBoolean("SHOW_SETTINGS");
 		}
-		switchTab(new ScheduleDayFragment(scheduleIndex, 1));
+		if (showSettings)
+		{
+			switchTab(new ScheduleDetailsFragment(scheduleIndex));
+		} else {
+			switchTab(new ScheduleDayFragment(scheduleIndex, 1));
+		}
 		
 	}
 	

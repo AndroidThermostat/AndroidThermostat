@@ -3,7 +3,6 @@ package com.androidthermostat.client;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.androidthermostat.client.data.Schedule;
 import com.androidthermostat.client.data.Schedules;
+import com.androidthermostat.client.data.Settings;
 
 public class SchedulesActivity extends SherlockActivity {
 	
@@ -40,7 +40,7 @@ public class SchedulesActivity extends SherlockActivity {
 		scheduleList.setOnItemClickListener(new ListView.OnItemClickListener() {
 	        @Override
 	        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-	        	selectSchedule(position);
+	        	selectSchedule(position, false);
 	        }
 	    });
 		
@@ -69,7 +69,8 @@ public class SchedulesActivity extends SherlockActivity {
 			i++;
 		}
 		Schedules.getCurrent().add(s);
-		scheduleListAdapter.notifyDataSetChanged();
+		//scheduleListAdapter.notifyDataSetChanged();
+		selectSchedule(Schedules.getCurrent().size()-1, true);
 	}
 	
 
@@ -88,13 +89,15 @@ public class SchedulesActivity extends SherlockActivity {
 	private void saveData()
 	{
 		Schedules.getCurrent().save();
+		Settings.getCurrent().save();
 	}
 	
-	private void selectSchedule(int scheduleIndex)
+	private void selectSchedule(int scheduleIndex, boolean showSettings)
     {
     	Bundle bundle = new Bundle();
     	//bundle.putString("SCHEDULE_NAME", scheduleName);
     	bundle.putInt("SCHEDULE_INDEX", scheduleIndex);
+    	bundle.putBoolean("SHOW_SETTINGS", showSettings);
     	Intent intent = new Intent(this, ScheduleActivity.class);
     	//Intent intent = new Intent(this, ScheduleTabsFragment.class);
     	intent.putExtras(bundle);

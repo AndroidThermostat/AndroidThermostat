@@ -27,7 +27,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 	public int newAwayLow;
 	public int newHigh;
 	public int newLow;
-	public int newSchedule;
+	//public int newSchedule;
 	public String newMode;
 	public boolean newIsAway;
 	Spinner temperatureList;
@@ -65,7 +65,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 		awayHolder = (LinearLayout) findViewById(R.id.awayHolder);
 		
 		
-		Spinner scheduleList = (Spinner) findViewById(R.id.scheduleList);
+		//Spinner scheduleList = (Spinner) findViewById(R.id.scheduleList);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, temperatures);
 		temperatureList.setAdapter(adapter);
@@ -77,15 +77,15 @@ public class SetTemperatureActivity extends SherlockActivity {
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, modes);
 		modeList.setAdapter(adapter);
 
-		String[] scheduleNames = Schedules.getCurrent().getNames(true);
+		//String[] scheduleNames = Schedules.getCurrent().getNames(true);
 
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, scheduleNames);
-		scheduleList.setAdapter(adapter);
+		//adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, scheduleNames);
+		//scheduleList.setAdapter(adapter);
 
 		Settings s = Settings.getCurrent();
 		newHigh = s.getTargetHigh();
 		newLow = s.getTargetLow();
-		newSchedule = s.getSchedule();
+		//newSchedule = s.getSchedule();
 		newMode = s.getMode();
 		newIsAway = s.getIsAway();
 		newAwayLow = s.getAwayLow();
@@ -142,6 +142,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
 		
+		/*
 		scheduleList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -151,6 +152,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 					public void onNothingSelected(AdapterView<?> parent) {
 					}
 				});
+				*/
 /*
 		modeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 					@Override
@@ -170,7 +172,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 			}
 		});
 		
-		scheduleList.setSelection(Settings.getCurrent().getSchedule() + 1);
+		//scheduleList.setSelection(Settings.getCurrent().getSchedule() + 1);
 
 		if (newIsAway) locationRadio.check(R.id.locationAway); else locationRadio.check(R.id.locationHome); 
 		
@@ -239,7 +241,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 				Settings s = Settings.getCurrent();
 				s.setTargetHigh(newHigh);
 				s.setTargetLow(newLow);
-				s.setSchedule(newSchedule);
+				//s.setSchedule(newSchedule);
 				s.setMode(newMode);
 				s.setAwayHigh(newAwayHigh);
 				s.setAwayLow(newAwayLow);

@@ -40,6 +40,7 @@ public class MainActivity extends ActivityBase {
 	String previousConditionsJson = "";
 	String previousSettingsJson = "";
 	String previousDebugText = "";
+	private static final int ACTIVITY_SETTEMP=100;
 	
 	
     
@@ -64,6 +65,9 @@ public class MainActivity extends ActivityBase {
         
         screenLayout.setOnClickListener(new View.OnClickListener() {public void onClick(View view) { openOptionsMenu(); }});
         weatherImage.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
+        outsideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
+        insideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {setTemperature();}});
+        targetTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {setTemperature();}});
         
         
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -104,6 +108,12 @@ public class MainActivity extends ActivityBase {
 			startActivity(i);
 		} catch (Exception ex) {}
 	}
+	
+	private void setTemperature()
+    {
+    	Intent i = new Intent(this, SetTemperatureActivity.class);
+		startActivityForResult(i, ACTIVITY_SETTEMP);
+    }
 
 
 	

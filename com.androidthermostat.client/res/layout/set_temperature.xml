@@ -3,37 +3,32 @@
 	<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp" >
 	
 	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingBottom="10dp">
-		    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Location"   android:layout_weight="70"  />
-		    <RadioGroup android:layout_width="fill_parent"	android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/locationRadio"   android:layout_weight="30" >
+		    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:text="Location" android:layout_weight="30" android:paddingTop="10dp" />
+		    <RadioGroup android:layout_width="0px"	android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/locationRadio"   android:layout_weight="70" >
 				<RadioButton android:id="@+id/locationHome" android:layout_width="wrap_content" android:layout_height="40sp" android:text="Home" />
 				<RadioButton android:id="@+id/locationAway" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Away" />
 			</RadioGroup>
 		</LinearLayout>
 		
-		
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/homeHolder" >
 			<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Mode"   android:layout_weight="30"  />
+			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:text="Mode" android:layout_weight="30"  />
 			    <Spinner android:id="@+id/modeList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="70" />
 			</LinearLayout>
 			<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  android:id="@+id/singleTemperatureHolder" >
-			    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Target Temperature" android:layout_weight="70" />
-			    <Spinner android:id="@+id/temperatureList" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="30" />
+			    <TextView android:layout_width="0px" android:layout_height="wrap_content"  android:text="Target Temperature" android:layout_weight="30" />
+			    <Spinner android:id="@+id/temperatureList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="70" />
 			</LinearLayout>
 			<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  android:id="@+id/temperatureRangeHolder" >
-			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Temperature Range" android:layout_weight="30" />
-			    <Spinner android:id="@+id/minTemperatureList" android:layout_width="30dp" android:layout_height="wrap_content" android:layout_weight="35" />
-			    <Spinner android:id="@+id/maxTemperatureList" android:layout_width="30dp" android:layout_height="wrap_content" android:layout_weight="35" />
-			</LinearLayout>
-			<LinearLayout  android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
-			    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Schedule" android:layout_weight="70" />
-			    <Spinner android:id="@+id/scheduleList" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="30" />
+			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:text="Temperature Range" android:layout_weight="30" />
+			    <Spinner android:id="@+id/minTemperatureList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35" />
+			    <Spinner android:id="@+id/maxTemperatureList" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35" />
 			</LinearLayout>
 		</LinearLayout>
 		
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/awayHolder" >
 		    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal"  android:id="@+id/temperatureRangeHolder" >
-			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="left" android:text="Temperature Range" android:layout_weight="30" />
+			    <TextView android:layout_width="0px" android:layout_height="wrap_content" android:gravity="left" android:text="Temperature Range" android:layout_weight="30" />
 			    <Spinner android:id="@+id/minAwayList" android:layout_width="50dp" android:layout_height="wrap_content" android:layout_weight="35" />
 			    <Spinner android:id="@+id/maxAwayList" android:layout_width="50dp" android:layout_height="wrap_content" android:layout_weight="35" />
 			</LinearLayout>

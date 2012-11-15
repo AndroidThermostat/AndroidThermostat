@@ -19,7 +19,7 @@ public class Settings {
 	private boolean isAway = false;
 	private double swing = 1.0;
 	private static Settings current;
-	private int zipCode = 90210;
+	private String location = "90210";
 	private int schedule = -1;
 	private int minCoolInterval = 5;
 	private int minHeatInterval = 2;
@@ -46,7 +46,7 @@ public class Settings {
 	public boolean getIsAway() { return isAway; }
 	public double getSwing() { return swing; }
 	public String getMode() { return mode; }
-	public int getZipCode() { return zipCode; }
+	public String getLocation() { return location; }
 	public int getSchedule() { return schedule; }
 	public int getMinCoolInterval() { return minCoolInterval; }
 	public int getMinHeatInterval() { return minHeatInterval; }
@@ -70,7 +70,7 @@ public class Settings {
 	public void setIsAway(boolean value) { isAway = value; }
 	public void setSwing(double value) { swing = value; }
 	public void setMode(String value) { mode = value; }
-	public void setZipCode(int value) { zipCode = value; }
+	public void setLocation(String value) { location = value; }
 	public void setSchedule(int value) { schedule = value; }
 	public void setMinCoolInterval(int value) { minCoolInterval = value; }
 	public void setMinHeatInterval(int value) { minHeatInterval = value; }

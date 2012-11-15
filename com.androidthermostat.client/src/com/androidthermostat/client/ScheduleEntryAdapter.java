@@ -43,7 +43,7 @@ public class ScheduleEntryAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.schedule_row, null);
+            convertView = mInflater.inflate(R.layout.schedule_entry_row, null);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.name);
             convertView.setTag(holder);

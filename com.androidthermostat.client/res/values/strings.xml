@@ -10,4 +10,16 @@
     <string name="min_cool_help">The minimum number of minutes between cooling cycles. To avoid short cycling your air conditioner it is recommended that you wait 5 minutes between air conditioning cycles to allow the refridgeration system to equalize.</string>
     <string name="min_heat">Minimum Heating Interval</string>
     <string name="min_heat_help">Minimum number of minutes between heat cycles.  Gas furnaces have a safety lockout in case the burner fails to ignite.  On some models turning the heater off and back on will reset this lockout.  It\'s recommended you keep the cycle interval above 2 minutes to avoid to allow any unignited gas to dissipate before trying again.</string>
+    <string name="name">Name</string>
+    <string name="name_help">A diplay name for your thermostat such as Downstairs.</string>
+    <string name="location">Location</string>
+    <string name="location_help">Enter a US zip code or city, country to be used for pulling the current weather conditions.  Examples: &quot;90210&quot; or &quot;Madrid, Spain&quot;</string>
+    <string name="password">Password</string>
+    <string name="password_help">Optional:  Enter a password that clients must send to control the thermostat.  This is useful if you wish to expose your thermostat to the Internet so you can control it remotely.</string>
+    <string name="forecast_url">Forecast Url</string>
+    <string name="forecast_url_help">Enter the url you would like the application to launch when you click the ouside conditions to view the forecast.  You can use [postalCode] in the url to substitute the value from the location field.</string>
+    <string name="usage_tracking">Usage Tracking</string>
+    <string name="usage_tracking_help">The thermostat can ping an outside tracking service such as ThermostatMonitor.com to monitor your usage history.  If you would like to enable this, sign up with a service and enter the settings they provide here.</string>
+    <string name="thermostat_key">Thermostat Key</string>
+    <string name="thermostat_key_help">Sign up at ThermostatMonitor.com and click the edit link next to your thermsotat.  Enter the key value shown there in this field.</string>
 </resources>
