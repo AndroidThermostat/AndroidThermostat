@@ -1,5 +1,7 @@
 package com.androidthermostat.client.data;
 
+import com.androidthermostat.utils.Utils;
+
 public class ScheduleEntry {
 
 	private int dayOfWeek;
@@ -30,9 +32,18 @@ public class ScheduleEntry {
 		String result = "At " + String.valueOf(displayHour) + ":" + String.format("%02d", minute) + " " + period + ", ";
 		if (mode.equals("Off")) result += "turn the thermostat off.";
 		else if (mode.equals("Fan")) result += "turn the thermostat fan on.";
-		else if (mode.equals("Heat")) result += "heat to " + String.valueOf(targetLow) + "° F.";
-		else if (mode.equals("Cool")) result += "cool to " + String.valueOf(targetHigh) + "° F.";
-		else if (mode.equals("Auto")) result += "auto maintain " + String.valueOf(targetLow) + "° F - " + String.valueOf(targetHigh) + "° F.";
+		else {
+			if (Settings.getCurrent().displayCelsius)
+			{
+				if (mode.equals("Heat")) result += "heat to " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetLow)) ) + "° C.";
+				else if (mode.equals("Cool")) result += "cool to " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetHigh)) ) + "° C.";
+				else if (mode.equals("Auto")) result += "auto maintain " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetLow)) ) + "° C - " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetHigh)) ) + "° C.";
+			} else {
+				if (mode.equals("Heat")) result += "heat to " + String.valueOf(targetLow) + "° F.";
+				else if (mode.equals("Cool")) result += "cool to " + String.valueOf(targetHigh) + "° F.";
+				else if (mode.equals("Auto")) result += "auto maintain " + String.valueOf(targetLow) + "° F - " + String.valueOf(targetHigh) + "° F.";
+			}
+		}
 		return result;
 	}
 	

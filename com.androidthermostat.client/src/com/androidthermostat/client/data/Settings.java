@@ -35,7 +35,9 @@ public class Settings {
 	private boolean cycleFan = false;
 	public int cycleFanOnMinutes = 5;
 	public int cycleFanOffMinutes = 25;
+	public boolean displayCelsius = false;
 	private String json;
+	
 	
 	
 
@@ -62,6 +64,7 @@ public class Settings {
 	public boolean getCycleFan() { return cycleFan; }
 	public int getCycleFanOnMinutes() { return cycleFanOnMinutes; }
 	public int getCycleFanOffMinutes() { return cycleFanOffMinutes; }
+	public boolean getDisplayCelsius() { return displayCelsius; }
 	
 	public void setTargetHigh(int value) { targetHigh = value; }
 	public void setTargetLow(int value) { targetLow = value; }
@@ -86,6 +89,7 @@ public class Settings {
 	public void setCycleFan(boolean cycleFan) { this.cycleFan = cycleFan; }
 	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
 	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }
+	public void setDisplayCelsius(boolean value) { this.displayCelsius = value; }
 	
 	public String getJson()
 	{
@@ -96,13 +100,25 @@ public class Settings {
 	{
 		String result="";
 		result = mode;
-		if (isAway)
+		if (displayCelsius)
 		{
-			result = "Away: " + String.valueOf(awayLow) + " - " + String.valueOf(awayHigh) + "° F";
+			if (isAway)
+			{
+				result = "Away: " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(awayLow)) ) + " - " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(awayHigh)) ) + "° C";
+			} else {
+				if ("Cool".equals(mode)) result += ": " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetHigh)) ) + "° C";
+				if ("Heat".equals(mode)) result += ": " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetLow)) ) + "° C";
+				if ("Auto".equals(mode)) result += ": " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetLow)) ) + " - " + String.valueOf( Math.round(Utils.fahrenheitToCelsius(targetHigh)) ) + "° C";
+			}
 		} else {
-			if ("Cool".equals(mode)) result += ": " + String.valueOf(targetHigh) + "° F";
-			if ("Heat".equals(mode)) result += ": " + String.valueOf(targetLow) + "° F";
-			if ("Auto".equals(mode)) result += ": " + String.valueOf(targetLow) + " - " + String.valueOf(targetHigh) + "° F";
+			if (isAway)
+			{
+				result = "Away: " + String.valueOf(awayLow) + " - " + String.valueOf(awayHigh) + "° F";
+			} else {
+				if ("Cool".equals(mode)) result += ": " + String.valueOf(targetHigh) + "° F";
+				if ("Heat".equals(mode)) result += ": " + String.valueOf(targetLow) + "° F";
+				if ("Auto".equals(mode)) result += ": " + String.valueOf(targetLow) + " - " + String.valueOf(targetHigh) + "° F";
+			}
 		}
 		return result;
 	}

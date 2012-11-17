@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.androidthermostat.client.data.ScheduleEntry;
 import com.androidthermostat.client.data.Schedules;
+import com.androidthermostat.client.data.Settings;
+import com.androidthermostat.utils.Utils;
 
 public class ScheduleEntryEditActivity extends SherlockActivity{
 
@@ -45,9 +47,12 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 	public int newHigh = 75;
 	public int newLow = 75;
 	public String newMode = "Off";
+	boolean celsius = false;
 	
 	ArrayList<ScheduleEntry> entries;
-	String[] temperatures = new String[] {  "50", "51", "52", "53", "54", "55", "56", "57", "58", "59","60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89" };
+	String[] temperaturesF = new String[] { "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89" };
+	String[] temperaturesC = new String[] { "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32"};
+	String[] temperatures = new String[] { };
 	String[] hours = new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 	String[] minutes = new String[] {  
 			"00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
@@ -61,6 +66,8 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		celsius = Settings.getCurrent().displayCelsius;
+		if (celsius) temperatures=temperaturesC; else temperatures=temperaturesF;
 		
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
@@ -110,17 +117,37 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
         });
 		tempList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) { 
-        		newHigh = 50 + pos;
-        		newLow = 50 + pos;
+        		if (celsius)
+        		{
+        			newHigh = (int)Math.round(Utils.celsiusToFahrenheit(10 + pos));
+        			newLow = (int)Math.round(Utils.celsiusToFahrenheit(10 + pos));
+        		} else {
+        			newHigh = 50 + pos;
+        			newLow = 50 + pos;
+        		}
         	}
         	public void onNothingSelected(AdapterView<?> parent) {}
         });
 		minTemperatureList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) { newLow = 50 + pos; }
+        	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) { 
+        		if (celsius)
+    			{
+        			newLow = (int)Math.round(Utils.celsiusToFahrenheit(10 + pos));
+    			} else {
+    				newLow = 50 + pos;
+    			}
+        	}
         	public void onNothingSelected(AdapterView<?> parent) {}
         });
 		maxTemperatureList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) { newHigh = 50 + pos; }
+        	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) { 
+        		if (celsius)
+    			{
+        			newHigh = (int)Math.round(Utils.celsiusToFahrenheit(10 + pos));
+    			} else {
+    				newHigh = 50 + pos;
+    			}
+        	}
         	public void onNothingSelected(AdapterView<?> parent) {}
         });
 		modeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -181,9 +208,16 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 	
 	private void toggleMode()
 	{
-		tempList.setSelection(newHigh - 50);
-		minTemperatureList.setSelection(newLow - 50);
-		maxTemperatureList.setSelection(newHigh - 50);
+		if (celsius)
+		{
+			tempList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newHigh)) - 10);
+			minTemperatureList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newLow)) - 10);
+			maxTemperatureList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newHigh)) - 10);
+		} else {
+			tempList.setSelection(newHigh - 50);
+			minTemperatureList.setSelection(newLow - 50);
+			maxTemperatureList.setSelection(newHigh - 50);
+		}
 		
 		if (newMode.equals("Auto"))
 		{

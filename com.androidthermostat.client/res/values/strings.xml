@@ -22,4 +22,6 @@
     <string name="usage_tracking_help">The thermostat can ping an outside tracking service such as ThermostatMonitor.com to monitor your usage history.  If you would like to enable this, sign up with a service and enter the settings they provide here.</string>
     <string name="thermostat_key">Thermostat Key</string>
     <string name="thermostat_key_help">Sign up at ThermostatMonitor.com and click the edit link next to your thermsotat.  Enter the key value shown there in this field.</string>
+    <string name="scale">Temperature scale</string>
+    <string name="scale_help">Sets whether the temperatures displayed are in Fahrenheit or Celsius.  This only changes how the temperatures are displayed within the client.  The server API alrways returns Farhenheit.</string>
 </resources>

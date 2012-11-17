@@ -25,6 +25,7 @@ public class Conditions {
 	@Expose private String weatherImageUrl = "";
 	@Expose private String weatherForecastUrl = "";
 	@Expose private String message = "";
+	@Expose private String state = "";
 	private String json = "";
 	
 	private Bitmap weatherImage = null;
@@ -43,6 +44,27 @@ public class Conditions {
 	public Bitmap getWeatherImage() { return weatherImage; }
 	public String getWeatherForecastUrl() { return weatherForecastUrl; }
 	public String getMessage() { return message; }
+	public String getState() { return state; }
+	
+	public String getDisplayInsideTemperature() {
+		if (Settings.getCurrent().displayCelsius)
+		{
+			if (insideTemperature==0) return "0° C";
+			else return String.valueOf( Math.round(Utils.fahrenheitToCelsius(insideTemperature)) ) + "° C";
+		} else {
+			return String.valueOf(insideTemperature) + "° F";
+		}
+	}
+	
+	public String getDisplayOutsideTemperature() {
+		if (Settings.getCurrent().displayCelsius)
+		{
+			return String.valueOf( Utils.fahrenheitToCelsius(outsideTemperature) ) + "° C";
+		} else {
+			return String.valueOf(outsideTemperature) + "° F";
+		}
+	}
+	
 
 	public void setInsideTemperature(double insideTemperature) { this.insideTemperature = insideTemperature; }
 	public void setOutsideTemperature(double outsideTemperature) { this.outsideTemperature = outsideTemperature; }

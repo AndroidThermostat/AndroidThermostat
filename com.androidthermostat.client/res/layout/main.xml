@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/screenLayout" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" >
     
     
     
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="0px" android:orientation="vertical" android:id="@+id/screenLayout"  android:gravity="center" android:layout_weight="100" android:layout_gravity="center" >
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0px" android:orientation="vertical" android:gravity="center" android:layout_weight="100" android:layout_gravity="center" >
     
 	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/screenLayout" >
 	        <LinearLayout android:layout_width="0px" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50" android:gravity="center">

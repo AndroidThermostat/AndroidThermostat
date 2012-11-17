@@ -18,6 +18,8 @@ public class GeneralSettingsFragment extends SherlockFragment {
 	EditText locationText;
 	EditText passwordText;
 	EditText forecastUrlText;
+	RadioButton scaleC;
+	RadioButton scaleF;
 	View root;
 
 	@Override
@@ -28,6 +30,8 @@ public class GeneralSettingsFragment extends SherlockFragment {
 		locationText = (EditText) root.findViewById(R.id.locationText);
 		passwordText = (EditText) root.findViewById(R.id.passwordText);
 		forecastUrlText = (EditText) root.findViewById(R.id.forecastUrlText);
+		scaleC = (RadioButton) root.findViewById(R.id.scaleC);
+		scaleF = (RadioButton) root.findViewById(R.id.scaleF);
 		
 		Settings s = Settings.getCurrent();
 		
@@ -35,6 +39,8 @@ public class GeneralSettingsFragment extends SherlockFragment {
 		locationText.setText( s.getLocation() );
 		passwordText.setText( String.valueOf(s.getPassword()) );
 		forecastUrlText.setText( s.getForecastUrl() );
+		
+		if (s.getDisplayCelsius()) scaleC.setChecked(true); else scaleF.setChecked(true);
 		
 		return root;
 	}
@@ -60,6 +66,7 @@ public class GeneralSettingsFragment extends SherlockFragment {
 		s.setLocation( locationText.getText().toString() );
 		s.setForecastUrl ( forecastUrlText.getText().toString());
 		s.setPassword(passwordText.getText().toString());
+		s.setDisplayCelsius(scaleC.isChecked());
 		s.save();
 		
 		Servers.getCurrent().getSelectedServer().setPassword(s.getPassword());

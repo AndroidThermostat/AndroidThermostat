@@ -69,6 +69,9 @@ public class MainActivity extends ActivityBase {
         
         
         setContentView(R.layout.main);
+        
+        
+        
         new SimpleEula(this).show();
         
         currentTime = (TextView) findViewById(R.id.currentTime);
@@ -82,7 +85,7 @@ public class MainActivity extends ActivityBase {
         screenLayout = (LinearLayout) findViewById(R.id.screenLayout);
         homeSchedule = (HomeSchedule) findViewById(R.id.homeSchedule);
         
-        screenLayout.setOnClickListener(new View.OnClickListener() {public void onClick(View view) { openOptionsMenu(); }});
+        //screenLayout.setOnClickListener(new View.OnClickListener() {public void onClick(View view) { openOptionsMenu(); }});
         weatherImage.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
         outsideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
         insideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {setTemperature();}});
@@ -189,17 +192,33 @@ public class MainActivity extends ActivityBase {
 		if (!conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson))
 		{
 		
-			insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
-			outsideTempText.setText( String.valueOf(conditions.getOutsideTemperature()) + "° F" );
+			//insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
+			//outsideTempText.setText( String.valueOf(conditions.getOutsideTemperature()) + "° F" );
+			insideTempText.setText( conditions.getDisplayInsideTemperature() );
+			outsideTempText.setText( conditions.getDisplayOutsideTemperature() );
+			
 			targetTempText.setText(settings.getSummary());
 			if (conditions.getWeatherImage()!=null) weatherImage.setImageBitmap(conditions.getWeatherImage());
 			
 			previousConditionsJson = conditions.getJson();
 			previousSettingsJson = settings.getJson();
 			//previousDebugText = Utils.debugText;
+			homeSchedule.refresh();
+			
+			if (conditions.getState().equals("Cool"))
+			{
+				screenLayout.setBackgroundResource(R.drawable.background_blue);
+			} else if (conditions.getState().equals("Heat"))
+			{
+				screenLayout.setBackgroundResource(R.drawable.background_red);
+			} else
+			{
+				screenLayout.setBackgroundResource(R.drawable.background_black);
+			}
+
+			
 		}
-		homeSchedule.refresh();
-		//debugText.setText(Utils.debugText);
+		
 		
 		String displayTime = formatter.format(new Date()).toLowerCase().replace("m", "");
 		if (!displayTime.equals(previousDisplayTime))
@@ -207,8 +226,6 @@ public class MainActivity extends ActivityBase {
 			currentTime.setText(displayTime);
 			previousDisplayTime=displayTime;
 		}
-		
-		currentTime.setText(displayTime);
 		
 	}
 	

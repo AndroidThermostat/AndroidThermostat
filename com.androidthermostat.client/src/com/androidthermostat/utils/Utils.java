@@ -94,4 +94,14 @@ public class Utils {
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
 	
+	public static double fahrenheitToCelsius(double fahrenheit)
+	{
+		return Math.round((fahrenheit-32.0) * 5.0 / 9.0 * 10) / 10.0;
+	}
+	
+	public static double celsiusToFahrenheit(double celsius)
+	{
+		return Math.round(celsius * 9.0 / 5.0 * 10) / 10.0 + 32;
+	}
+	
 }

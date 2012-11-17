@@ -13,14 +13,20 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.androidthermostat.client.data.Schedules;
 import com.androidthermostat.client.data.Settings;
+import com.androidthermostat.utils.Utils;
 
 public class SetTemperatureActivity extends SherlockActivity {
 
-	String[] temperatures = new String[] { "50", "51", "52", "53", "54", "55",
+	String[] temperaturesF = new String[] { "50", "51", "52", "53", "54", "55",
 			"56", "57", "58", "59", "60", "61", "62", "63", "64", "65",
 			"66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76",
 			"77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87",
 			"88", "89" };
+	String[] temperaturesC = new String[] { "10", "11", "12", "13", "14", "15",
+			"16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
+			"26", "27", "28", "29", "30", "31", "32"};
+	String[] temperatures = new String[]{};
+	
 	String[] modes = new String[] {"Off", "Fan", "Heat", "Cool", "Auto"};
 
 	public int newAwayHigh;
@@ -40,11 +46,15 @@ public class SetTemperatureActivity extends SherlockActivity {
 	LinearLayout temperatureRangeHolder;
 	LinearLayout homeHolder;
 	LinearLayout awayHolder;
+	boolean celsius = false;
 	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		celsius = Settings.getCurrent().displayCelsius;
+		if (celsius) temperatures=temperaturesC; else temperatures=temperaturesF;
 
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -95,8 +105,14 @@ public class SetTemperatureActivity extends SherlockActivity {
 		temperatureList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-						if (newMode.equals("Heat")) { newLow = 50 + pos; if (newLow>newHigh) newHigh=newLow; }
-						if (newMode.equals("Cool")) { newHigh = 50 + pos; if (newLow>newHigh) newLow=newHigh; }
+						if (newMode.equals("Heat")) { 
+							if (celsius) newLow = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newLow = 50 + pos; 
+							if (newLow>newHigh) newHigh=newLow; 
+						}
+						if (newMode.equals("Cool")) {
+							if (celsius) newHigh = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newHigh = 50 + pos;
+							if (newLow>newHigh) newLow=newHigh; 
+						}
 					}
 					public void onNothingSelected(AdapterView<?> parent) {}
 				});
@@ -104,7 +120,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 		minTemperatureList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				newLow = 50 + pos;
+				if (celsius) newLow = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newLow = 50 + pos;
 			}
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
@@ -112,7 +128,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 		maxTemperatureList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				newHigh = 50 + pos;
+				if (celsius) newHigh = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newHigh = 50 + pos;
 			}
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
@@ -120,7 +136,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 		minAwayList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				newAwayLow = 50 + pos;
+				if (celsius) newAwayLow = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newAwayLow = 50 + pos;
 			}
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
@@ -128,7 +144,7 @@ public class SetTemperatureActivity extends SherlockActivity {
 		maxAwayList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				newAwayHigh = 50 + pos;
+				if (celsius) newAwayHigh = (int)Math.round(Utils.celsiusToFahrenheit(10+pos)); else newAwayHigh = 50 + pos;
 			}
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
@@ -141,28 +157,6 @@ public class SetTemperatureActivity extends SherlockActivity {
 			}
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
-		
-		/*
-		scheduleList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-						newSchedule = pos - 1;
-					}
-
-					public void onNothingSelected(AdapterView<?> parent) {
-					}
-				});
-				*/
-/*
-		modeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						RadioButton b = (RadioButton) findViewById(checkedId);
-						newMode = b.getText().toString();
-						toggleMode();
-					}
-				});
-*/
 
 		locationRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			@Override
@@ -172,23 +166,10 @@ public class SetTemperatureActivity extends SherlockActivity {
 			}
 		});
 		
-		//scheduleList.setSelection(Settings.getCurrent().getSchedule() + 1);
 
 		if (newIsAway) locationRadio.check(R.id.locationAway); else locationRadio.check(R.id.locationHome); 
 		
 		String mode = Settings.getCurrent().getMode();
-		/*
-		if (mode.equals("Off"))
-			modeRadio.check(R.id.modeOff);
-		else if (mode.equals("Fan"))
-			modeRadio.check(R.id.modeFan);
-		else if (mode.equals("Heat"))
-			modeRadio.check(R.id.modeHeat);
-		else if (mode.equals("Cool"))
-			modeRadio.check(R.id.modeCool);
-		else if (mode.equals("Auto"))
-			modeRadio.check(R.id.modeAuto);
-		*/
 		int modeIdx=0;
 		for (int i=0;i<modes.length;i++) if (modes[i].equals(mode)) modeIdx = i;
 		modeList.setSelection(modeIdx);
@@ -196,16 +177,44 @@ public class SetTemperatureActivity extends SherlockActivity {
 		toggleMode();
 		toggleLocation();
 		
-		minAwayList.setSelection(newAwayLow - 50);
-		maxAwayList.setSelection(newAwayHigh - 50);
+		if (celsius)
+		{
+			int tempC = (int)Math.round(Utils.fahrenheitToCelsius(newAwayLow));
+			minAwayList.setSelection(tempC - 10);
+			tempC = (int)Math.round(Utils.fahrenheitToCelsius(newAwayHigh));
+			maxAwayList.setSelection(tempC - 10);
+		} else {
+			minAwayList.setSelection(newAwayLow - 50);
+			maxAwayList.setSelection(newAwayHigh - 50);
+		}
 	}
 	
 	private void toggleMode()
 	{
-		if (newMode.equals("Cool")) temperatureList.setSelection(newHigh - 50); else temperatureList.setSelection(newLow - 50);
+		if (newMode.equals("Cool")) {
+			if (celsius) {
+				int tempC = (int)Math.round(Utils.fahrenheitToCelsius(newHigh));
+				temperatureList.setSelection(tempC - 10);
+			} 
+			else temperatureList.setSelection(newHigh - 50); 
+		} else {
+			if (celsius) {
+				int tempC = (int)Math.round(Utils.fahrenheitToCelsius(newLow));
+				temperatureList.setSelection(tempC - 10);
+			}
+			else temperatureList.setSelection(newLow - 50);
+		}
 		
-		minTemperatureList.setSelection(newLow - 50);
-		maxTemperatureList.setSelection(newHigh - 50);
+		if (celsius)
+		{
+			int tempC = (int)Math.round(Utils.fahrenheitToCelsius(newLow));
+			minTemperatureList.setSelection(tempC - 10);
+			tempC = (int)Math.round(Utils.fahrenheitToCelsius(newHigh));
+			maxTemperatureList.setSelection(tempC - 10);
+		} else {
+			minTemperatureList.setSelection(newLow - 50);
+			maxTemperatureList.setSelection(newHigh - 50);
+		}
 		
 		if (newMode.equals("Auto"))
 		{
@@ -241,7 +250,6 @@ public class SetTemperatureActivity extends SherlockActivity {
 				Settings s = Settings.getCurrent();
 				s.setTargetHigh(newHigh);
 				s.setTargetLow(newLow);
-				//s.setSchedule(newSchedule);
 				s.setMode(newMode);
 				s.setAwayHigh(newAwayHigh);
 				s.setAwayLow(newAwayLow);
