@@ -29,6 +29,7 @@ public class Conditions {
 	@Expose private String weatherImageUrl = "";
 	@Expose private String weatherForecastUrl = "";
 	@Expose private String message = "";
+	@Expose private String state = "Off";
 	
 	private Bitmap weatherImage = null;
 	public int insideTempRaw=0;
@@ -44,9 +45,11 @@ public class Conditions {
 	public String getWeatherForecastUrl() { return weatherForecastUrl; }
 	public String getMessage() { return message; }
 	
+	
 	public void setInsideTemperature(double insideTemperature) { this.insideTemperature = insideTemperature; }
 	public void setOutsideTemperature(double outsideTemperature) { this.outsideTemperature = outsideTemperature; }
 	public void setMessage(String message) { this.message=message; }
+	
 
 	
 	public static Conditions getCurrent()
@@ -56,9 +59,10 @@ public class Conditions {
 	}
 	
 	
-	public String getMode()
+	public String getState()
 	{
-		return FurnaceController.getCurrent().getMode();
+		this.state = FurnaceController.getCurrent().getMode(); 
+		return state;
 	}
 	
 	
@@ -116,7 +120,7 @@ public class Conditions {
 						
 				this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
 				//this.weatherForecastUrl = "http://www.weather.com/weather/right-now/" + Settings.getCurrent().getZipCode();
-				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getZipCode()) );
+				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getLocation()) );
 			}
 		
 			if (previousTemp!=Conditions.getCurrent().getOutsideTemperature() && success)

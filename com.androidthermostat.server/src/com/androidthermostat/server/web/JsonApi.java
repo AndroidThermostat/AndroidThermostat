@@ -33,6 +33,7 @@ public class JsonApi {
 	        	} else if (url.equals("/api/schedules")) {
 	        		json = gson.toJson(Schedules.getCurrent());
 	        	} else if (url.equals("/api/conditions")) {
+	        		Conditions.getCurrent().getState(); // update the mode field.
 	        		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	        		json = gson.toJson(Conditions.getCurrent());
 	        	} else if (url.equals("/api")) {

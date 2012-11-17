@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" >
-    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:textStyle="bold" android:layout_weight="50" android:textSize="20sp" android:text="Server" />
-    <TextView android:id="@+id/debugText" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="50"  />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0px" android:orientation="vertical" android:layout_weight="80" >
+	    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="15sp" android:text="Server" android:layout_marginBottom="10dp" />
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Name" />
+	    	<TextView android:id="@+id/nameText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Heat" />
+	    	<TextView android:id="@+id/heatText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	        <TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Ip Address" />
+	    	<TextView android:id="@+id/ipText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Cool" />
+	    	<TextView android:id="@+id/coolText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	        <TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Web Server" />
+	    	<TextView android:id="@+id/webText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Fan" />
+	    	<TextView android:id="@+id/fanText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	        <TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Multicast" />
+	    	<TextView android:id="@+id/multicastText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="15" android:text="Temp" />
+	    	<TextView android:id="@+id/tempText" android:layout_width="0px" android:layout_height="wrap_content" android:layout_weight="35"  />
+	    </LinearLayout>
+    </LinearLayout>
+   	<LinearLayout android:layout_width="fill_parent" android:layout_height="0px" android:orientation="horizontal" android:layout_weight="20">
+     	<Button android:id="@+id/clientButton" android:layout_width="0px" android:layout_height="wrap_content" android:text="Launch Client" android:layout_weight="50" />
+     	<Button android:id="@+id/stopButton" android:layout_width="0px" android:layout_height="wrap_content" android:text="Stop Server" android:layout_weight="50" />
+	</LinearLayout>
+    <TextView android:id="@+id/debugText" android:layout_width="fill_parent" android:layout_height="wrap_content"  />
 </LinearLayout>

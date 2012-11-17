@@ -1,6 +1,7 @@
 package com.androidthermostat.server.data;
 
-import android.app.Activity;
+import java.net.URLEncoder;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -20,7 +21,7 @@ public class Settings {
 	@Expose private boolean isAway = false;
 	@Expose private double swing = 1.0;
 	@Expose private static Settings current;
-	@Expose private int zipCode = 90210;
+	@Expose private String location = "90210";
 	@Expose private int openWeatherMapStation = 5328041;
 	@Expose private int schedule = -1;
 	@Expose private int minCoolInterval = 5;
@@ -37,6 +38,7 @@ public class Settings {
 	@Expose private boolean cycleFan = false;
 	@Expose public int cycleFanOnMinutes = 5;
 	@Expose public int cycleFanOffMinutes = 25;
+	@Expose public boolean displayCelcius = false;
 	
 	public int getTargetHigh() { return targetHigh; }
 	public int getTargetLow() { return targetLow; }
@@ -45,7 +47,7 @@ public class Settings {
 	public boolean getIsAway() { return isAway; }
 	public double getSwing() { return swing; }
 	public String getMode() { return mode; }
-	public int getZipCode() { return zipCode; }
+	public String getLocation() { return location; }
 	public int getOpenWeatherMapStation() { return openWeatherMapStation; }
 	public int getSchedule() { return schedule; }
 	public int getMinCoolInterval() { return minCoolInterval; }
@@ -62,6 +64,7 @@ public class Settings {
 	public boolean getCycleFan() { return cycleFan; }
 	public int getCycleFanOnMinutes() { return cycleFanOnMinutes; }
 	public int getCycleFanOffMinutes() { return cycleFanOffMinutes; }
+	public boolean getDisplayCelcius() { return displayCelcius; }
 	
 	public void setTargetHigh(int value) { targetHigh = value; }
 	public void setTargetLow(int value) { targetLow = value; }
@@ -70,7 +73,7 @@ public class Settings {
 	public void setIsAway(boolean value) { isAway = value; }
 	public void setSwing(double value) { swing = value; }
 	public void setMode(String value) { mode = value; }
-	public void setZipCode(int value) { zipCode = value; }
+	public void setLocation(String value) { location = value; }
 	public void setOpenWeatherMapStation(int value) { openWeatherMapStation = value; }
 	public void setSchedule(int value) { schedule = value; }
 	public void setMinCoolInterval(int value) { minCoolInterval = value; }
@@ -87,7 +90,7 @@ public class Settings {
 	public void setCycleFan(boolean cycleFan) { this.cycleFan = cycleFan; }
 	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
 	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }
-	
+	public void setDisplayCelcius(boolean value) { this.displayCelcius = value; }
 	
 	public String getSummary()
 	{
@@ -136,7 +139,7 @@ public class Settings {
 	
 	public static void load(String json)
 	{
-		int previousZip = current.zipCode; 
+		String previousLocation = current.location; 
 		int previousWeatherStation = current.openWeatherMapStation;
 		
 		Gson gson = new Gson();
@@ -149,13 +152,13 @@ public class Settings {
 			result.openWeatherMapStation = previousWeatherStation;
 
 			Settings.current=result;
-			if (current.zipCode != previousZip) updateOpenWeatherStation();
+			if (current.location != previousLocation) updateOpenWeatherStation();
 		}
 	}
 	
 	private static void updateOpenWeatherStation()
 	{
-		String result = Utils.getUrlContents("http://api.thermostatmonitor.com/v2/?a=location&z=" + Settings.getCurrent().zipCode );
+		String result = Utils.getUrlContents("http://api.thermostatmonitor.com/v2/?a=location&q=" + URLEncoder.encode(Settings.getCurrent().location) );
 		Settings.getCurrent().setOpenWeatherMapStation( Integer.parseInt(result) );
 		Conditions.getCurrent().updateWeather();
 	}

@@ -16,6 +16,7 @@ import android.text.format.Formatter;
 public class MulticastListener {
 
 	private static MulticastSocket ms;
+	public static String ipAddress = "";
 	
 	public static void listen(Context context)
 	{
@@ -24,7 +25,7 @@ public class MulticastListener {
 		//WifiManager wm = (WifiManager)activity.getSystemService(Context.WIFI_SERVICE); 
 		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 		int ip = wm.getConnectionInfo().getIpAddress();
-		String ipAddress = Formatter.formatIpAddress(ip); 
+		ipAddress = Formatter.formatIpAddress(ip); 
 		
 		
 
