@@ -3,36 +3,44 @@
     
     
     
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/screenLayout"  android:gravity="center" android:layout_weight="1" >
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0px" android:orientation="vertical" android:id="@+id/screenLayout"  android:gravity="center" android:layout_weight="100" android:layout_gravity="center" >
     
-	    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/screenLayout" >
-	        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
-	        	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="center" android:text="Inside Conditions" />
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/screenLayout" >
+	        <LinearLayout android:layout_width="0px" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50" android:gravity="center">
+	        	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:text="Inside Conditions" />
 	        </LinearLayout>
-	        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
-	        	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:gravity="center" android:text="Outside Conditions" />
+	        <LinearLayout android:layout_width="0px" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50" android:gravity="center">
+	        	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="20sp" android:text="Outside Conditions" />
 	        </LinearLayout>
 	    </LinearLayout>
 	    
-	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
-	        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
 				<TextView android:id="@+id/insideTempText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="70sp" android:gravity="center" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="50" android:gravity="center" >
+			<LinearLayout android:layout_width="fill_parent" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="50" android:gravity="center" >
 				<ImageView android:id="@+id/weatherImage"  android:layout_width="100sp" android:layout_height="100sp"  />
 			</LinearLayout>
 		</LinearLayout>
 		
 	    
-	    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
-	        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
-	        	<TextView android:id="@+id/targetTempText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="30sp" android:gravity="center" />
+	    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+	        <LinearLayout android:layout_width="0px" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
+	        	<TextView android:id="@+id/targetTempText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="30sp"  />
 	        </LinearLayout>
-	        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
-	        	<TextView android:id="@+id/outsideTempText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="60sp"  android:gravity="center" />
+	        <LinearLayout android:layout_width="0px" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="50"  android:gravity="center" >
+	        	<TextView android:id="@+id/outsideTempText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="30sp"  />
 	        </LinearLayout>
 	    </LinearLayout>
 	    
+	    
+	    
 	</LinearLayout>
-	<TextView android:id="@+id/debugText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="14sp"  android:gravity="center" android:text="debug" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp" android:background="@drawable/home_border" >
+		<TextView android:id="@+id/currentTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="30sp" android:textColor="#898989" />
+		<com.androidthermostat.client.controls.HomeSchedule android:id="@+id/homeSchedule" android:layout_width="0px" android:layout_height="fill_parent"  android:layout_weight="100" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" />
+		<ImageView android:id="@+id/serverButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/connect" android:paddingTop="5dp" android:paddingRight="5dp" />
+		<ImageView android:id="@+id/settingsButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/settings" android:paddingTop="5dp" android:paddingRight="10dp" />
+	</LinearLayout>
+	
 </LinearLayout>

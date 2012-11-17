@@ -1,9 +1,12 @@
 package com.androidthermostat.client;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.androidthermostat.client.controls.HomeSchedule;
 import com.androidthermostat.client.data.Conditions;
 import com.androidthermostat.client.data.Schedules;
 import com.androidthermostat.client.data.Servers;
@@ -28,9 +32,13 @@ public class MainActivity extends ActivityBase {
 	TextView insideTempText;
 	TextView outsideTempText;
 	TextView targetTempText;
-	TextView debugText;
+	//TextView debugText;
+	TextView currentTime;
 	ImageView weatherImage;
+	ImageView settingsButton;
+	ImageView serverButton;
 	LinearLayout screenLayout;
+	HomeSchedule homeSchedule;
 	
 	Handler refreshHandler;
 	
@@ -39,10 +47,17 @@ public class MainActivity extends ActivityBase {
 	
 	String previousConditionsJson = "";
 	String previousSettingsJson = "";
-	String previousDebugText = "";
+	//String previousDebugText = "";
+	String previousDisplayTime = "";
 	private static final int ACTIVITY_SETTEMP=100;
+	private static final int ACTIVITY_SCHEDULE=101;
+	private static final int ACTIVITY_SETTINGS=102;
+	private static final int ACTIVITY_SELECT_SERVER=103;
 	
+	SimpleDateFormat formatter = new SimpleDateFormat("h:mma");
 	
+	//<TextView android:id="@+id/debugText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="14sp"  android:gravity="center" android:text="debug" />
+	//<solid android:color="@android:color/transparent" />
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,18 +71,25 @@ public class MainActivity extends ActivityBase {
         setContentView(R.layout.main);
         new SimpleEula(this).show();
         
+        currentTime = (TextView) findViewById(R.id.currentTime);
         insideTempText  = (TextView) findViewById(R.id.insideTempText);
         outsideTempText  = (TextView) findViewById(R.id.outsideTempText);
         targetTempText  = (TextView) findViewById(R.id.targetTempText);
-        debugText  = (TextView) findViewById(R.id.debugText);
+        //debugText  = (TextView) findViewById(R.id.debugText);
         weatherImage = (ImageView) findViewById(R.id.weatherImage);
+        settingsButton = (ImageView) findViewById(R.id.settingsButton);
+        serverButton = (ImageView) findViewById(R.id.serverButton);
         screenLayout = (LinearLayout) findViewById(R.id.screenLayout);
+        homeSchedule = (HomeSchedule) findViewById(R.id.homeSchedule);
         
         screenLayout.setOnClickListener(new View.OnClickListener() {public void onClick(View view) { openOptionsMenu(); }});
         weatherImage.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
         outsideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showWeatherDetails();}});
         insideTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {setTemperature();}});
         targetTempText.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {setTemperature();}});
+        settingsButton.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showSettings();}});
+        serverButton.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showServer();}});
+        homeSchedule.setOnClickListener(new View.OnClickListener() {public void onClick(View view) {showSchedule();}});
         
         
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -99,6 +121,30 @@ public class MainActivity extends ActivityBase {
 
 	}
 	
+	private void showServer()
+    {
+		Intent i = new Intent(this, ServerSelectActivity.class);
+		startActivityForResult(i, ACTIVITY_SELECT_SERVER);
+    }
+	
+	private void showSettings()
+    {
+    	Intent i = new Intent(this, SettingsActivity.class);
+		startActivityForResult(i, ACTIVITY_SETTINGS);
+    }
+	
+	private void showSchedule()
+    {
+		final Activity activity = this;
+		new Thread(new Runnable() {
+	        public void run() {
+	        	Schedules.load();
+	        	Intent i = new Intent(activity, SchedulesActivity.class);
+	    		startActivityForResult(i, ACTIVITY_SCHEDULE);
+	        }
+	      }).start();
+		
+    }
 	
 	public void showWeatherDetails()
 	{
@@ -128,7 +174,7 @@ public class MainActivity extends ActivityBase {
 		insideTempText.setText( "" );
 		outsideTempText.setText( "" );
 		targetTempText.setText( "Not Connected to Server" );
-		debugText.setText(Utils.debugText);
+		//debugText.setText(Utils.debugText);
 	}
 
 	public void updateScreen()
@@ -140,19 +186,29 @@ public class MainActivity extends ActivityBase {
 		//Updating these fields every second creates unnecessary processor usage.  Only update the fields
 		//if the values have changed.
 		
-		if (!conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson) || !Utils.debugText.equals(previousDebugText))
+		if (!conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson))
 		{
 		
 			insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
 			outsideTempText.setText( String.valueOf(conditions.getOutsideTemperature()) + "° F" );
 			targetTempText.setText(settings.getSummary());
 			if (conditions.getWeatherImage()!=null) weatherImage.setImageBitmap(conditions.getWeatherImage());
-			debugText.setText(Utils.debugText);
 			
 			previousConditionsJson = conditions.getJson();
 			previousSettingsJson = settings.getJson();
-			previousDebugText = Utils.debugText;
+			//previousDebugText = Utils.debugText;
 		}
+		homeSchedule.refresh();
+		//debugText.setText(Utils.debugText);
+		
+		String displayTime = formatter.format(new Date()).toLowerCase().replace("m", "");
+		if (!displayTime.equals(previousDisplayTime))
+		{
+			currentTime.setText(displayTime);
+			previousDisplayTime=displayTime;
+		}
+		
+		currentTime.setText(displayTime);
 		
 	}
 	
