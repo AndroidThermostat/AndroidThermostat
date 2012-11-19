@@ -36,19 +36,22 @@
 	    	<TextView android:layout_width="0px" android:layout_height="wrap_content" android:gravity="left" android:text="Fan circulation"  android:paddingTop="20sp"  android:layout_weight="30" />
 	    	<LinearLayout android:layout_width="0px" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="70" >
     	    	<ToggleButton android:id="@+id/cycleFanSwitch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOn="On" android:textOff="Off" />
-    	    	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
-		    	    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Turn on for " />
-			    	<EditText android:id="@+id/cycleFanOnText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
-			    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes"/>
-			    </LinearLayout>
-				<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
-			    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="then off for "/>
-			    	<EditText android:id="@+id/cycleFanOffText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
-			    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes. "/>
+    	    	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" >
+	    	    	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+			    	    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Turn on for " />
+				    	<EditText android:id="@+id/cycleFanOnText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes"/>
+				    </LinearLayout>
+					<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="then off for "/>
+				    	<EditText android:id="@+id/cycleFanOffText" android:layout_width="60dp" android:layout_height="wrap_content" android:inputType="number" />
+				    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" minutes. "/>
+			    	</LinearLayout>
 		    	</LinearLayout>
 	    	</LinearLayout>
 	    	<com.androidthermostat.client.controls.HelpControl android:layout_width="wrap_content" android:layout_height="wrap_content" atc:title_id="@string/fan_circulation" atc:message_id="@string/fan_circulation_help" />
 		</LinearLayout>
+		
 
   	</LinearLayout>
 </ScrollView>

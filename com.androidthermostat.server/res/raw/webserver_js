@@ -1,268 +1,599 @@
-var passwordaddition = (password != '') ? '?password=' + password : '';
-var conditionsUrl = baseurl + 'conditions/' + passwordaddition;
+var conditionsUrl = '/api/conditions';
+var schedulesUrl = '/api/schedules';
+var settingsUrl = '/api/settings';
 
-$(function() {
-
-    $.getJSON(conditionsUrl, function(data) {
-
-        if (typeof data.error != 'undefined') {
-            alert('Error retrieiving conditions: ' + data.error);
-        } else {
-            // COLUMN 1 - Inside
-            if (typeof data.insideTemperature != 'undefined') {
-                if (data.insideTemperature == '') data.insideTemperature = '<br />n/a';
-                $('#insideTemperature').html(data.insideTemperature + ' &deg; F<br />');
-            }
-            if (typeof data.message != 'undefined' && data.message != '') {
-                $('#message').text(data.message);
-            }
-
-            // COLUMN 2 - Outside
-            if (typeof data.weatherForecastUrl != 'undefined' && data.weatherForecastUrl != '') {
-                $('#weatherForecastLink').attr('href', data.weatherForecastUrl);
-            }
-            if (typeof data.weatherImageUrl != 'undefined' && data.weatherImageUrl != '') {
-                $('#weatherImageUrl').attr("src", data.weatherImageUrl);
-            }
-            if (typeof data.outsideTemperature != 'undefined') {
-                if (data.outsideTemperature == '') data.outsideTemperature = '<br />n/a';
-                $('#outsideTemperature').html(data.outsideTemperature + ' &deg; F<br />');
-            }
-        }
-
-    });
-
-});
+var selectedSchedule = -1;
+var selectedScheduleEntry = -1;
+var selectedScheduleDay = 1;
+var conditions;
+var settings;
+var schedules;
 
 
+function init() {
+    refreshTop();
+    clearTabs();
+    showSetTemperature();
+}
 
-
-
-
-// day codes start with 1 = sunday
-var passwordaddition = (password != '') ? '?password=' + password : '';
-var schedulesUrl = baseurl + 'schedules/' + passwordaddition;
-
-$(function() {
-
-    $.getJSON(schedulesUrl, function(data) {
-
-        if (typeof data.error != 'undefined') {
-            alert('Error retrieiving schedules: ' + data.error);
-        } else {
-            var scheduleoutput = '';
-            scheduleoutput += '<dl>';
-            $.each(data, function(key, val) {
-                scheduleoutput += '<dt>' + val.name + '</dt>';
-                $.each(val.entries, function(key2, val2) {
-                    scheduleoutput += '<dd class="schedule-' + val.name.toLowerCase() + '">';
-                    scheduleoutput += 'Mode: ' + val2.mode + ' Hour: ' + val2.hour + ' Minute: ' + val2.minute + ' DoW: ' + val2.dayOfWeek + ' Target High: ' + val2.targetHigh + ' Target Low: ' + val2.targetLow;
-                    scheduleoutput += '<span style="display: none;" class="schedule-' + val.name.toLowerCase() + '-json">{"mode":"' + val2.mode +'", "hour":"' + val2.hour + '","minute":"' + val2.minute + '","dayOfWeek":"' + val2.dayOfWeek + '","targetHigh":"' + val2.targetHigh + '","targetLow":"' + val2.targetLow + '"}</span>';
-                    scheduleoutput += '</dd>';
-
-                });
+function refreshTop() {
+    $.get(conditionsUrl, function(data) {
+    	if (data.error==null || data.error=='')
+    	{
+    		conditions = data;
+            $('#insideTemp').html(conditions.insideTemperature);
+            $('#outsideTemp').html(conditions.outsideTemperature);
+            $('#weatherImage').attr("src", conditions.weatherImageUrl.replace("/60/", "/120/"));
+            $('#weatherUrl').attr("href", conditions.weatherForecastUrl);
+            $('#state').html("Currently: " + conditions.state);
+            $.get(settingsUrl, function(data) {
+                $('#mode').html(getDisplayMode(data));
             });
-            scheduleoutput += '</dl>';
-            $('#schedules').html(scheduleoutput);
-        }
-
-    });
-
-});
-
-
-function saveSchedules() {
-    $.post(schedulesUrl, getSchedulesJSON(), function(data) {
-        alert('Schedules POST Recieved: ' + data);
+    	} else {
+    		$('#passwordModal').modal();
+    	}
+        
     });
 }
 
+function clearTabs() {
+    $('#setTemperature').hide();
+    $('#settings').hide();
+    $('#schedules').hide();
+    $('#setTemperatureNav').removeClass('active');
+    $('#schedulesNav').removeClass('active');
+    $('#settingsNav').removeClass('active');
+}
 
-function getSchedulesJSON() {
-    // parse data on page to build json to submit
-    var json = '';
-    var schedulecount = $('#schedules dl dt').length;
-    schedulecount = schedulecount - 1;
-    $('#schedules dl dt').each(function(scheduleindex, element) {
-        var schedulename = $(this).text();
+function getDisplayMode(s)
+{
+    result = s.mode;
+    if (s.isAway)
+	{
+	    result = "Away: " + s.awayLow.toString() + " - " + s.awayHigh.toString() + "&deg; F";
+	} else {
+	    if (s.mode == "Cool") result += ": " + s.targetHigh.toString() + "&deg; F";
+		if (s.mode == "Heat") result += ": " + s.targetLow.toString() + "&deg; F";
+		if (s.mode == "Auto") result += ": " + s.targetLow.toString() + " - " + s.targetHigh.toString() + "&deg; F";
+	}
+	return result;
+}
 
-        json += '{';
-        json += '"name":"' + schedulename + '",';
-        json += '"entries":[';
+function login()
+{
+	var password = $('#loginPassword').val();
+	logginInner(password);
+	$('#passwordModal').modal('hide');
+	refreshTop();
+}
 
-        var entriescount = $('.schedule-' + schedulename + '-json').length;
-        $('.schedule-' + schedulename + '-json').each(function(entriesindex, element) {
-            json += $(this).text();
-            if (entriesindex != entriescount - 1) json += ',';
-        });
-        json += ']'; // end entries
+function logginInner(password)
+{
+	conditionsUrl = conditionsUrl.split('?')[0] + '?password=' + escape(password);
+	settingsUrl = settingsUrl.split('?')[0] + '?password=' + escape(password);
+	schedulesUrl = schedulesUrl.split('?')[0] + '?password=' + escape(password);
+}
 
-        json += '}'; // end schedule
 
-        if (scheduleindex < schedulecount) json += ',';
+/*******************************************SET TEMP*******************************************/
+
+function showSetTemperature() {
+    $.get(settingsUrl, function(data) {
+        settings = data;
+        showSetTemperatureInner();
     });
-    json = '[' + json + ']';
+}
 
-    return json;
+function showSetTemperatureInner() {
+    clearTabs();
+    $('#setTemperature').show();
+    $('#setTemperatureNav').addClass('active');
+    
+    if (settings.isAway) $('#setTempAway').prop('checked',true); else $('#setTempHome').prop('checked',true);  
+    $('#setTempMode').val(settings.mode);
+    $('#setTempMin').val(settings.targetLow);
+    $('#setTempMax').val(settings.targetHigh);
+    $('#setTempAwayMin').val(settings.awayLow);
+    $('#setTempAwayMax').val(settings.awayHigh);
+    
+    toggleSetTempHomeAway();
+    
+}
+
+
+function toggleSetTempHomeAway()
+{
+	if ($('#setTempHome').prop('checked'))
+	{
+		$('#tabHome').show();
+		$('#tabAway').hide();
+	} else {
+		$('#tabHome').hide();
+		$('#tabAway').show();
+	}
+}
+
+function toggleSetTempMode()
+{
+	$('#setTempLabel').show();
+	switch($('#setTempMode').val())
+	{
+		case 'Off':
+		case 'Fan':
+			$('#setTempMin').hide();
+			$('#setTempMax').hide();
+			$('#setTempLabel').hide();
+			break;
+		case 'Heat':
+			$('#setTempMin').show();
+			$('#setTempMax').hide();
+			break;
+		case 'Cool':
+			$('#setTempMin').hide();
+			$('#setTempMax').show();
+			break;
+		case 'Auto':
+			$('#setTempMin').show();
+			$('#setTempMax').show();
+			break;
+	}
+}
+
+function saveSetTemp()
+{
+	settings.isAway = $('#setTempAway').prop('checked');
+	settings.mode = $('#setTempMode').val();
+	settings.targetLow = $('#setTempMin').val();
+	settings.targetHigh = $('#setTempMax').val();
+	settings.awayLow = $('#setTempAwayMin').val();
+	settings.awayHigh = $('#setTempAwayMax').val();
+	$.post(settingsUrl, JSON.stringify(settings));
+	
+	setTimeout( function(){refreshTop();} , 100);
+	return false;
 }
 
 
 
-var passwordaddition = (password != '') ? '?password=' + password : '';
-var settingsUrl = baseurl + 'settings/' + passwordaddition;
-
-$(function() {
-
-    $("#cycleFan").button().click(function() {
-                if ($(this).val() == '1') {
-                    $(this).val('0');
-                    $(this).text('Off');
-                } else {
-                    $(this).val('1');
-                    $(this).text('On');
-                }
-            });
 
 
-    $.getJSON(settingsUrl, function(data) {
-
-        if (typeof data.error != 'undefined') {
-            alert('Error retrieiving settings: ' + data.error);
-        } else {
-
-// ################################## SET TEMPERATURE
-
-            if (typeof data.isAway != 'undefined') {
-                var location = (data.isAway) ? 'away' : 'home';
-                $('#isaway-' + location.toLowerCase()).prop('checked', true);
-            }
-            if (typeof data.mode != 'undefined' && data.mode != '') {
-                $('#mode-' + data.mode.toLowerCase()).prop('checked', true);
-            }
-            if (typeof data.schedule != 'undefined' && data.schedule != '') {
-                $('#schedule').val(data.schedule);
-            }
-            if (typeof data.openWeatherMapStation != 'undefined' && data.openWeatherMapStation != '') {
-                $('#openWeatherMapStation').val(data.openWeatherMapStation);
-            }
-            if (typeof data.targetHigh != 'undefined' && data.targetHigh != '') {
-                $('#targetHigh').val(data.targetHigh);
-            }
-            if (typeof data.targetLow != 'undefined' && data.targetLow != '') {
-                $('#targetLow').val(data.targetLow);
-            }
-            if (typeof data.awayLow != 'undefined' && data.awayLow != '') {
-                $('#awayLow').val(data.awayLow);
-            }
-            if (typeof data.awayHigh != 'undefined' && data.awayHigh != '') {
-                $('#awayHigh').val(data.awayHigh);
-            }
-
-// ################################## SETTINGS - GENERAL
-
-            if (typeof data.name != 'undefined' && data.name != '') {
-                $('#name').val(data.name);
-            }
-            if (typeof data.zipCode != 'undefined' && data.zipCode != '') {
-                $('#zipCode').val(data.zipCode);
-            }
-            if (typeof data.password != 'undefined' && data.password != '') {
-                $('#password').val(data.password);
-            }
-            if (typeof data.forecastUrl != 'undefined' && data.forecastUrl != '') {
-                $('#forecastUrl').val(data.forecastUrl);
-            }
-
-// ################################## SETTINGS - USAGE
-
-            if (typeof data.pingOutUrl != 'undefined' && data.pingOutUrl != '') {
-                $('#pingOutUrl').val(data.pingOutUrl);
-            }
-            if (typeof data.cycleCompleteParams != 'undefined' && data.cycleCompleteParams != '') {
-                $('#cycleCompleteParams').val(data.cycleCompleteParams);
-            }
-            if (typeof data.insideTempChangeParams != 'undefined' && data.insideTempChangeParams != '') {
-                $('#insideTempChangeParams').val(data.insideTempChangeParams);
-            }
-            if (typeof data.outsideTempChangeParams != 'undefined' && data.outsideTempChangeParams != '') {
-                $('#outsideTempChangeParams').val(data.outsideTempChangeParams);
-            }
-            if (typeof data.viewStatsParams != 'undefined' && data.viewStatsParams != '') {
-                $('#viewStatsParams').val(data.viewStatsParams);
-            }
-
-// ################################## SETTINGS - FURNACE
-
-            if (typeof data.swing != 'undefined' && data.swing != '') {
-                $('input:radio[name="swing"][value="' + data.swing + '"]').prop('checked', true);
-            }
-            if (typeof data.temperatureCalibration != 'undefined') {
-                $('#temperatureCalibration').val(data.temperatureCalibration);
-            }
-            if (typeof data.cycleFan != 'undefined') {
-                if (data.cycleFan) {
-                    $("#cycleFan").val('1').text('On');
-                } else {
-                    $("#cycleFan").val('0').text('Off');
-                }
-            }
-            if (typeof data.cycleFanOnMinutes != 'undefined' && data.cycleFanOnMinutes != '') {
-                $('#cycleFanOnMinutes').val(data.cycleFanOnMinutes);
-            }
-            if (typeof data.cycleFanOffMinutes != 'undefined' && data.cycleFanOffMinutes != '') {
-                $('#cycleFanOffMinutes').val(data.cycleFanOffMinutes);
-            }
-            if (typeof data.minCoolInterval != 'undefined' && data.minCoolInterval != '') {
-                $('#minCoolInterval').val(data.minCoolInterval);
-            }
-            if (typeof data.minHeatInterval != 'undefined' && data.minHeatInterval != '') {
-                $('#minHeatInterval').val(data.minHeatInterval);
-            }
-
-        }
-    });
-});
 
 
-function saveSettings() {
-    $.post(settingsUrl, getSettingsJSON(), function(data) {
-        alert('Settings POST Recieved: ' + data);
+
+/*******************************************SETTINGS******************************************/
+
+function showSettings() {
+    $.get(settingsUrl, function(data) {
+        settings = data;
+        showSettingsInner();
     });
 }
 
+function showSettingsInner() {
+    clearTabs();
+    
+    $('#settingsGeneralName').val(settings.name);
+    $('#settingsGeneralLocation').val(settings.location);
+    $('#settingsGeneralPassword').val(settings.password);
+    $('#settingsGeneralForecastUrl').val(settings.forecastUrl);
+    if (settings.displayCelcius) $('#settingsGeneralScaleC').prop('checked', true); else $('#settingsGeneralScaleF').prop('checked', true);
+    
+    $('#settingsFurnaceCalibration').val(settings.temperatureCalibration);
+    switch (settings.swing)
+    {
+		case 1:
+			$('#settingsFurnaceSwing1').prop('checked',true);
+		    break;
+    	case 2:
+    		$('#settingsFurnaceSwing2').prop('checked',true);
+    		break;
+        case 3:
+        	$('#settingsFurnaceSwing3').prop('checked',true);
+        	break;
+    }
+    $('#settingsFurnaceMinCool').val(settings.minCoolInterval);
+    $('#settingsFurnaceMinHeat').val(settings.minHeatInterval);
+    $('#settingsFurnaceCirculate').val(settings.cycleFan);
+    $('#settingsFurnaceCirculateOn').val(settings.cycleFanOnMinutes);
+    $('#settingsFurnaceCirculateOff').val(settings.cycleFanOffMinutes);
+    
+    $('#settingsUsageBaseUrl').val(settings.pingOutUrl);
+    $('#settingsUsageCycleComplete').val(settings.cycleCompleteParams);
+    $('#settingsUsageInsideTemp').val(settings.insideTempChangeParams);
+    $('#settingsUsageOutsideTemp').val(settings.outsideTempChangeParams);
+    $('#settingsUsageStats').val(settings.viewStatsParams);
+    if (settings.pingOutUrl.indexOf('http://api.thermostatmonitor.com/v2/?k=')>-1)
+	{
+    	$('#settingsUsageThermostatKey').val(settings.pingOutUrl.replace('http://api.thermostatmonitor.com/v2/?k=', ''));
+    	$('#settingsUsageServiceTM').prop('checked',true);
+	} else {
+		$('#settingsUsageThermostatKey').val('');
+		$('#settingsUsageServiceOther').prop('checked',true);
+	}
 
-function getSettingsJSON() {
-    // parse data on page to build json to submit
-    var json = '';
-    var settingscount = $('.settings').length;
+    toggleSettingsUsageTracking();
+    toggleSettingsFurnaceCirculate();
+    
+    
+    $('#settings').show();
+    $('#settingsNav').addClass('active');
+}
 
-    settingscount = settingscount - 1;
-    json += '{';
-    $('.settings').each(function(settingsindex, element) {
-        var varname = ($(this).attr('name')) ? $(this).attr('name') : $(this).attr('id');
+function toggleSettingsUsageTracking()
+{
+	if ($('#settingsUsageServiceTM').prop('checked'))
+	{
+		$('#usageSettingsTMHolder').show();
+		$('#usageSettingsOtherHolder').hide();
+	} else {
+		$('#usageSettingsTMHolder').hide();
+		$('#usageSettingsOtherHolder').show();
+	}
+}
 
-        if ($(this).attr('type') == 'checkbox') {
-            var varval = $(this).is(':checked');
-        } else if ($(this).attr('type') == 'radio') {
-            if ($(this).attr('checked') == 'checked') {
-                var varval = $(this).val();
-            }
-        } else {
-            var varval = $(this).val();
-        }
+function toggleSettingsFurnaceCirculate()
+{
+	
+	if ($('#settingsFurnaceCirculate').val()=='true')
+	{
+		$('#settingsFurnaceCirculateLabels').show();
+		$('#settingsFurnaceCirculateOn').show();
+		$('#settingsFurnaceCirculateOff').show();
+	} else {
+		$('#settingsFurnaceCirculateLabels').hide();
+		$('#settingsFurnaceCirculateOn').hide();
+		$('#settingsFurnaceCirculateOff').hide();
+	}
+}
 
-        if (varname != '' && (varval || varval == '')) {
-            json += '"' + varname + '":"' + varval + '"';
-            if (settingsindex < settingscount) json += ',';
-        }
-
-    });
-    json += '}';
-
-    return json;
+function saveSettings()
+{
+	settings.name = $('#settingsGeneralName').val();
+	settings.location = $('#settingsGeneralLocation').val();
+	settings.password = $('#settingsGeneralPassword').val();
+	settings.forecastUrl = $('#settingsGeneralForecastUrl').val();
+	settings.temperatureCalibration = $('#settingsFurnaceCalibration').val();
+	settings.displayCelcius = $('#settingsGeneralScaleC').prop('checked');
+	
+	if ($('#settingsFurnaceSwing1').prop('checked')) settings.swing = 1;
+	else if ($('#settingsFurnaceSwing2').prop('checked')) settings.swing = 2;
+	else settings.swing = 3;
+	settings.minCoolInterval = $('#settingsFurnaceMinCool').val();
+	settings.minHeatInterval = $('#settingsFurnaceMinHeat').val();
+	settings.cycleFan = $('#settingsFurnaceCirculate').val();
+	settings.cycleFanOnMinutes = $('#settingsFurnaceCirculateOn').val();
+	settings.cycleFanOffMinutes = $('#settingsFurnaceCirculateOff').val();
+	if ($('#settingsUsageServiceTM').prop('checked'))
+	{
+		settings.pingOutUrl = 'http://api.thermostatmonitor.com/v2/?k=' + $('#settingsUsageThermostatKey').val();
+		settings.cycleCompleteParams = '&a=cycle&m=[mode]&d=[duration]';
+		settings.insideTempChangeParams = '&a=temp&t=[insideTemp]';
+		settings.outsideTempChangeParams = '&a=conditions&t=[outsideTemp]';
+		settings.viewStatsParams = '&a=stats';
+	} else {
+		settings.pingOutUrl = $('#settingsUsageBaseUrl').val();
+		settings.cycleCompleteParams = $('#settingsUsageCycleComplete').val();
+		settings.insideTempChangeParams = $('#settingsUsageInsideTemp').val();
+		settings.outsideTempChangeParams = $('#settingsUsageOutsideTemp').val();
+		settings.viewStatsParams = $('#settingsUsageStats').val();
+	}
+	
+	$.post(settingsUrl, JSON.stringify(settings));
+	setTimeout( function(){
+		logginInner(settings.password);
+		refreshTop();
+	} , 100);
+	return false;
 }
 
 
+
+/*******************************************SCHEDULES*******************************************/
+
+function showSchedules() {
+    $.get(schedulesUrl, function(data) {
+        schedules = data;
+        showSchedulesInner();
+    });
+}
+
+function showSchedulesInner() {
+    clearTabs();
+    
+    var scheduleListHtml='<ul>';
+    for (var i=0;i<schedules.length;i++)
+	{
+    	scheduleListHtml += '<li><a href="javascript:showSchedule(' + i + ')">' + schedules[i].name + '</a></li>';
+	}
+    scheduleListHtml += '<li><a href="javascript:showSchedule(-1)">(Add new)</a></li>';
+    scheduleListHtml += '</ul>';
+    $('#scheduleList').html(scheduleListHtml);
+    $('#scheduleList').show();
+    $('#scheduleDetails').hide();
+    
+    
+    $('#schedules').show();
+    $('#schedulesNav').addClass('active');
+}
+
+function showSchedule(idx)
+{
+	selectedSchedule = idx;
+	$('#scheduleList').hide();
+    $('#scheduleDetails').show();
+    
+    if (idx==-1)
+    {
+    	selectedSchedule = schedules.length;
+    	var s = {};
+    	s.entries = [];
+    	s.name = 'New Schedule';
+    	schedules[selectedSchedule]=s;
+    } 
+    
+    $('#scheduleName').val(schedules[selectedSchedule].name);
+    
+    $('#scheduleDayTab1').addClass('active');
+    $('#scheduleDayTab2').removeClass('active');
+    $('#scheduleDayTab3').removeClass('active');
+    $('#scheduleDayTab4').removeClass('active');
+    $('#scheduleDayTab5').removeClass('active');
+    $('#scheduleDayTab6').removeClass('active');
+    $('#scheduleDayTab7').removeClass('active');
+    $('#scheduleDaySettingsTab').removeClass('active');
+    showScheduleDay(1);
+}
+
+function showScheduleDay(idx)
+{
+	selectedScheduleDay = idx;
+	var scheduleEntryListHtml='<ul>';
+	
+	if (selectedSchedule>-1)
+	{
+	    for (var i=0;i<schedules[selectedSchedule].entries.length;i++)
+		{
+	    	if (schedules[selectedSchedule].entries[i].dayOfWeek == idx) {
+	    		scheduleEntryListHtml += '<li><a href="javascript:editScheduleEntry(' + i + ')">' + getScheduleEntryName(schedules[selectedSchedule].entries[i]) + '</a></li>';
+			}
+		}
+	}
+	scheduleEntryListHtml += '<li><a href="javascript:editScheduleEntry(-1)">(Add new)</a></li>';
+	scheduleEntryListHtml += '</ul>';
+	scheduleEntryListHtml += '<div class="row"><button class="btn btn-primary span1 offset11" onclick="return showCopyScheduleDay();">Copy</button></div>';
+	
+    $('#scheduleEntriesList').html(scheduleEntryListHtml);
+    $('#scheduleEntryEdit').hide();
+    $('#scheduleEntriesList').show();
+}
+
+function getScheduleEntryName(entry)
+{
+	var displayTime = entry.minute.toString();
+	while (displayTime.length<2) displayTime = '0' + displayTime;
+	var hour=entry.hour;
+	var amPm = ' am'
+	
+	if (hour>=12) { amPm = ' pm'; hour = hour - 12; }
+	if (hour==0) hour = 12;
+	displayTime = hour.toString() + ':' + displayTime + amPm;
+	
+	var result = "At " + displayTime + ", ";
+	switch (entry.mode)
+	{
+		case 'Off':
+			result += 'turn the thermostat off.';
+			break;
+		case 'Fan':
+			result += 'turn the fan on.';
+			break;
+		case 'Heat':
+			result += 'heat to ' + entry.targetLow + '&deg; F.';
+			break;
+		case 'Cool':
+			result += 'cool to ' + entry.targetHigh + '&deg; F.';
+			break;
+		case 'Auto':
+			result += 'maintain ' + entry.targetLow + ' to ' + entry.targetHigh + '&deg; F.';
+			break;
+	}
+	return result;
+}
+
+
+function editScheduleEntry(idx)
+{
+	selectedScheduleEntry = idx;
+
+	if (selectedScheduleEntry==-1)
+	{
+		selectedScheduleEntry = schedules[selectedSchedule].entries.length;
+		var entry = {};
+		entry.mode = 'Off';
+		entry.dayOfWeek = selectedScheduleDay;
+		entry.targetLow = 75;
+		entry.targetHigh = 75;
+		entry.hour = 0;
+		entry.minute = 0;
+		schedules[selectedSchedule].entries[selectedScheduleEntry] = entry;
+	}
+	
+	entry = getScheduleEntry();
+	var hour = entry.hour;
+	var pm = false;
+	if (hour>11) { hour = hour - 12; pm = true; }
+	$('#scheduleHour').val(hour);
+	$('#scheduleMin').val(entry.minute);
+	$('#schedulePm').val(pm.toString());
+	$('#scheduleMode').val(entry.mode);
+	$('#scheduleTempMax').val(entry.targetHigh);
+	$('#scheduleTempMin').val(entry.targetLow);
+	
+	toggleScheduleMode();
+	
+	$('#scheduleEntryEdit').show();
+    $('#scheduleEntriesList').hide();
+}
+
+function getScheduleEntry()
+{
+	if (selectedSchedule>-1) return schedules[selectedSchedule].entries[selectedScheduleEntry];
+	return {};
+}
+
+function toggleScheduleMode()
+{
+	$('#scheduleTempLabel').show();
+	switch($('#scheduleMode').val())
+	{
+		case 'Off':
+		case 'Fan':
+			$('#scheduleTempMin').hide();
+			$('#scheduleTempMax').hide();
+			$('#scheduleTempLabel').hide();
+			break;
+		case 'Heat':
+			$('#scheduleTempMin').show();
+			$('#scheduleTempMax').hide();
+			break;
+		case 'Cool':
+			$('#scheduleTempMin').hide();
+			$('#scheduleTempMax').show();
+			break;
+		case 'Auto':
+			$('#scheduleTempMin').show();
+			$('#scheduleTempMax').show();
+			break;
+	}
+}
+
+function deleteScheduleEntry()
+{
+	schedules[selectedSchedule].entries.splice(selectedScheduleEntry, 1);
+	saveSchedules();
+	showScheduleDay(selectedScheduleDay);
+}
+
+function saveScheduleEntry()
+{
+	var entry = getScheduleEntry();
+	var hour = parseInt($('#scheduleHour').val());
+	if ($('#schedulePm').val()=='true') hour += 12;
+	entry.hour = hour;
+	entry.minute = $('#scheduleMin').val();
+	entry.mode = $('#scheduleMode').val();
+	entry.targetLow = $('#scheduleTempMin').val();
+	entry.targetHigh = $('#scheduleTempMax').val();
+	if (entry.targetLow > entry.targetHigh)
+	{
+		if (entry.mode=='Cool') entry.targetLow = entry.targetHigh; else entry.targetHigh = entry.targetLow;
+	}
+	saveSchedules();
+	showScheduleDay(selectedScheduleDay);
+}
+
+function saveSchedule()
+{
+	schedules[selectedSchedule].name = $('#scheduleName').val();
+	saveSchedules();
+	setTimeout( function(){showSchedules();} , 200);
+}
+
+function deleteSchedule()
+{
+	schedules.splice(selectedSchedule, 1);
+	saveSchedules();
+	setTimeout( function(){showSchedules();} , 200);
+}
+
+function saveSchedules()
+{
+	$.post(schedulesUrl, JSON.stringify(schedules));
+}
+
+function showCopyScheduleDay()
+{
+	$('#copyScheduleModal').modal();
+	$('#copyToSunday').prop('checked',false);
+	$('#copyToMonday').prop('checked',false);
+	$('#copyToTuesday').prop('checked',false);
+	$('#copyToWednesday').prop('checked',false);
+	$('#copyToThursday').prop('checked',false);
+	$('#copyToFriday').prop('checked',false);
+	$('#copyToSaturday').prop('checked',false);
+	$('#copyToSundayLabel').show();
+	$('#copyToMondayLabel').show();
+	$('#copyToTuesdayLabel').show();
+	$('#copyToWednesdayLabel').show();
+	$('#copyToThursdayLabel').show();
+	$('#copyToFridayLabel').show();
+	$('#copyToSaturdayLabel').show();
+	
+	switch (selectedScheduleDay)
+	{
+		case 1:
+			$('#copyToSundayLabel').hide();
+			break;
+		case 2:
+			$('#copyToMondayLabel').hide();
+			break;
+		case 3:
+			$('#copyToTuesdayLabel').hide();
+			break;
+		case 4:
+			$('#copyToWednesdayLabel').hide();
+			break;
+		case 5:
+			$('#copyToThursdayLabel').hide();
+			break;
+		case 6:
+			$('#copyToFridayLabel').hide();
+			break;
+		case 7:
+			$('#copyToSaturdayLabel').hide();
+			break;
+	}
+}
+
+function copyScheduleDay()
+{
+	if ($('#copyToSunday').prop('checked')) copyScheduleEntries(selectedScheduleDay,1);
+	if ($('#copyToMonday').prop('checked')) copyScheduleEntries(selectedScheduleDay,2);
+	if ($('#copyToTuesday').prop('checked')) copyScheduleEntries(selectedScheduleDay,3);
+	if ($('#copyToWednesday').prop('checked')) copyScheduleEntries(selectedScheduleDay,4);
+	if ($('#copyToThursday').prop('checked')) copyScheduleEntries(selectedScheduleDay,5);
+	if ($('#copyToFriday').prop('checked')) copyScheduleEntries(selectedScheduleDay,6);
+	if ($('#copyToSaturday').prop('checked')) copyScheduleEntries(selectedScheduleDay,7);
+	$('#copyScheduleModal').modal('hide');
+	saveSchedules();
+}
+
+function copyScheduleEntries(fromDay, toDay)
+{
+	var schedule = schedules[selectedSchedule];
+
+	//Remove existing entries in toDay
+	for (var i = schedule.entries.length - 1; i>=0; i--)
+	{
+    	if (schedule.entries[i].dayOfWeek == toDay) {
+    		schedule.entries.splice(i, 1);
+    	}
+	}
+	
+	//Copy entries from fromDay to toDay
+	for (var i=0;i<schedule.entries.length;i++)
+	{
+		if (schedule.entries[i].dayOfWeek == fromDay) {
+			var newEntry = {};
+			jQuery.extend(newEntry,schedule.entries[i]);
+			newEntry.dayOfWeek = toDay;
+			schedule.entries[schedule.entries.length] = newEntry;
+    	}
+	}
+}
+
+
+init();
 
 
 

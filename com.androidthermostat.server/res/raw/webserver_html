@@ -1,233 +1,387 @@
-<html>
-<head>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/smoothness/jquery-ui.css" />
-    <link rel="stylesheet" href="main.css" />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Android Thermostat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <style type="text/css"> body { padding-top: 60px; padding-bottom: 40px; } </style>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
 
-    <script type="text/javascript">
-        var baseurl = '/api/';
+  <body>
 
-        var password = '';
-
-        $.ajaxSetup({
-            error: function (xhr, status, errorobj) {
-                alert('status: ' + status + ' error: ' + errorobj);
-            },
-            success: function ( data, text, jqXhr ) {
-                alert('success: ' + text)
-            }
-        });
-
-        // set default tabs to display, counting starts at zero
-        $(function() {
-            $("#tabs").tabs(); // {active: 3}
-            $("#tabs-settings").tabs(); // {active: 2}
-        });
-    </script>
-
-    <script src="main.js" type="text/javascript"></script>
-</head>
-<body>
-<button onclick="saveSettings()">save settings</button>
-<button onclick="saveSchedules()">save schedules</button>
-<div>
-    <div id="tabs">
-        <ul>
-            <li><a href="#conditionstab">Conditions</a></li>
-            <li><a href="#settemptab">Set Temperature</a></li>
-            <li><a href="#settingstab">Settings</a></li>
-            <li><a href="#schedulestab">Schedules</a></li>
-        </ul>
-
-        <div id="conditionstab">
-            <table border="0" cellpadding="10">
-                <tr>
-                    <td valign="top" align="center">
-                        Inside Conditions<br />
-                        <span id="insideTemperature"></span><br />
-                        <span id="message"></span>
-                    </td>
-                    <td valign="top" align="center">
-                        Outside Conditions<br />
-                        <a id="weatherForecastLink" target="_blank"><img src="http://placehold.it/60x50" id="weatherImageUrl" width="60" height="50" alt="Weather Conditions Graphic" border="0" /></a><br />
-                        <span id="outsideTemperature"></span><br />
-                    </td>
-                </tr>
-            </table>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Android Thermostat</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li id="setTemperatureNav"><a href="#temperature" onclick="showSetTemperature();">Set Temperature</a></li>
+              <li id="schedulesNav"><a href="#schedules" onclick="showSchedules();">Schedules</a></li>
+              <li id="settingsNav"><a href="#settings" onclick="showSettings();">Settings</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
+    </div>
 
-        <div id="settemptab">
-            <table border="0">
-                <tr>
-                    <td>Location:</td>
-                    <td>
-                        <input type="radio" class="settings" id="isaway-home" name="isAway" value="0" /><label for="isaway-home">Home</label>
-                        <input type="radio" class="settings" id="isaway-away" name="isAway" value="1" /><label for="isaway-away">Away</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mode:</td>
-                    <td>
-                        <input type="radio" class="settings" id="mode-off"  name="mode" value="Off"  /><label for="mode-off">Off</label>
-                        <input type="radio" class="settings" id="mode-fan"  name="mode" value="Fan"  /><label for="mode-fan">Fan</label>
-                        <input type="radio" class="settings" id="mode-heat" name="mode" value="Heat" /><label for="mode-heat">Heat</label>
-                        <input type="radio" class="settings" id="mode-cool" name="mode" value="Cool" /><label for="mode-cool">Cool</label>
-                        <input type="radio" class="settings" id="mode-auto" name="mode" value="Auto" /><label for="mode-auto">Auto</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Target High:</td>
-                    <td><input type="text" class="settings" id="targetHigh" /></td>
-                </tr>
-                <tr>
-                    <td>Target Low:</td>
-                    <td><input type="text" class="settings" id="targetLow" /></td>
-                </tr>
-                <tr>
-                    <td>Schedule:</td>
-                    <td>
-                        <select class="settings" name="schedule">
-                            <option value="-1">(None)</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>OpenWeatherMapStation:</td>
-                    <td><input type="text" class="settings" id="openWeatherMapStation" /></td>
-                </tr>
-                <tr>
-                    <td>awayLow:</td>
-                    <td><input type="text" class="settings" id="awayLow" /></td>
-                </tr>
-                <tr>
-                    <td>awayHigh:</td>
-                    <td><input type="text" class="settings" id="awayHigh" /></td>
-                </tr>
-            </table>
-        </div>
+    <div class="container">
 
-        <div id="schedulestab">
-            <!-- Don't forget to populate #schedule in SetTempTab -->
-            <!--<span id="schedules-json"></span>-->
-            <span id="schedules"></span>
-        </div>
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="page-header">
+        
+        <table width="100%"><tr><td width="50%" valign="top">
+            <h2>Inside Conditions</h2>
+            <h1><span id="insideTemp">0</span>&deg; F</h1>
+            <h2 id="state"></h2>
+        </td><td width="50%" valign="top">
+            <h2>Outside Conditions</h2>
+            <h1><span id="outsideTemp">0</span>&deg; F <a id="weatherUrl" href="about:blank" target="_blank" /><img id="weatherImage" src="about:blank" /></a></h1>
+            <h2 id="mode"></h2>
+        </td></tr></table>
+        
+      </div>
 
-        <div id="settingstab">
-            <span id="settings-json"></span>
-            <div id="tabs-settings">
-                <ul>
-                    <li class="active"><a href="#settingstab-general">General</a></li>
-                    <li><a href="#settingstab-usage">Usage</a></li>
-                    <li><a href="#settingstab-furnace">Furnace</a></li>
-                </ul>
-                <div id="settingstab-general">
-                    <table border="0">
-                        <tr>
-                            <td>Name:</td>
-                            <td><input type="text" class="settings longtext" id="name" /></td>
-                        </tr>
-                        <tr>
-                            <td>Zipcode:</td>
-                            <td><input type="text" class="settings longtext" id="zipCode" /></td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td><input type="text" class="settings longtext" id="password" /></td>
-                        </tr>
-                        <tr>
-                            <td>Forecast URL:</td>
-                            <td><input type="text" class="settings longtext" id="forecastUrl" /></td>
-                        </tr>
-                    </table>
+      
+      <!--------------------------------------------------------------SET TEMPERATURE-------------------------------------------------------------->
+      <div id="setTemperature">
+          <h2>Set Temperature</h2>
+          <form>
+			<div class="controls-row" style="margin-bottom:10px;">
+				<label class="radio inline"><input type="radio" name="homeAway" id="setTempHome" value="Home" checked onclick="toggleSetTempHomeAway();">Home</label>
+				<label class="radio inline"><input type="radio" name="homeAway" id="setTempAway" value="Away" onclick="toggleSetTempHomeAway();">Away</label>
+			</div>
+            <div id="tabHome">
+                <div class="row">
+                    <div class="span6">Mode</div>
+                    <div class="span6" id="setTempLabel">Temperature</div>
                 </div>
-                <div id="settingstab-usage">
-                    <h1>Status Change URLs:</h1>
-                    <em>
-                        The thermostat can ping an outside tracking service such as ThermostatMonitor.com to monitor your usage history.
-                        If you would like to enable this, sign up with a service and enter the URL they provide here.
-                    </em><br />
-                    <br />
-                    Base URL:<br />
-                    <input type="text" class="settings longtext" id="pingOutUrl" /><br />
-                    <br />
-                    Cycle Complete Parameters:<br />
-                    <input type="text" class="settings longtext" id="cycleCompleteParams" /><br />
-                    <br />
-                    Inside Temperature Change Parameters:<br />
-                    <input type="text" class="settings longtext" id="insideTempChangeParams" /><br />
-                    <br />
-                    Outside Temperature Change Parameters:<br />
-                    <input type="text" class="settings longtext" id="outsideTempChangeParams" /><br />
-                    <br />
-                    View State Parameters:<br />
-                    <input type="text" class="settings longtext" id="viewStatsParams" /><br />
+                <div class="controls-row">
+                    <select class="span6" id="setTempMode" onclick="toggleSetTempMode();">
+                        <option value="Off">Off</option>
+                        <option value="Heat">Heat</option>
+                        <option value="Cool">Cool</option>
+                        <option value="Fan">Fan</option>
+                        <option value="Auto">Auto</option>
+                    </select>
+                    <select class="span3" id="setTempMin">
+                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+                    </select>
+                    <select class="span3" id="setTempMax">
+                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+                    </select>
                 </div>
-                <div id="settingstab-furnace">
-                    <table border="0">
-                        <tr>
-                            <td>Temperature Swing:</td>
-                            <td>
-                                <input type="radio" class="settings" name="swing" value="1" /> 1
-                                <input type="radio" class="settings" name="swing" value="2" /> 2
-                                <input type="radio" class="settings" name="swing" value="3" /> 3
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Temperature Calibration:</td>
-                            <td><input type="text" class="settings shorttext" id="temperatureCalibration" /></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <em>
-                                    It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold
-                                    pockets where the thermostat is placed.  Enter a positive number to increase the reported temperature or negative to
-                                    decrease it.
-                                </em>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                Fan circulation
-                                <button id="cycleFan" class="ui-button settings" value="">n/a</button>
-                                Turn on for
-                                <input type="text" class="settings shorttext" id="cycleFanOnMinutes" />
-                                minutes, then turn off for
-                                <input type="text" class="settings shorttext" id="cycleFanOffMinutes" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <em>This is useful if your upstairs heater doesn't turn on frequently in the winter, but you want to circulate air to evenly warm each room.</em>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                Minimum Minutes Between Cool Cycles<br />
-                                <input type="text" class="settings shorttext" id="minCoolInterval" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                Minimum Minutes Between Heat Cycles<br />
-                                <input type="text" class="settings shorttext" id="minHeatInterval" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <em>
-                                    Gas furnaces have a safety lockout in case the burner fails to ignite.  On some models, turning the heather off and back on will reset this lockout.
-                                    It's recommended that you keep the cycle interval above 2 minutes to allow any unignited gas to dissipate before trying again.
-                                </em>
-                            </td>
-                        </tr>
-                    </table>
+           	</div>
+                
+            <div id="tabAway">
+                <div class="row">
+                    <div class="span6">Temperature Range</div>
+                </div>
+                <div class="controls-row">
+                    <select class="span3" id="setTempAwayMin">
+                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+                    </select>
+                    <select class="span3" id="setTempAwayMax">
+                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-</body>
+            <div class="row"><div class="span12" style="text-align:right;"><button class="btn btn-primary" onclick="return saveSetTemp();">Save</button></div></div>
+          </form>
+      </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <!-----------------------------------------------------------------SETTINGS------------------------------------------------------------------>
+      <div id="settings">
+          <h2>Settings</h2>
+          <form>
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#generalSettingsTab" data-toggle="tab">General</a></li>
+                <li><a href="#usageSettingsTab" data-toggle="tab">Usage</a></li>
+                <li><a href="#furnaceSettingsTab" data-toggle="tab">Furnace</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="generalSettingsTab">
+                    <div class="row">
+                        <div class="span6">Name</div>
+                        <div class="span6">Password (Optional)</div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" id="settingsGeneralName" placeholder="Downstairs" class="span6" />
+                        <input type="password" id="settingsGeneralPassword" class="span6" />
+                    </div>
+                    <div class="row">
+                        <div class="span6">Location</div>
+                        <div class="span6">Forecast Url</div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" id="settingsGeneralLocation" placeholder="90210 or Madrid, Spain" class="span6" />
+                        <input type="text" id="settingsGeneralForecastUrl" placeholder="http://www.weather.com/weather/right-now/[postalCode]" class="span6" />
+                    </div>
+                	<div class="row">
+                    	<div class="span6">Temperature Scale</div>
+					</div>
+                	<div class="controls-row">
+                		<label class="radio inline"><input type="radio" name="scaleRadio" id="settingsGeneralScaleF" value="Fahrenheit" checked>Fahrenheit</label>
+  						<label class="radio inline"><input type="radio" name="scaleRadio" id="settingsGeneralScaleC" value="Celsius">Celsius</label>
+                	</div>
+                </div>
+                
+                <div class="tab-pane" id="usageSettingsTab">
+                    <div class="row">
+                        <div class="span6">Tracking Service</div>
+                    </div>
+                    <div class="controls-row" style="margin-bottom:10px;">
+               			<label class="radio inline"><input type="radio" name="serviceRadio" id="settingsUsageServiceTM" value="ThermostatMonitor.com" checked onclick="toggleSettingsUsageTracking();">ThermostatMonitor.com</label>
+ 						<label class="radio inline"><input type="radio" name="serviceRadio" id="settingsUsageServiceOther" value="Other" onclick="toggleSettingsUsageTracking();">Other</label>
+                	</div>
+                	<div id="usageSettingsTMHolder">
+	                	<div class="row">
+	                        <div class="span6">Thermostat Key</div>
+	                    </div>
+	                    <div class="controls-row">
+	                        <input type="text" id="settingsUsageThermostatKey" class="span6" />
+	                    </div>
+                    </div>
+                    <div id="usageSettingsOtherHolder">
+	                    <div class="row">
+	                        <div class="span6">Base Url</div>
+	                        <div class="span6">Cycle Complete Params</div>
+	                    </div>
+	                    <div class="controls-row">
+	                        <input type="text" id="settingsUsageBaseUrl" placeholder="http://api.thermostatmonitor.com/v2/?k=ABC123def" class="span6" />
+	                        <input type="text" id="settingsUsageCycleComplete" placeholder="&a=cycle&m=[mode]&d=[duration]" class="span6" />
+	                    </div>
+	                    <div class="row">
+	                        <div class="span6">Inside Temp Change Params</div>
+	                        <div class="span6">Outside Temp Change Params</div>
+	                    </div>
+	                    <div class="controls-row">
+	                        <input type="text" id="settingsUsageInsideTemp" placeholder="&a=temp&t=[insideTemp]" class="span6" />
+	                        <input type="text" id="settingsUsageOutsideTemp" placeholder="&a=conditions&t=[outsideTemp]" class="span6" />
+	                    </div>
+	                    <div class="row">
+	                        <div class="span6">View Stats Params</div>
+	                    </div>
+	                    <div class="controls-row">
+	                        <input type="text" id="settingsUsageStats" placeholder="&a=stats" class="span6" />
+	                    </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="furnaceSettingsTab">
+                    <div class="row">
+                        <div class="span6">Temperature Calibration</div>
+                        <div class="span6">Temperature Swing</div>
+                    </div>
+                    <div class="controls-row">
+                    	<input type="text" id="settingsFurnaceCalibration" placeholder="0" class="span6" />
+               			<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing1" value="1" checked>1&deg;</label>
+ 						<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing2" value="2">2&deg;</label>
+ 						<label class="radio span1"><input type="radio" name="swingRadio" id="settingsFurnaceSwing3" value="3">3&deg;</label>
+                	</div>
+                    <div class="row">
+                        <div class="span6">Min. Cool Cycle</div>
+                        <div class="span6">Min. Heat Cycle</div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" id="settingsFurnaceMinCool" placeholder="5" class="span6" />
+                        <input type="text" id="settingsFurnaceMinHeat" placeholder="5" class="span6" />
+                    </div>
+                    
+                    <div class="row">
+                        <div class="span6">Fan Circulation</div>
+                        <div id="settingsFurnaceCirculateLabels">
+	                        <div class="span3">Minutes On</div>
+	                        <div class="span3">Minutes Off</div>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                    	<select id="settingsFurnaceCirculate" class="span6" onchange="toggleSettingsFurnaceCirculate();"><option value="false">Off</option><option value="true">On</option></select>
+                   		<input id="settingsFurnaceCirculateOn" type="text" placeholder="5" class="span3" />
+                       	<input id="settingsFurnaceCirculateOff" type="text" placeholder="5" class="span3" />
+                    </div>
+                    
+                    
+                	
+                </div>
+                
+              </div>
+            </div>
+            <div class="row"><div class="span12" style="text-align:right;"><button class="btn btn-primary" onclick="return saveSettings();">Save</button></div></div>
+          </form>
+      </div>
+      
+      
+      
+      
+      <!--------------------------------------------------------------SCHEDULE-------------------------------------------------------------->
+	  <div id="schedules">
+		<h2>Schedules</h2>
+		<div id="scheduleList"></div>
+
+		<div id="scheduleDetails" class="tabbable">
+			<ul class="nav nav-tabs">
+				<li onclick="showScheduleDay(1);" class="active" id="scheduleDayTab1"><a href="#scheduleDayTabContent" data-toggle="tab">Sunday</a></li>
+				<li onclick="showScheduleDay(2);" id="scheduleDayTab2"><a href="#scheduleDayTabContent" data-toggle="tab">Monday</a></li>
+				<li onclick="showScheduleDay(3);" id="scheduleDayTab3"><a href="#scheduleDayTabContent" data-toggle="tab">Tuesday</a></li>
+				<li onclick="showScheduleDay(4);" id="scheduleDayTab4"><a href="#scheduleDayTabContent" data-toggle="tab">Wednesday</a></li>
+				<li onclick="showScheduleDay(5);" id="scheduleDayTab5"><a href="#scheduleDayTabContent" data-toggle="tab">Thursday</a></li>
+				<li onclick="showScheduleDay(6);" id="scheduleDayTab6"><a href="#scheduleDayTabContent" data-toggle="tab">Friday</a></li>
+				<li onclick="showScheduleDay(7);" id="scheduleDayTab7"><a href="#scheduleDayTabContent" data-toggle="tab">Saturday</a></li>
+				<li id="scheduleSettingsTab"><a href="#scheduleSettingsTabContent" data-toggle="tab">Settings</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="scheduleDayTabContent">
+					<div id="scheduleEntriesList"></div>
+					<div id="scheduleEntryEdit">
+						<div class="row">
+							<div class="span3">Time</div>
+		                    <div class="span3">Mode</div>
+		                    <div class="span6" id="scheduleTempLabel">Temperature</div>
+		                </div>
+		                <div class="controls-row">
+		                	<select class="span1" id="scheduleHour">
+		                        <option value="0">12</option>
+		                        <option value="1">01</option>
+		                        <option value="2">02</option>
+		                        <option value="3">03</option>
+		                        <option value="4">04</option>
+		                        <option value="5">05</option>
+		                        <option value="6">06</option>
+		                        <option value="7">07</option>
+		                        <option value="8">08</option>
+		                        <option value="9">09</option>
+		                        <option value="10">10</option>
+		                        <option value="11">11</option>
+		                    </select>
+		                    <select class="span1" id="scheduleMin">
+		                        <option value="0">00</option><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option>
+		                        <option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option>
+		                        <option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option>
+		                        <option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option>
+		                        <option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option>
+		                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+		                    </select>
+		                    <select class="span1" id="schedulePm">
+		                    	<option value="false">am</option>
+		                    	<option value="true">pm</option>
+		                    </select>
+		                    <select class="span3" id="scheduleMode" onclick="toggleScheduleMode();">
+		                        <option value="Off">Off</option>
+		                        <option value="Heat">Heat</option>
+		                        <option value="Cool">Cool</option>
+		                        <option value="Fan">Fan</option>
+		                        <option value="Auto">Auto</option>
+		                    </select>
+		                    <select class="span3" id="scheduleTempMin">
+		                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+		                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+		                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+		                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+		                    </select>
+		                    <select class="span3" id="scheduleTempMax">
+		                        <option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+		                        <option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option>
+		                        <option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option>
+		                        <option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option>
+		                    </select>
+		                </div>
+		                <div class="row">
+	                		<button class="btn span1 offset10" onclick="return deleteScheduleEntry();">Delete</button>
+							<button class="btn btn-primary span1" onclick="return saveScheduleEntry();">Save</button>
+		                </div>
+					</div>
+				</div>
+				<div class="tab-pane" id="scheduleSettingsTabContent">
+					<div class="row">
+                        <div class="span6">Name</div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" id="scheduleName" placeholder="Summer" class="span6" />
+                    </div>
+                    <div class="row">
+                		<button class="btn span1 offset10" onclick="return deleteSchedule();">Delete</button>
+						<button class="btn btn-primary span1" onclick="return saveSchedule();">Save</button>
+	                </div>
+				</div>
+			</div>
+          </div>
+          
+      </div>
+      
+      <div id="copyScheduleModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="copyModalLabel" aria-hidden="true">
+      	<form>
+		  <div class="modal-header">
+		  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h3 id="copyModalLabel">Copy Schedule To</h3>
+		  </div>
+		  <div class="modal-body">
+		    <p>
+		    	<label class="checkbox" id="copyToSundayLabel"><input type="checkbox" id="copyToSunday"> Sunday</label>
+		    	<label class="checkbox" id="copyToMondayLabel"><input type="checkbox" id="copyToMonday"> Monday</label>
+		    	<label class="checkbox" id="copyToTuesdayLabel"><input type="checkbox" id="copyToTuesday"> Tuesday</label>
+		    	<label class="checkbox" id="copyToWednesdayLabel"><input type="checkbox" id="copyToWednesday"> Wednesday</label>
+		    	<label class="checkbox" id="copyToThursdayLabel"><input type="checkbox" id="copyToThursday"> Thursday</label>
+		    	<label class="checkbox" id="copyToFridayLabel"><input type="checkbox" id="copyToFriday"> Friday</label>
+		    	<label class="checkbox" id="copyToSaturdayLabel"><input type="checkbox" id="copyToSaturday"> Saturday</label>
+		    </p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#" class="btn btn-primary" onclick="return copyScheduleDay();">Copy</a>
+		  </div>
+		</form>
+      </div>
+      
+      
+    </div>
+    
+    
+    <!--------------------------------------------------------------PASSWORD-------------------------------------------------------------->
+    <div id="passwordModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <h3 id="passwordModalLabel">Enter Password</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p><input type="password" id="loginPassword" /></p>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" class="btn btn-primary" onclick='return login();'>Login</a>
+	  </div>
+	</div>
+    
+    
+    
+    <script src="http:////ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>
