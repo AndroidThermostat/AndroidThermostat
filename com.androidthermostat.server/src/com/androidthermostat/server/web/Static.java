@@ -27,6 +27,10 @@ public class Static {
 			reply = com.androidthermostat.server.utils.Utils.readRawResource(context, R.raw.webserver_css);
 			contentType="text/css";
 		}
+		else if (url.equals("/log.txt")) {
+			reply = com.androidthermostat.server.utils.Utils.readLogFile();
+			contentType="text/text";
+		}
 		
 		
 		StringEntity body = new StringEntity(reply);

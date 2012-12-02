@@ -51,12 +51,10 @@ public class WebServer {
     	WebServer.context = context;
     	try{
 	    	Thread t = new RequestListenerThread(8080);
-	    	
 	        t.setDaemon(false);
 	        t.start();
-    	} catch (IOException ex) {
-    		Utils.debugText = "Error starting web server - " + ex.toString();
-    		
+    	} catch (IOException e) {
+    		com.androidthermostat.server.utils.Utils.logError(e.toString(), "web.WebServer.init");
     	}
     }
 

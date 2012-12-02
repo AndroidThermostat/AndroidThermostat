@@ -52,7 +52,7 @@ public class MulticastListener {
 	            
 	            if (response.equals("Greetings from Android Thermostat Client"))
 	            {
-	            	Utils.debugText="received data - " + response;
+	            	Utils.logInfo("Received data - " + response, "utils.MulticastListener.listen");
 		            byte[] message = new byte[1024];
 		            String output = "Greetings from Android Thermostat Server @" + ipAddress + "/" + Settings.getCurrent().getName();
 					message = output.getBytes();
@@ -61,8 +61,8 @@ public class MulticastListener {
 	            }
 			}
 	    }
-	    catch (Exception ex) {
-	    	Utils.debugText = "MulticastListener.listen - " + ex.toString();
+	    catch (Exception e) {
+	    	Utils.logError(e.toString(), "utils.MulticastListener.listen");
 	    }
 	    //ms.leaveGroup(sessAddr);
 	    

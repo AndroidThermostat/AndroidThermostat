@@ -47,14 +47,16 @@ public class JsonApi {
 	    	StringEntity body = new StringEntity(json);
 	        body.setContentType("application/json");
 	        response.setEntity(body); 
-	    } catch (Exception ex) {
-			com.androidthermostat.server.utils.Utils.debugText = "Error handling get to " + url;
+	    } catch (Exception e) {
+			com.androidthermostat.server.utils.Utils.logError(url + " - " + e.toString(), "web.JsonApi.handleGet");
 		}
     }
     
     public static void handlePost(String url, String[] params, String json, HttpResponse response, Context context) throws HttpException, IOException
     {
     	try{
+    		com.androidthermostat.server.utils.Utils.logInfo("Received post to " + url, "web.JsonApi.handlePost");
+    		
 	    	response.setStatusCode(HttpStatus.SC_OK);
 	    	String output = "[]";
 	    	
@@ -75,8 +77,8 @@ public class JsonApi {
 	    	StringEntity body = new StringEntity("output");
 	        body.setContentType("application/json");
 	        response.setEntity(body); 
-    	} catch (Exception ex) {
-    		com.androidthermostat.server.utils.Utils.debugText = "Error handling post to " + url;
+    	} catch (Exception e) {
+    		com.androidthermostat.server.utils.Utils.logError(url + " - " + e.toString(), "web.JsonApi.handlePost");
     	}
     }
     

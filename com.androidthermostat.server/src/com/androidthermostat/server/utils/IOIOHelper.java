@@ -21,17 +21,17 @@ public class IOIOHelper extends BaseIOIOLooper {
 	
 	
 	public void toggleFan(boolean on) { 
-		try { fan.write(on); } catch (Exception e) {  Utils.debugText = "IOIOHelper.toggleFan - " + e.toString();  }
+		try { fan.write(on); } catch (Exception e) {  Utils.logError(e.toString(), "utils.IOIOHelper.toggleFan");  }
 	}
 	
 	public void toggleHeat(boolean on)
 	{
-		try { heat.write(on); } catch (Exception e) {  Utils.debugText = "IOIOHelper.toggleHeat - " + e.toString();  }
+		try { heat.write(on); } catch (Exception e) {  Utils.logError(e.toString(), "utils.IOIOHelper.toggleFan");  }
 	}
 	
 	public void toggleCool(boolean on)
 	{
-		try { cool.write(on); } catch (Exception e) { Utils.debugText = "IOIOHelper.toggleCool - " + e.toString(); }
+		try { cool.write(on); } catch (Exception e) { Utils.logError(e.toString(), "utils.IOIOHelper.toggleFan"); }
 	}
 	
 	public double getTemperature()
@@ -60,7 +60,7 @@ public class IOIOHelper extends BaseIOIOLooper {
 		
 		@Override
 		protected void setup() throws ConnectionLostException {
-			Utils.debugText = "IOIO.setup";
+			Utils.logInfo("Starting IOIO setup", "utils.IOIOHelper.setup");
 			try {
 				//DigitalOutput led_ = ioio_.openDigitalOutput(0, true);
 				
@@ -72,7 +72,7 @@ public class IOIOHelper extends BaseIOIOLooper {
 				//this.
 				tempIn.setBuffer(5000);
 			} catch (Exception e) {
-				Utils.debugText = "IOIOHelper.setup - " + e.toString();
+				Utils.logError(e.toString(), "utils.IOIOHelper.setup");
 			}
 			
 		}

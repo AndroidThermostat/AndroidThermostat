@@ -60,6 +60,12 @@ public class MainActivity extends ActivityBase {
 	//<solid android:color="@android:color/transparent" />
     
 	@Override
+	protected void onResume() {
+		super.onResume();
+		updateScreen(true);
+	}
+	
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -180,7 +186,7 @@ public class MainActivity extends ActivityBase {
 		//debugText.setText(Utils.debugText);
 	}
 
-	public void updateScreen()
+	public void updateScreen(boolean forceRefresh)
 	{
 		
 		Conditions conditions = Conditions.getCurrent();
@@ -189,7 +195,7 @@ public class MainActivity extends ActivityBase {
 		//Updating these fields every second creates unnecessary processor usage.  Only update the fields
 		//if the values have changed.
 		
-		if (!conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson))
+		if (forceRefresh || !conditions.getJson().equals(previousConditionsJson) || !settings.getJson().equals(previousSettingsJson))
 		{
 		
 			//insideTempText.setText( String.valueOf(conditions.getInsideTemperature()) + "° F" );
@@ -248,7 +254,7 @@ public class MainActivity extends ActivityBase {
 	private Runnable refreshRunnable = new Runnable() {
 	   public void run() {
 		   try {
-			   updateScreen();
+			   updateScreen(false);
 		   } catch (Exception e) {}
 		   refreshHandler.postDelayed(this, 1000);
 	    }

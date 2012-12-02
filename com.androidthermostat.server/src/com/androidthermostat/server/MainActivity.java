@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 			ipText.setText(MulticastListener.ipAddress);
 		}
 		
-		debugText.setText(Utils.debugText);
+		debugText.setText(Utils.getLastLogMessage());
 	}
 	
 	private Runnable refreshRunnable = new Runnable() {

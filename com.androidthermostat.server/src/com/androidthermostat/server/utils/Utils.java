@@ -1,9 +1,12 @@
 package com.androidthermostat.server.utils;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -21,11 +24,58 @@ import org.apache.http.params.HttpParams;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.androidthermostat.server.MainService;
 import com.androidthermostat.server.data.Conditions;
 
 public class Utils {
 	
-	public static String debugText = "";
+	private static String debugText = "";
+	
+	public static String getLastLogMessage() { return debugText; }
+	
+	public static void logError(String message, String method)
+	{
+		debugText = message;
+		writeLogEntry(message, method, true);
+	}
+	
+	public static void logInfo(String message, String method)
+	{
+		debugText = message;
+		writeLogEntry(message, method, false);
+	}
+	
+	public static String readLogFile()
+	{
+		try {
+			BufferedReader inputReader = new BufferedReader(new InputStreamReader(MainService.getContext().openFileInput("log.txt")));
+		    String inputString;
+		    StringBuffer stringBuffer = new StringBuffer();                
+		    while ((inputString = inputReader.readLine()) != null) {
+		        stringBuffer.append(inputString + "\n");
+		    }
+		    return stringBuffer.toString();
+		} catch (Exception e) {
+			return e.toString();
+		}
+	}
+	
+	private static void writeLogEntry(String message, String method, boolean error)
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		
+		String output = dateFormat.format(date);
+		if (error) output += " Error:";
+		output += " " + method + " - " + message + "\n";
+		
+		try {
+			FileOutputStream fos = MainService.getContext().openFileOutput("log.txt", Context.MODE_APPEND);
+			fos.write(output.getBytes());
+			fos.close();
+		} catch (Exception e) { debugText = e.toString(); }
+	}
+	
 
 	public static String getUrlContents(String url) {
 		HttpParams httpParameters = new BasicHttpParams();

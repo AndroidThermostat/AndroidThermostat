@@ -128,13 +128,12 @@ public class Conditions {
 				try {
 					Settings s = Settings.getCurrent();
 					if (s.getPingOutUrl()!=null && s.getPingOutUrl()!="" && s.getOutsideTempChangeParams()!=null && s.getOutsideTempChangeParams()!="") Utils.pingOut(s.getPingOutUrl() + s.getOutsideTempChangeParams());
-				} catch (Exception ex) {
-					Utils.debugText = "Pinging weather update failed.";
+				} catch (Exception e) {
+					Utils.logError(e.toString(), "data.Conditions.updateWeather");
 				}
 			}
-		} catch (Exception ex) { Utils.debugText = "Updating weather failed - " + ex.toString();}
-		
-		
+		} catch (Exception e) { Utils.logError(e.toString(), "data.Conditions.updateWeather"); }
+
 	}
 	
 	
@@ -167,28 +166,24 @@ public class Conditions {
 			
 			if (temp > 45 && temp < 100)
 			{
-				Utils.debugText = "Temp within range 45-, " + String.valueOf(effectiveLow) + " - " + String.valueOf(effectiveHigh);
 				if (s.getMode().equals("Auto")) setThermostatState(effectiveLow, effectiveHigh, s.getSwing());
 				if (s.getMode().equals("Cool")) setThermostatState(0, effectiveHigh, s.getSwing());
 				if (s.getMode().equals("Heat")) setThermostatState(effectiveLow, 255, s.getSwing());
 				if (s.getMode().equals("Fan")) fc.setMode("Fan");
 				if (s.getMode().equals("Off")) fc.setMode("Off");
-				
-				Utils.debugText = "Set mode to " + s.getMode();
-				
 	
 				//Make sure there's a full 1 degree difference in temperature so it isn't too chatty.
 				if (previousTemp - temp > 1 || previousTemp - temp < -1)
 				{
 					try {
 						if (s.getPingOutUrl()!=null && s.getPingOutUrl()!="" && s.getInsideTempChangeParams()!=null && s.getInsideTempChangeParams()!="") Utils.pingOut(s.getPingOutUrl() + s.getInsideTempChangeParams());
-					} catch (Exception ex) {
-						Utils.debugText = "Pinging inside conditions update failed.";
+					} catch (Exception e) {
+						Utils.logError(e.toString(), "data.Conditions.updateArduino");
 					}
 				}
 			} else {
 				//*** Temperature is outside of safe range.  Ignore all other settings and take action.
-				Utils.debugText = "Manual override";
+				Utils.logInfo("MANUAL TEMPERATURE OVERRIDE ACTIVATED - " + String.valueOf(temp) + "F", "data.Conditions.updateArduino");
 				if (temp<=45) fc.setMode("Heat");
 				if (temp>=100) fc.setMode("Cool");
 			}
@@ -228,8 +223,8 @@ public class Conditions {
 					Utils.pingOut(url);
 				}
 			}
-		} catch (Exception ex) {
-			Utils.debugText = "Conditions.setThermostatState - " + ex.toString();
+		} catch (Exception e) {
+			Utils.logError(e.toString(), "data.Conditions.setThermostatState");
 		}
 		
 	}
@@ -240,8 +235,8 @@ public class Conditions {
         public void run() {
         	try {
         		Conditions.getCurrent().updateArduino();
-        	} catch (Exception ex) {
-    			Utils.debugText = "Updating conditions failed - " + ex.toString();
+        	} catch (Exception e) {
+        		Utils.logError(e.toString(), "data.Conditions.ConditionsTimerTask.run");
     		}
         }
     };
@@ -251,7 +246,9 @@ public class Conditions {
         public void run() {
         	try {
         		Conditions.getCurrent().updateWeather();
-        	} catch (Exception ex) { Utils.debugText = "Updating weather failed - " + ex.toString();}
+        	} catch (Exception e) { 
+        		Utils.logError(e.toString(), "data.Conditions.WeatherTimerTask.run");
+        	}
         }
     };
     
@@ -265,7 +262,9 @@ public class Conditions {
 	            {
 	            	Schedules.getCurrent().get(scheduleId).check(context);
 	            }
-        	} catch (Exception ex) { Utils.debugText = "Updating schedule failed - " + ex.toString();}
+        	} catch (Exception e) { 
+        		Utils.logError(e.toString(), "data.Conditions.WeatherTimerTask.run");
+        	}
             		
         }
     };

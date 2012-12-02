@@ -38,7 +38,7 @@ public class Settings {
 	@Expose private boolean cycleFan = false;
 	@Expose public int cycleFanOnMinutes = 5;
 	@Expose public int cycleFanOffMinutes = 25;
-	@Expose public boolean displayCelcius = false;
+	@Expose public boolean displayCelsius = false;
 	
 	public int getTargetHigh() { return targetHigh; }
 	public int getTargetLow() { return targetLow; }
@@ -64,7 +64,7 @@ public class Settings {
 	public boolean getCycleFan() { return cycleFan; }
 	public int getCycleFanOnMinutes() { return cycleFanOnMinutes; }
 	public int getCycleFanOffMinutes() { return cycleFanOffMinutes; }
-	public boolean getDisplayCelcius() { return displayCelcius; }
+	public boolean getDisplayCelsius() { return displayCelsius; }
 	
 	public void setTargetHigh(int value) { targetHigh = value; }
 	public void setTargetLow(int value) { targetLow = value; }
@@ -90,7 +90,7 @@ public class Settings {
 	public void setCycleFan(boolean cycleFan) { this.cycleFan = cycleFan; }
 	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
 	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }
-	public void setDisplayCelcius(boolean value) { this.displayCelcius = value; }
+	public void setDisplayCelsius(boolean value) { this.displayCelsius = value; }
 	
 	public String getSummary()
 	{

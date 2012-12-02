@@ -19,7 +19,11 @@ import com.androidthermostat.server.web.WebServer;
 public class MainService extends Service {
 	private NotificationManager mNM;
 	WebServer webServer;
-	Context context;
+	private static Context context;
+	
+	public static Context getContext() { return context; }
+	
+	
 	
 	
 	private int NOTIFICATION = 1;
@@ -68,15 +72,16 @@ public class MainService extends Service {
 	
 	private void init()
 	{
-		Utils.debugText = "init";
 		context = getApplicationContext();
+		Utils.logInfo("Initializing", "MainService.init");
+		
         Settings.load(context);
         Schedules.load(context);
         FurnaceController.getCurrent().init();
         Conditions.getCurrent().init(context);
         webServer = new WebServer();
         webServer.init(context);
-        Utils.debugText = "started web server";
+        
         
         
         new Thread(new Runnable() {

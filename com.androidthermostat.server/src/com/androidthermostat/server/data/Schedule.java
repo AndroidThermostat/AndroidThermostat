@@ -52,7 +52,6 @@ public class Schedule {
 	
 	public void check(Context context)
 	{
-		Utils.debugText = "Checking " + this.getName();
 		int currentDayOfWeek = Utils.getDayOfWeek(new Date());
 		int currentHour = new Date().getHours();
 		int currentMinute = new Date().getMinutes();
@@ -68,8 +67,7 @@ public class Schedule {
 				s.setTargetHigh(entry.getTargetHigh());
 				s.setTargetLow(entry.getTargetLow());
 				s.save(context);
-				Utils.debugText = "Changing thermostat to " + String.valueOf(s.getTargetHigh()) + " per schedule: " + this.getName();
-			
+				Utils.logInfo("Changing thermostat to " + String.valueOf(s.getTargetHigh()) + " per schedule: " + this.getName(), "server.data.Schedule");
 			}
 		}
 	}

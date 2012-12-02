@@ -75,12 +75,14 @@ public class FurnaceController {
 			{
 				int minutes = (int)(new Date().getTime() - offTime.getTime().getTime()) / 1000 / 60;
 				if (minutes>=s.getCycleFanOffMinutes()) {
+					Utils.logInfo("Turning on fan per cycle settings", "utils.FurnaceController.forceFanOn");
 					forcedFanTime = Calendar.getInstance();
 					return true;
 				}
 			} else {
 				int minutes = (int)(new Date().getTime() - forcedFanTime.getTime().getTime()) / 1000 / 60;
 				if (minutes>=s.getCycleFanOnMinutes()) {
+					Utils.logInfo("Turning off fan per cycle settings", "utils.FurnaceController.forceFanOn");
 					return false;
 				} else return true;
 			}
@@ -90,7 +92,8 @@ public class FurnaceController {
 
 	public void setMode(String mode)
 	{
-		
+		if (!mode.equals(Conditions.getCurrent().getState())) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
+
 		
 		if (mode.equals("Off")) {
 			
@@ -117,13 +120,13 @@ public class FurnaceController {
 				//Utils.debugText = "Setting Mode to Heat";
 				Conditions.getCurrent().setMessage("Heating");
 				forcingFan = false;
-				if (!fanOn) toggleFan(true);
+				//if (fanOn) toggleFan(true);
 				if (!heatOn) toggleHeat(true);
 				if (coolOn) toggleCool(false);
 			} else {
 				int remaining = Settings.getCurrent().getMinHeatInterval() - minutes;
 				String message = "Waiting to heat - " + String.valueOf(remaining) + " minute(s) remaining.";
-				Utils.debugText = message;
+				Utils.logInfo(message, "utils.FurnaceController.setMode");
 				Conditions.getCurrent().setMessage(message);
 			}
 			
@@ -134,13 +137,13 @@ public class FurnaceController {
 				//Utils.debugText = "Setting Mode to Cool";
 				Conditions.getCurrent().setMessage("Cooling");
 				forcingFan = false;
-				if (!fanOn) toggleFan(true);
+				//if (!fanOn) toggleFan(true);
 				if (heatOn) toggleHeat(false);
 				if (!coolOn) toggleCool(true);
 			} else {
 				int remaining = Settings.getCurrent().getMinCoolInterval() - minutes;
 				String message = "Waiting to cool - " + String.valueOf(remaining) + " minute(s) remaining.";
-				Utils.debugText = message;
+				Utils.logInfo(message, "utils.FurnaceController.setMode");
 				Conditions.getCurrent().setMessage(message);
 			}
 		} else if (mode.equals("Fan")) {
