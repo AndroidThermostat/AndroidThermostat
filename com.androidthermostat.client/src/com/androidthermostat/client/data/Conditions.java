@@ -50,7 +50,8 @@ public class Conditions {
 		if (Settings.getCurrent().displayCelsius)
 		{
 			if (insideTemperature==0) return "0° C";
-			else return String.valueOf( Math.round(Utils.fahrenheitToCelsius(insideTemperature)) ) + "° C";
+			else return String.valueOf( Math.round(Utils.fahrenheitToCelsius(insideTemperature)*10.0) / 10.0 ) + "° C";
+			//else return String.format("%.1g%n", Math.round(Utils.fahrenheitToCelsius(insideTemperature))) + "° C";
 		} else {
 			return String.valueOf(insideTemperature) + "° F";
 		}
