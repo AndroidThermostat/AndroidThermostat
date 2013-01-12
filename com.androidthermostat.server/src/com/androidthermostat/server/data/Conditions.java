@@ -72,6 +72,7 @@ public class Conditions {
 		
 		arduinoTimer = new Timer();
 		arduinoTimer.schedule(new ConditionsTimerTask(), 5000, 5000);
+		//arduinoTimer.schedule(new ConditionsTimerTask(), 1000, 1000);
 		
 		weatherTimer = new Timer();
 		weatherTimer.schedule(new WeatherTimerTask(), 2000, 900000);
@@ -106,7 +107,7 @@ public class Conditions {
 		boolean success=false;
 		
 		
-		String json = Utils.getUrlContents("http://openweathermap.org/data/2.0/weather/city/" + Settings.getCurrent().getOpenWeatherMapStation() );
+		String json = Utils.getUrlContents("http://openweathermap.org/data/2.1/weather/city/" + Settings.getCurrent().getOpenWeatherMapStation() );
 		com.google.gson.Gson gson = new com.google.gson.Gson();
 		OpenWeatherMapResponse resp = gson.fromJson(json, OpenWeatherMapResponse.class);
 
