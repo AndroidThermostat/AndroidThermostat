@@ -71,6 +71,7 @@ public class IOIOHelper extends BaseIOIOLooper {
 				tempIn = ioio_.openAnalogInput(46);
 				//this.
 				tempIn.setBuffer(5000);
+				//tempIn.setBuffer(1);
 			} catch (Exception e) {
 				Utils.logError(e.toString(), "utils.IOIOHelper.setup");
 			}

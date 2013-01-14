@@ -45,6 +45,13 @@ public class Utils {
 		writeLogEntry(message, method, false);
 	}
 	
+	public static void clearLogFile()
+	{
+		try {
+			MainService.getContext().deleteFile("log.txt");
+		} catch (Exception e) { debugText = e.toString(); }
+	}
+	
 	public static String readLogFile()
 	{
 		try {

@@ -126,6 +126,7 @@ public class MainActivity extends Activity {
 	   public void run() {
 		   updateScreen();
 		   refreshHandler.postDelayed(this, 3000);
+		   //refreshHandler.postDelayed(this, 1000);
 	    }
 	};
 	

@@ -73,6 +73,8 @@ public class MainService extends Service {
 	private void init()
 	{
 		context = getApplicationContext();
+		
+		Utils.clearLogFile();
 		Utils.logInfo("Initializing", "MainService.init");
 		
         Settings.load(context);

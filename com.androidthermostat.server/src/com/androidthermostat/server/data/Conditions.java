@@ -117,11 +117,13 @@ public class Conditions {
 				success = true;
 				double celcius = resp.main.temp - 272.15;
 				this.outsideTemperature = Math.round(celcius * 9.0 / 5.0 + 32);
-				this.weatherImageUrl = resp.img;
-						
+				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getLocation()) );
+				
+				this.weatherImageUrl = "http://openweathermap.org/img/w/" + resp.weather.get(0).icon + ".png";
+				//this.weatherImageUrl = resp.img;
 				this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
 				//this.weatherForecastUrl = "http://www.weather.com/weather/right-now/" + Settings.getCurrent().getZipCode();
-				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getLocation()) );
+				
 			}
 		
 			if (previousTemp!=Conditions.getCurrent().getOutsideTemperature() && success)
