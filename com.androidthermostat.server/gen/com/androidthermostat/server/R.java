@@ -11,8 +11,26 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_action_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int i01d=0x7f020000;
+        public static final int i01n=0x7f020001;
+        public static final int i02d=0x7f020002;
+        public static final int i02n=0x7f020003;
+        public static final int i03d=0x7f020004;
+        public static final int i03n=0x7f020005;
+        public static final int i04d=0x7f020006;
+        public static final int i04n=0x7f020007;
+        public static final int i09d=0x7f020008;
+        public static final int i09n=0x7f020009;
+        public static final int i10d=0x7f02000a;
+        public static final int i10n=0x7f02000b;
+        public static final int i11d=0x7f02000c;
+        public static final int i11n=0x7f02000d;
+        public static final int i13d=0x7f02000e;
+        public static final int i13n=0x7f02000f;
+        public static final int i50d=0x7f020010;
+        public static final int i50n=0x7f020011;
+        public static final int ic_action_search=0x7f020012;
+        public static final int ic_launcher=0x7f020013;
     }
     public static final class id {
         public static final int clientButton=0x7f070008;

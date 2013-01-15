@@ -132,6 +132,19 @@ public class Utils {
 		}
 	}
 	
+	public static byte[] readResourceBytes(Context context, int resourceId)
+	{
+		byte[] b = null;
+        try {
+    		Resources res = context.getResources();
+            InputStream in_s = res.openRawResource(resourceId);
+        	b = new byte[in_s.available()];
+        	in_s.read(b);
+        	in_s.close();
+        } catch (IOException e) { }
+        return b;	
+	}
+	
 	public static String readRawResource(Context context, int resourceId)
 	{
 		String result = "";

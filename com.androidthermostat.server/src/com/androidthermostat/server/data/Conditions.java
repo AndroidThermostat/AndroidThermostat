@@ -119,9 +119,10 @@ public class Conditions {
 				this.outsideTemperature = Math.round(celcius * 9.0 / 5.0 + 32);
 				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getLocation()) );
 				
-				this.weatherImageUrl = "http://openweathermap.org/img/w/" + resp.weather.get(0).icon + ".png";
+				this.weatherImageUrl = "/img/" + resp.weather.get(0).icon + ".png";
+				//this.weatherImageUrl = "http://openweathermap.org/img/w/" + resp.weather.get(0).icon + ".png";
 				//this.weatherImageUrl = resp.img;
-				this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
+				//this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
 				//this.weatherForecastUrl = "http://www.weather.com/weather/right-now/" + Settings.getCurrent().getZipCode();
 				
 			}

@@ -104,7 +104,12 @@ public class Conditions {
 					if (!this.weatherImageUrl.equals(result.weatherImageUrl))
 					{
 						this.weatherImageUrl = result.weatherImageUrl;
-						if (this.weatherImageUrl!=null && this.weatherImageUrl!="") this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
+						if (this.weatherImageUrl!=null && this.weatherImageUrl!="") 
+						{
+							String imgUrl = this.weatherImageUrl;
+							if (imgUrl.indexOf("http")!=0) imgUrl = Servers.getBaseUrl() + imgUrl;
+							this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(imgUrl).getContent());
+						}
 					}
 					this.weatherForecastUrl = result.weatherForecastUrl;
 					this.setMessage(result.message);

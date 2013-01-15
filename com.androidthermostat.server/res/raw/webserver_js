@@ -246,6 +246,7 @@ function toggleSettingsFurnaceCirculate()
 	}
 }
 
+
 function saveSettings()
 {
 	settings.name = $('#settingsGeneralName').val();
@@ -254,7 +255,6 @@ function saveSettings()
 	settings.forecastUrl = $('#settingsGeneralForecastUrl').val();
 	settings.temperatureCalibration = $('#settingsFurnaceCalibration').val();
 	settings.displayCelcius = $('#settingsGeneralScaleC').prop('checked');
-	
 	if ($('#settingsFurnaceSwing1').prop('checked')) settings.swing = 1;
 	else if ($('#settingsFurnaceSwing2').prop('checked')) settings.swing = 2;
 	else settings.swing = 3;
@@ -290,23 +290,51 @@ function saveSettings()
 
 /*******************************************SCHEDULES*******************************************/
 
+function saveSelectedSchedule()
+{
+	settings.schedule = parseInt($('#selectedSchedule').val());
+	$.post(settingsUrl, JSON.stringify(settings));
+	setTimeout( function(){ refreshTop(); } , 100);
+}
+
 function showSchedules() {
     $.get(schedulesUrl, function(data) {
         schedules = data;
-        showSchedulesInner();
+	    $.get(settingsUrl, function(data) {
+	        settings = data;
+	        showSchedulesInner();
+	    });
     });
 }
+
 
 function showSchedulesInner() {
     clearTabs();
     
-    var scheduleListHtml='<ul>';
+    var scheduleListHtml='<div class="row"><span class="span6"><ul>';
     for (var i=0;i<schedules.length;i++)
 	{
     	scheduleListHtml += '<li><a href="javascript:showSchedule(' + i + ')">' + schedules[i].name + '</a></li>';
 	}
     scheduleListHtml += '<li><a href="javascript:showSchedule(-1)">(Add new)</a></li>';
     scheduleListHtml += '</ul>';
+    
+    scheduleListHtml += '</span><span class="span2"><b>Active Schedule</b></span><span class="span4"><select id="selectedSchedule" onchange="saveSelectedSchedule()">';
+    if (settings.schedule==-1)
+    {
+    	scheduleListHtml += '<option value="-1" selected="selected">(None)</option>';
+    } else
+    {
+    	scheduleListHtml += '<option value="-1">(None)</option>';
+    }
+    for (var i=0;i<schedules.length;i++)
+	{
+    	scheduleListHtml += '<option value="' + i + '"'
+    	if (i==settings.schedule) scheduleListHtml += ' selected="selected"';
+    	scheduleListHtml += '>' + schedules[i].name + '</option>';
+	}
+	scheduleListHtml += "</select></span></div>";
+    
     $('#scheduleList').html(scheduleListHtml);
     $('#scheduleList').show();
     $('#scheduleDetails').hide();

@@ -38,8 +38,12 @@
             <h2 id="state"></h2>
         </td><td width="50%" valign="top">
             <h2>Outside Conditions</h2>
-            <h1><span id="outsideTemp">0</span>&deg; F <a id="weatherUrl" href="about:blank" target="_blank" /><img id="weatherImage" src="about:blank" /></a></h1>
-            <h2 id="mode"></h2>
+            <table><tr><td>
+	            <h1><span id="outsideTemp">0</span>&deg; F</h1>
+	            <h2 id="mode"></h2>
+           	</td><td>
+           		<a id="weatherUrl" href="about:blank" target="_blank" /><img id="weatherImage" src="about:blank" /></a>
+           	</td></tr></table>
         </td></tr></table>
         
       </div>
