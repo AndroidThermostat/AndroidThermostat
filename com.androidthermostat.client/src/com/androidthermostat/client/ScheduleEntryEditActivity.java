@@ -210,11 +210,21 @@ public class ScheduleEntryEditActivity extends SherlockActivity{
 	{
 		if (celsius)
 		{
-			tempList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newHigh)) - 10);
+			if (newMode.equals("Heat"))
+			{
+				tempList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newLow)) - 10);
+			} else {
+				tempList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newHigh)) - 10);
+			}
 			minTemperatureList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newLow)) - 10);
 			maxTemperatureList.setSelection((int)Math.round(Utils.fahrenheitToCelsius(newHigh)) - 10);
 		} else {
-			tempList.setSelection(newHigh - 50);
+			if (newMode.equals("Heat"))
+			{
+				tempList.setSelection(newLow - 50);
+			} else {
+				tempList.setSelection(newHigh - 50);
+			}
 			minTemperatureList.setSelection(newLow - 50);
 			maxTemperatureList.setSelection(newHigh - 50);
 		}
