@@ -67,7 +67,12 @@ public class Schedule {
 				s.setTargetHigh(entry.getTargetHigh());
 				s.setTargetLow(entry.getTargetLow());
 				s.save(context);
-				Utils.logInfo("Changing thermostat to " + String.valueOf(s.getTargetHigh()) + " per schedule: " + this.getName(), "server.data.Schedule");
+				
+				String displayTemp = s.getMode() + " - ";
+				if (s.getMode().equals("Cool")) displayTemp += String.valueOf(s.getTargetHigh());
+				if (s.getMode().equals("Heat")) displayTemp += String.valueOf(s.getTargetLow());
+				if (s.getMode().equals("Auto")) displayTemp += String.valueOf(s.getTargetLow() + " - " + s.getTargetHigh());
+				Utils.logInfo("Changing thermostat to " + displayTemp + " per schedule: " + this.getName(), "server.data.Schedule");
 			}
 		}
 	}
