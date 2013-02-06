@@ -191,6 +191,15 @@ function showSettingsInner() {
         	$('#settingsFurnaceSwing3').prop('checked',true);
         	break;
     }
+    switch (settings.hardwareRevision)
+    {
+		case "B":
+			$('#settingsFurnaceHardwareB').prop('checked',true);
+		    break;
+    	default:
+    		$('#settingsFurnaceHardwareA').prop('checked',true);
+    		break;
+    }
     $('#settingsFurnaceMinCool').val(settings.minCoolInterval);
     $('#settingsFurnaceMinHeat').val(settings.minHeatInterval);
     $('#settingsFurnaceCirculate').val(settings.cycleFan);
@@ -258,6 +267,10 @@ function saveSettings()
 	if ($('#settingsFurnaceSwing1').prop('checked')) settings.swing = 1;
 	else if ($('#settingsFurnaceSwing2').prop('checked')) settings.swing = 2;
 	else settings.swing = 3;
+	
+	if ($('#settingsFurnaceHardwareB').prop('checked')) settings.hardwareRevision = "B";
+	else settings.hardwareRevision = "A";
+	
 	settings.minCoolInterval = $('#settingsFurnaceMinCool').val();
 	settings.minHeatInterval = $('#settingsFurnaceMinHeat').val();
 	settings.cycleFan = $('#settingsFurnaceCirculate').val();

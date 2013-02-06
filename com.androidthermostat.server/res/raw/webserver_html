@@ -130,7 +130,7 @@
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#generalSettingsTab" data-toggle="tab">General</a></li>
                 <li><a href="#usageSettingsTab" data-toggle="tab">Usage</a></li>
-                <li><a href="#furnaceSettingsTab" data-toggle="tab">Furnace</a></li>
+                <li><a href="#furnaceSettingsTab" data-toggle="tab">Equipment</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="generalSettingsTab">
@@ -234,7 +234,13 @@
                        	<input id="settingsFurnaceCirculateOff" type="text" placeholder="5" class="span3" />
                     </div>
                     
-                    
+                    <div class="row">
+                    	<div class="span6">Hardware Revision</div>
+                    </div>
+                    <div class="controls-row">
+               			<label class="radio span2"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareA" value="A" checked>A</label>
+ 						<label class="radio span1"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareB" value="B">B</label>
+                	</div>
                 	
                 </div>
                 

@@ -20,6 +20,7 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 	EditText minHeatInterval;
 	EditText temperatureCalibration;
 	RadioGroup swingRadio;
+	RadioGroup hardwareRadio;
 	
 	EditText cycleFanOnText;
 	EditText cycleFanOffText;
@@ -40,6 +41,7 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		cycleFanOffText = (EditText) root.findViewById(R.id.cycleFanOffText);
 		cycleFanSwitch = (ToggleButton) root.findViewById(R.id.cycleFanSwitch);
 		swingRadio = (RadioGroup) root.findViewById(R.id.swingRadio);
+		hardwareRadio = (RadioGroup) root.findViewById(R.id.hardwareRadio);
 		temperatureCalibration = (EditText) root.findViewById(R.id.temperatureCalibration);
 		
 		
@@ -50,6 +52,8 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		if (s.getSwing()==1) swingRadio.check(R.id.swing1);
 		else if (s.getSwing()==2) swingRadio.check(R.id.swing2);
 		else if (s.getSwing()==3) swingRadio.check(R.id.swing3);
+		
+		if (s.getHardwareRevision()=="B") hardwareRadio.check(R.id.hardware2); else hardwareRadio.check(R.id.hardware1); 
 		
 		cycleFanSwitch.setChecked(s.getCycleFan());
 		cycleFanOnText.setText( String.valueOf(s.getCycleFanOnMinutes()) );
@@ -87,6 +91,15 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		{
 			s.setSwing( 1 );
 		}
+		
+		b = (RadioButton) root.findViewById(hardwareRadio.getCheckedRadioButtonId());
+		try{
+			s.setHardwareRevision( b.getText().toString() );
+		} catch (Exception ex)
+		{
+			s.setHardwareRevision( "A" );
+		}
+		
 		
 		int fanOnMin = Integer.parseInt(cycleFanOnText.getText().toString() );
 		int fanOffMin = Integer.parseInt(cycleFanOffText.getText().toString() );

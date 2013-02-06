@@ -32,6 +32,7 @@ public class Settings {
 	private String viewStatsParams = "";
 	private String password = "";
 	private String forecastUrl = "http://www.weather.com/weather/right-now/[postalCode]";
+	private String hardwareRevision = "A";
 	private boolean cycleFan = false;
 	public int cycleFanOnMinutes = 5;
 	public int cycleFanOffMinutes = 25;
@@ -61,6 +62,7 @@ public class Settings {
 	public String getViewStatsParams() { return viewStatsParams; }
 	public String getPassword() { return password; }
 	public String getForecastUrl() { return forecastUrl; }
+	public String getHardwareRevision() { return hardwareRevision; }
 	public boolean getCycleFan() { return cycleFan; }
 	public int getCycleFanOnMinutes() { return cycleFanOnMinutes; }
 	public int getCycleFanOffMinutes() { return cycleFanOffMinutes; }
@@ -86,6 +88,7 @@ public class Settings {
 	public void setViewStatsParams(String viewStatsParams) { this.viewStatsParams = viewStatsParams; }
 	public void setPassword(String password) { this.password = password; }
 	public void setForecastUrl(String forecastUrl) { this.forecastUrl = forecastUrl; }
+	public void setHardwareRevision(String hardwareRevision) { this.hardwareRevision = hardwareRevision; }
 	public void setCycleFan(boolean cycleFan) { this.cycleFan = cycleFan; }
 	public void setCycleFanOnMinutes(int cycleFanOnMinutes) { this.cycleFanOnMinutes = cycleFanOnMinutes; }
 	public void setCycleFanOffMinutes(int cycleFanOffMinutes) { this.cycleFanOffMinutes = cycleFanOffMinutes; }

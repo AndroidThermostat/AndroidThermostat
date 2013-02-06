@@ -1,5 +1,7 @@
 package com.androidthermostat.server.utils;
 
+import com.androidthermostat.server.data.Settings;
+
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.exception.ConnectionLostException;
@@ -64,11 +66,20 @@ public class IOIOHelper extends BaseIOIOLooper {
 			try {
 				//DigitalOutput led_ = ioio_.openDigitalOutput(0, true);
 				
-				fan = ioio_.openDigitalOutput(10, false);
-				heat = ioio_.openDigitalOutput(12, false);
-				cool = ioio_.openDigitalOutput(7, false);
+				String hw = Settings.getCurrent().getHardwareRevision();
+				if (hw=="A")
+				{
+					fan = ioio_.openDigitalOutput(10, false);
+					heat = ioio_.openDigitalOutput(12, false);
+					cool = ioio_.openDigitalOutput(7, false);
+					tempIn = ioio_.openAnalogInput(46);
+				} else {
+					heat = ioio_.openDigitalOutput(5, false);
+					fan = ioio_.openDigitalOutput(6, false);
+					cool = ioio_.openDigitalOutput(7, false);
+					tempIn = ioio_.openAnalogInput(43);
+				}
 				
-				tempIn = ioio_.openAnalogInput(46);
 				//this.
 				tempIn.setBuffer(5000);
 				//tempIn.setBuffer(1);

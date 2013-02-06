@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menu_general" android:title="General" android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/menu_usage" android:title="Usage" android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/menu_furnace" android:title="Furnace" android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_furnace" android:title="Equipment" android:showAsAction="ifRoom|withText" />
 </menu>
