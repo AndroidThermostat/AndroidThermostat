@@ -190,6 +190,7 @@ public class FurnaceController {
 
 	public void init()
 	{
+		//IOIOHelper.getCurrent().setup();
 	}
 	
 

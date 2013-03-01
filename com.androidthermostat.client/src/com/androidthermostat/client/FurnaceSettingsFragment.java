@@ -53,7 +53,7 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		else if (s.getSwing()==2) swingRadio.check(R.id.swing2);
 		else if (s.getSwing()==3) swingRadio.check(R.id.swing3);
 		
-		if (s.getHardwareRevision()=="B") hardwareRadio.check(R.id.hardware2); else hardwareRadio.check(R.id.hardware1); 
+		if (s.getHardwareRevision().equals("B")) hardwareRadio.check(R.id.hardware2); else hardwareRadio.check(R.id.hardware1); 
 		
 		cycleFanSwitch.setChecked(s.getCycleFan());
 		cycleFanOnText.setText( String.valueOf(s.getCycleFanOnMinutes()) );

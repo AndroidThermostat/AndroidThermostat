@@ -61,23 +61,23 @@ public class IOIOHelper extends BaseIOIOLooper {
 	
 		
 		@Override
-		protected void setup() throws ConnectionLostException {
+		protected void setup() {
 			Utils.logInfo("Starting IOIO setup", "utils.IOIOHelper.setup");
 			try {
 				//DigitalOutput led_ = ioio_.openDigitalOutput(0, true);
 				
 				String hw = Settings.getCurrent().getHardwareRevision();
-				if (hw=="A")
+				if (hw.equals("B"))
 				{
-					fan = ioio_.openDigitalOutput(10, false);
-					heat = ioio_.openDigitalOutput(12, false);
-					cool = ioio_.openDigitalOutput(7, false);
-					tempIn = ioio_.openAnalogInput(46);
-				} else {
 					heat = ioio_.openDigitalOutput(5, false);
 					fan = ioio_.openDigitalOutput(6, false);
 					cool = ioio_.openDigitalOutput(7, false);
 					tempIn = ioio_.openAnalogInput(43);
+				} else {
+					fan = ioio_.openDigitalOutput(10, false);
+					heat = ioio_.openDigitalOutput(12, false);
+					cool = ioio_.openDigitalOutput(7, false);
+					tempIn = ioio_.openAnalogInput(46);
 				}
 				
 				//this.
