@@ -125,10 +125,11 @@ public class Utils {
 		try {
 			if (url.contains("[outsideTemp]")) url = url.replace("[outsideTemp]", String.valueOf(Conditions.getCurrent().getOutsideTemperature()) );
 			if (url.contains("[insideTemp]")) url = url.replace("[insideTemp]", String.valueOf(Conditions.getCurrent().getInsideTemperature()) );
-			
+
+			Utils.logInfo("Pinging - " + url, "data.Utils.pingOut");
 			Utils.getUrlContents(url);
 		} catch (Exception e) {
-			Utils.debugText="Utils.pingout - " + e.toString();
+			Utils.logError(e.toString(), "data.Utils.pingOut");
 		}
 	}
 	

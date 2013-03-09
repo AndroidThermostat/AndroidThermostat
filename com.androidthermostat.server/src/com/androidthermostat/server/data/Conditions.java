@@ -33,6 +33,9 @@ public class Conditions {
 	
 	private Bitmap weatherImage = null;
 	public int insideTempRaw=0;
+	public double lastLoggedInsideTemp = 0;
+	
+	
 	public String debugMessage = "";
 
 	private Context context;
@@ -124,7 +127,6 @@ public class Conditions {
 				//this.weatherImageUrl = resp.img;
 				//this.weatherImage = BitmapFactory.decodeStream((InputStream)new URL(weatherImageUrl).getContent());
 				//this.weatherForecastUrl = "http://www.weather.com/weather/right-now/" + Settings.getCurrent().getZipCode();
-				
 			}
 		
 			if (previousTemp!=Conditions.getCurrent().getOutsideTemperature() && success)
@@ -147,7 +149,7 @@ public class Conditions {
 		Settings s = Settings.getCurrent();
 		FurnaceController fc = FurnaceController.getCurrent();
 		
-		double previousTemp = Conditions.getCurrent().insideTemperature;
+		//double previousTemp = Conditions.getCurrent().insideTemperature;
 		double temp = fc.getTemperature();
 		
 		int effectiveHigh = s.getTargetHigh();
@@ -177,8 +179,9 @@ public class Conditions {
 				if (s.getMode().equals("Off")) fc.setMode("Off");
 	
 				//Make sure there's a full 1 degree difference in temperature so it isn't too chatty.
-				if (previousTemp - temp > 1 || previousTemp - temp < -1)
+				if (lastLoggedInsideTemp - temp > 1 || lastLoggedInsideTemp - temp < -1)
 				{
+					lastLoggedInsideTemp = temp;
 					try {
 						if (s.getPingOutUrl()!=null && s.getPingOutUrl()!="" && s.getInsideTempChangeParams()!=null && s.getInsideTempChangeParams()!="") Utils.pingOut(s.getPingOutUrl() + s.getInsideTempChangeParams());
 					} catch (Exception e) {
