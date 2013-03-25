@@ -91,7 +91,7 @@ public class IOIOHelper extends BaseIOIOLooper {
 	
 		@Override
 		public void loop() throws ConnectionLostException {
-			
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
 		}
 	
 
