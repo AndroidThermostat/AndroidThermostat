@@ -29,9 +29,7 @@
 
     <div class="container">
 
-      <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="page-header">
-        
         <table width="100%"><tr><td width="50%" valign="top">
             <h2>Inside Conditions</h2>
             <h1><span id="insideTemp">0</span>&deg; F</h1>
@@ -45,7 +43,6 @@
            		<a id="weatherUrl" href="about:blank" target="_blank" /><img id="weatherImage" src="about:blank" /></a>
            	</td></tr></table>
         </td></tr></table>
-        
       </div>
 
       

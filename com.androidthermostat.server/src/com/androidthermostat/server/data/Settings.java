@@ -153,9 +153,8 @@ public class Settings {
 		{
 			//the weather station isn't posted back.  Override it.
 			result.openWeatherMapStation = previousWeatherStation;
-
 			Settings.current=result;
-			if (current.location != previousLocation) updateOpenWeatherStation();
+			if (!current.location.equals(previousLocation)) updateOpenWeatherStation();
 		}
 	}
 	

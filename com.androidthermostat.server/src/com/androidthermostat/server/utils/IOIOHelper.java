@@ -38,16 +38,17 @@ public class IOIOHelper extends BaseIOIOLooper {
 	
 	public double getTemperature()
 	{
-		int debugNum = -99;
+		//int debugNum = -99;
 		try{
-			double totalVolts = 0;
-			int samples = tempIn.available();
-			debugNum = samples;
-			for (int i=0;i<samples;i++)
-			{
-				totalVolts+=tempIn.getVoltageBuffered();
-			}
-			double averageVolts = totalVolts / (double)samples;
+//			double totalVolts = 0;
+			//int samples = tempIn.available();
+			//debugNum = samples;
+			//for (int i=0;i<samples;i++)
+			//{
+//				totalVolts+=tempIn.getVoltageBuffered();
+	//		}
+		//	double averageVolts = totalVolts / (double)samples;
+			double averageVolts = tempIn.getVoltage();
 			
 			double mv = averageVolts * 1000.0;
 			double c = (mv - 500.0)/10.0;
@@ -81,7 +82,7 @@ public class IOIOHelper extends BaseIOIOLooper {
 				}
 				
 				//this.
-				tempIn.setBuffer(5000);
+				//tempIn.setBuffer(5000);
 				//tempIn.setBuffer(1);
 			} catch (Exception e) {
 				Utils.logError(e.toString(), "utils.IOIOHelper.setup");

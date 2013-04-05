@@ -121,7 +121,7 @@ public class Utils {
 	
 	public static void pingOut(String url)
 	{
-		if (url==null || url=="") return;
+		if (url==null || url=="" || !url.toLowerCase().contains("http")) return;
 		try {
 			if (url.contains("[outsideTemp]")) url = url.replace("[outsideTemp]", String.valueOf(Conditions.getCurrent().getOutsideTemperature()) );
 			if (url.contains("[insideTemp]")) url = url.replace("[insideTemp]", String.valueOf(Conditions.getCurrent().getInsideTemperature()) );

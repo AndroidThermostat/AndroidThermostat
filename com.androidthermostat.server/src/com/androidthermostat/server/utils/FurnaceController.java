@@ -18,6 +18,12 @@ public class FurnaceController {
 	private Calendar offTime;
 	private Calendar forcedFanTime;
 	private boolean forcingFan = false;
+	
+	private int tempMaxSamples = 30;
+	private int tempSamples = 0;
+	private int tempIndex = 0;
+	double[] temps = new double[tempMaxSamples];
+	
 	//private ArduinoHelper arduinoHelper;
 	//private IOIOHelper ioioHelper;
 	
@@ -137,7 +143,7 @@ public class FurnaceController {
 				//Utils.debugText = "Setting Mode to Cool";
 				Conditions.getCurrent().setMessage("Cooling");
 				forcingFan = false;
-				//if (!fanOn) toggleFan(true);
+				if (!fanOn) toggleFan(true);
 				if (heatOn) toggleHeat(false);
 				if (!coolOn) toggleCool(true);
 			} else {
@@ -183,9 +189,26 @@ public class FurnaceController {
 	
 	public double getTemperature()
 	{
-		//return arduinoHelper.getTemperature();
-		return IOIOHelper.getCurrent().getTemperature();
-		//return 0;
+		double tempSample = IOIOHelper.getCurrent().getTemperature();
+		if (tempSample!=-99)
+		{
+//			Utils.logInfo(String.valueOf(tempSample), "getTemperature");
+			temps[tempIndex] = tempSample;
+			if (tempSamples<tempMaxSamples) tempSamples++;
+			tempIndex ++;
+			if (tempIndex>=tempMaxSamples) tempIndex = 0;
+		}
+		
+		double result = 0;
+		if (tempSamples>0)
+		{
+			double totalTemp = 0;
+			for (int i=0;i<tempSamples;i++) { totalTemp+=temps[i]; }
+			result = (double)Math.round(totalTemp / (double)tempSamples * 10) / 10;
+		}
+		return result;
+		
+		//return IOIOHelper.getCurrent().getTemperature();
 	}
 
 	public void init()

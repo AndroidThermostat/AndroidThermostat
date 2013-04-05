@@ -74,8 +74,8 @@ public class Conditions {
 		this.context=context;
 		
 		arduinoTimer = new Timer();
-		arduinoTimer.schedule(new ConditionsTimerTask(), 5000, 5000);
-		//arduinoTimer.schedule(new ConditionsTimerTask(), 1000, 1000);
+		//arduinoTimer.schedule(new ConditionsTimerTask(), 5000, 5000);
+		arduinoTimer.schedule(new ConditionsTimerTask(), 1000, 1000);
 		
 		weatherTimer = new Timer();
 		weatherTimer.schedule(new WeatherTimerTask(), 2000, 900000);
