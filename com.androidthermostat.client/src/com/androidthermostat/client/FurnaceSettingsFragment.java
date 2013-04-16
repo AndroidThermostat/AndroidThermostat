@@ -19,8 +19,11 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 	EditText minCoolInterval;
 	EditText minHeatInterval;
 	EditText temperatureCalibration;
+	EditText temperatureCalibrationRunning;
+	EditText calibrationSeconds;
 	RadioGroup swingRadio;
 	RadioGroup hardwareRadio;
+	RadioGroup fanOnCoolRadio;
 	
 	EditText cycleFanOnText;
 	EditText cycleFanOffText;
@@ -42,18 +45,25 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		cycleFanSwitch = (ToggleButton) root.findViewById(R.id.cycleFanSwitch);
 		swingRadio = (RadioGroup) root.findViewById(R.id.swingRadio);
 		hardwareRadio = (RadioGroup) root.findViewById(R.id.hardwareRadio);
+		fanOnCoolRadio = (RadioGroup) root.findViewById(R.id.fanOnCoolRadio);
 		temperatureCalibration = (EditText) root.findViewById(R.id.temperatureCalibration);
+		temperatureCalibrationRunning = (EditText) root.findViewById(R.id.temperatureCalibrationRunning);
+		calibrationSeconds = (EditText) root.findViewById(R.id.calibrationSeconds);
+		
 		
 		
 		Settings s = Settings.getCurrent();
 		minCoolInterval.setText( String.valueOf(s.getMinCoolInterval()) );
 		minHeatInterval.setText( String.valueOf(s.getMinHeatInterval()) );
 		temperatureCalibration.setText( String.valueOf(s.getTemperatureCalibration() ) );
+		temperatureCalibrationRunning.setText( String.valueOf(s.getTemperatureCalibrationRunning() ) );
+		calibrationSeconds.setText( String.valueOf(s.getCalibrationSeconds() ) );
 		if (s.getSwing()==1) swingRadio.check(R.id.swing1);
 		else if (s.getSwing()==2) swingRadio.check(R.id.swing2);
 		else if (s.getSwing()==3) swingRadio.check(R.id.swing3);
 		
-		if (s.getHardwareRevision().equals("B")) hardwareRadio.check(R.id.hardware2); else hardwareRadio.check(R.id.hardware1); 
+		if (s.getHardwareRevision().equals("B")) hardwareRadio.check(R.id.hardware2); else hardwareRadio.check(R.id.hardware1);
+		if (s.getFanOnCool()==true) fanOnCoolRadio.check(R.id.fanOnCoolYes); else fanOnCoolRadio.check(R.id.fanOnCoolNo);
 		
 		cycleFanSwitch.setChecked(s.getCycleFan());
 		cycleFanOnText.setText( String.valueOf(s.getCycleFanOnMinutes()) );
@@ -83,7 +93,9 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		int heatInterval = Integer.parseInt(minHeatInterval.getText().toString());
 		s.setMinCoolInterval(coolInterval);
 		s.setMinHeatInterval(heatInterval);
-		s.setTemperatureCalibration( Integer.parseInt(temperatureCalibration.getText().toString()) );
+		s.setTemperatureCalibration( Double.parseDouble(temperatureCalibration.getText().toString()) );
+		s.setTemperatureCalibrationRunning( Double.parseDouble(temperatureCalibrationRunning.getText().toString()) );
+		s.setCalibrationSeconds( Integer.parseInt(calibrationSeconds.getText().toString()) );
 		RadioButton b = (RadioButton) root.findViewById(swingRadio.getCheckedRadioButtonId());
 		try{
 			s.setSwing( Double.parseDouble(b.getText().toString()) );
@@ -98,6 +110,14 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		} catch (Exception ex)
 		{
 			s.setHardwareRevision( "A" );
+		}
+		
+		b = (RadioButton) root.findViewById(fanOnCoolRadio.getCheckedRadioButtonId());
+		try{
+			if (b.getText().equals("Yes")) s.setFanOnCool(true); else s.setFanOnCool(true);
+		} catch (Exception ex)
+		{
+			s.setFanOnCool(true);
 		}
 		
 		

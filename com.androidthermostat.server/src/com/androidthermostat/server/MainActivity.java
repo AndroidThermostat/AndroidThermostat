@@ -120,6 +120,7 @@ public class MainActivity extends Activity {
 		}
 		
 		debugText.setText(Utils.getLastLogMessage());
+		
 	}
 	
 	private Runnable refreshRunnable = new Runnable() {

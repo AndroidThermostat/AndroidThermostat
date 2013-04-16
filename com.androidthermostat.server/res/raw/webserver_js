@@ -180,6 +180,8 @@ function showSettingsInner() {
     if (settings.displayCelcius) $('#settingsGeneralScaleC').prop('checked', true); else $('#settingsGeneralScaleF').prop('checked', true);
     
     $('#settingsFurnaceCalibration').val(settings.temperatureCalibration);
+    $('#settingsFurnaceCalibrationRunning').val(settings.temperatureCalibrationRunning);
+    $('#settingsFurnaceCalibrationSeconds').val(settings.calibrationSeconds);
     switch (settings.swing)
     {
 		case 1:
@@ -203,6 +205,7 @@ function showSettingsInner() {
     }
     $('#settingsFurnaceMinCool').val(settings.minCoolInterval);
     $('#settingsFurnaceMinHeat').val(settings.minHeatInterval);
+    $('#settingsFurnaceFanOnCool').val(settings.fanOnCool);
     $('#settingsFurnaceCirculate').val(settings.cycleFan);
     $('#settingsFurnaceCirculateOn').val(settings.cycleFanOnMinutes);
     $('#settingsFurnaceCirculateOff').val(settings.cycleFanOffMinutes);
@@ -264,6 +267,8 @@ function saveSettings()
 	settings.password = $('#settingsGeneralPassword').val();
 	settings.forecastUrl = $('#settingsGeneralForecastUrl').val();
 	settings.temperatureCalibration = $('#settingsFurnaceCalibration').val();
+	settings.temperatureCalibrationRunning = $('#settingsFurnaceCalibrationRunning').val();
+	settings.calibrationSeconds = $('#settingsFurnaceCalibrationSettings').val();
 	settings.displayCelcius = $('#settingsGeneralScaleC').prop('checked');
 	if ($('#settingsFurnaceSwing1').prop('checked')) settings.swing = 1;
 	else if ($('#settingsFurnaceSwing2').prop('checked')) settings.swing = 2;
@@ -274,6 +279,7 @@ function saveSettings()
 	
 	settings.minCoolInterval = $('#settingsFurnaceMinCool').val();
 	settings.minHeatInterval = $('#settingsFurnaceMinHeat').val();
+	settings.fanOnCool = $('#settingsFurnaceFanOnCool').val();
 	settings.cycleFan = $('#settingsFurnaceCirculate').val();
 	settings.cycleFanOnMinutes = $('#settingsFurnaceCirculateOn').val();
 	settings.cycleFanOffMinutes = $('#settingsFurnaceCirculateOff').val();

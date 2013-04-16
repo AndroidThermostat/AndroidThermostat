@@ -26,7 +26,10 @@ public class Settings {
 	@Expose private int schedule = -1;
 	@Expose private int minCoolInterval = 5;
 	@Expose private int minHeatInterval = 2;
-	@Expose private int temperatureCalibration = 0;
+	@Expose private double temperatureCalibration = 0;
+	@Expose private double temperatureCalibrationRunning = 0;
+	@Expose private int calibrationSeconds = 0;
+	@Expose private boolean fanOnCool = false;
 	@Expose private String name = "Android Thermostat";
 	@Expose private String pingOutUrl = "";
 	@Expose private String cycleCompleteParams = "&a=cycle&m=[mode]&d=[duration]";
@@ -53,7 +56,10 @@ public class Settings {
 	public int getSchedule() { return schedule; }
 	public int getMinCoolInterval() { return minCoolInterval; }
 	public int getMinHeatInterval() { return minHeatInterval; }
-	public int getTemperatureCalibration() { return temperatureCalibration; }
+	public double getTemperatureCalibration() { return temperatureCalibration; }
+	public double getTemperatureCalibrationRunning() { return temperatureCalibrationRunning; }
+	public int getCalibrationSeconds() { return calibrationSeconds; }
+	public boolean getFanOnCool() { return fanOnCool; }
 	public String getName() { return name; }
 	public String getPingOutUrl() { return pingOutUrl; }
 	public String getCycleCompleteParams() { return cycleCompleteParams; }
@@ -80,7 +86,10 @@ public class Settings {
 	public void setSchedule(int value) { schedule = value; }
 	public void setMinCoolInterval(int value) { minCoolInterval = value; }
 	public void setMinHeatInterval(int value) { minHeatInterval = value; }
-	public void setTemperatureCalibration(int value) { temperatureCalibration = value; }
+	public void setTemperatureCalibration(double value) { temperatureCalibration = value; }
+	public void setTemperatureCalibrationRunning(double value) { temperatureCalibrationRunning = value; }
+	public void setCalibrationSeconds(int value) { calibrationSeconds = value;}
+	public void setFanOnCool(boolean value) { this.fanOnCool = value; }
 	public void setName(String value) { this.name = value; }
 	public void setPingOutUrl(String pingOutUrl) { this.pingOutUrl = pingOutUrl; }
 	public void setCycleCompleteParams(String cycleCompleteParams) { this.cycleCompleteParams = cycleCompleteParams; }

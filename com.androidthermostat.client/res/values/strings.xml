@@ -2,8 +2,14 @@
     <string name="app_name">Android Thermostat Client</string>
     <string name="temp_calibration">Temperature Calibration</string>
     <string name="temp_calibration_help">It is sometimes necessary to adjust the registered temperature up or down a few degrees to compensate for hot or cold pockets where the thermostat is placed.  Enter a possitive number to increase the reported temperature or negative to decrease it.</string>
+    <string name="temp_calibration_running">Temperature Calibration Running</string>
+    <string name="temp_calibration_running_help">If the thermostat is placed by a vent or intake it may be necessary to have a different calibration when the furnace is running than when it is idle.  Enter a possitive number to increase the reported temperature or negative to decrease it.</string>
+    <string name="calibration_seconds">Temperature Calibration Seconds</string>
+    <string name="calibration_seconds_help">The number of seconds it takes to transition from the running calibration to the idle calibration or back.  The relays warm up and cool down over a period of about 5 minutes.  If these are affecting your temperature readings you may wish to add different values for the idle and running temperature calibrations and transition between them over a period of 5 minutes (300 seconds).</string>
     <string name="temp_swing">Temperature Swing</string>
     <string name="temp_swing_help">The temperature swing indicates how many degrees to allow the temperature to rise or fall below the set point before the air conditioner or heater turns on to return the temperature to the set point.  Larger swings are generally more energy efficient.</string>
+    <string name="fan_on_cool">Fan On with Cool</string>
+    <string name="fan_on_cool_help">If your home was built with air conditioning then the furnace will most likely automatically turn on the blower when the thermostat triggers the AC to turn on.  In this case it is better not to separately send the command to turn on the fan and you should set this to No. If your AC was added after the home was built, the fan may need to be controlled seperately by setting this to Yes.</string>
     <string name="fan_circulation">Fan Circulation</string>
     <string name="fan_circulation_help">This sets how often the fan will circulate the air in your house regardless of other heat and cool settings.  One scenario where this is useful is if your upstairs heater doesn\'t turn on frequently in the winter.  You casn have the upstair fan circulate periodically to evenly distribute the heat rising from downstairs to each room.</string>
     <string name="min_cool">Minimum Coooling Interval</string>

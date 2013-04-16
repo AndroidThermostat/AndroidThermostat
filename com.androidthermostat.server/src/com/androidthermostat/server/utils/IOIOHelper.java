@@ -1,5 +1,7 @@
 package com.androidthermostat.server.utils;
 
+import java.util.Date;
+
 import com.androidthermostat.server.data.Settings;
 
 import ioio.lib.api.AnalogInput;
@@ -20,6 +22,8 @@ public class IOIOHelper extends BaseIOIOLooper {
 	private static IOIOHelper current;
 	public static IOIOHelper getCurrent() { return current; }
 	public static void setCurrent(IOIOHelper value) { current = value; }
+	private int repeatSamples = 0;
+	private double lastSample = 0;
 	
 	
 	public void toggleFan(boolean on) { 
@@ -28,34 +32,60 @@ public class IOIOHelper extends BaseIOIOLooper {
 	
 	public void toggleHeat(boolean on)
 	{
-		try { heat.write(on); } catch (Exception e) {  Utils.logError(e.toString(), "utils.IOIOHelper.toggleFan");  }
+		try { heat.write(on); } catch (Exception e) {  Utils.logError(e.toString(), "utils.IOIOHelper.toggleHeat");  }
 	}
 	
 	public void toggleCool(boolean on)
 	{
-		try { cool.write(on); } catch (Exception e) { Utils.logError(e.toString(), "utils.IOIOHelper.toggleFan"); }
+		try { cool.write(on); } catch (Exception e) { Utils.logError(e.toString(), "utils.IOIOHelper.toggleCool"); }
+	}
+	
+	
+	//The IOIO appears to stop returning new samples after a while.  This is a temp patch to reset the IOIO when this happens.
+	private void checkReset(double volts)
+	{
+		if (volts == lastSample)
+		{
+			repeatSamples++;
+		} else
+		{
+			repeatSamples=0;
+		}
+		lastSample = volts;
+		if (repeatSamples>30) reset();
+	}
+	
+	private void reset()
+	{
+		Utils.logInfo("Resetting IOIO", "utils.IOIOHelper.reset");
+		try{
+			tempIn=null;
+			ioio_.hardReset();
+		} catch (Exception e) {
+			Utils.logError(e.toString(), "utils.IOIOHelper.reset");
+		}
 	}
 	
 	public double getTemperature()
 	{
-		//int debugNum = -99;
-		try{
-//			double totalVolts = 0;
-			//int samples = tempIn.available();
-			//debugNum = samples;
-			//for (int i=0;i<samples;i++)
-			//{
-//				totalVolts+=tempIn.getVoltageBuffered();
-	//		}
-		//	double averageVolts = totalVolts / (double)samples;
-			double averageVolts = tempIn.getVoltage();
-			
-			double mv = averageVolts * 1000.0;
-			double c = (mv - 500.0)/10.0;
-			double f = Math.round( (c * 9.0 / 5.0 + 32.0) * 10.0 ) / 10.0;
-			return f;
-		} catch (Exception ex) { 
-				//Utils.debugText = "IOIO.getTemperature - " + ex.toString() + String.valueOf(debugNum);
+		if (tempIn!=null)
+		{
+			try{
+				//double averageVolts = tempIn.getVoltage();
+				//double averageVolts = tempIn.getVoltageBuffered();
+				double averageVolts = tempIn.getVoltage();
+				checkReset(averageVolts);
+	//			if (new Date().getSeconds()==0)	Utils.logInfo("Average volts - " + String.valueOf(averageVolts), "utils.IOIOHelper.getTemperature");
+				double mv = averageVolts * 1000.0;
+				double c = (mv - 500.0)/10.0;
+				double f = Math.round( (c * 9.0 / 5.0 + 32.0) * 10.0 ) / 10.0;
+				return f;
+			} catch (ConnectionLostException e) {
+				Utils.logError("Connection Lost", "utils.IOIOHelper.getTemperature");
+				this.reset();
+			} catch (Exception e) {
+				Utils.logError(e.toString(), "utils.IOIOHelper.getTemperature");
+			}
 		}
 		return -99;
 	}

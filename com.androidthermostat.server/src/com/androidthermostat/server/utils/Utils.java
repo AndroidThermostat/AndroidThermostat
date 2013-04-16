@@ -41,8 +41,11 @@ public class Utils {
 	
 	public static void logInfo(String message, String method)
 	{
-		debugText = message;
-		writeLogEntry(message, method, false);
+		if (message!=debugText) //don't continually log the same message
+		{
+			debugText = message;
+			writeLogEntry(message, method, false);
+		}
 	}
 	
 	public static void clearLogFile()

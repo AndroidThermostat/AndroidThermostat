@@ -12,14 +12,15 @@ public class FurnaceController {
 	public boolean coolOn = false;
 	public boolean heatOn = false;
 	public boolean fanOn = false;
-	private Date cycleStartTime;
+	private Calendar cycleStartTime;
 	private Calendar lastCoolTime;
 	private Calendar lastHeatTime;
 	private Calendar offTime;
 	private Calendar forcedFanTime;
 	private boolean forcingFan = false;
+	private String lastMode = "";
 	
-	private int tempMaxSamples = 30;
+	private int tempMaxSamples = 60;
 	private int tempSamples = 0;
 	private int tempIndex = 0;
 	double[] temps = new double[tempMaxSamples];
@@ -59,7 +60,7 @@ public class FurnaceController {
 	}
 	
 
-	public Date getCycleStartTime() { return cycleStartTime; }
+	public Calendar getCycleStartTime() { return cycleStartTime; }
 
 	public String getMode()
 	{
@@ -98,8 +99,9 @@ public class FurnaceController {
 
 	public void setMode(String mode)
 	{
-		if (!mode.equals(Conditions.getCurrent().getState())) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
-
+		Settings s = Settings.getCurrent();
+		//if (!mode.equals(Conditions.getCurrent().getState()) && !forcingFan) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
+		if (!mode.equals(lastMode)) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
 		
 		if (mode.equals("Off")) {
 			
@@ -115,22 +117,22 @@ public class FurnaceController {
 				forcingFan = false;
 				//Utils.debugText = "Setting Mode to Off";
 				Conditions.getCurrent().setMessage("Off");
-				if (fanOn) toggleFan(false);
-				if (heatOn) toggleHeat(false);
-				if (coolOn) toggleCool(false);
+				toggleFan(false);
+				toggleHeat(false);
+				toggleCool(false);
 			}
 		} else if (mode.equals("Heat")) {
 			int minutes = (int)(new Date().getTime() - lastHeatTime.getTime().getTime()) / 1000 / 60;
-			if (minutes > Settings.getCurrent().getMinHeatInterval())
+			if (minutes > s.getMinHeatInterval())
 			{
 				//Utils.debugText = "Setting Mode to Heat";
 				Conditions.getCurrent().setMessage("Heating");
 				forcingFan = false;
 				//if (fanOn) toggleFan(true);
-				if (!heatOn) toggleHeat(true);
-				if (coolOn) toggleCool(false);
+				toggleHeat(true);
+				toggleCool(false);
 			} else {
-				int remaining = Settings.getCurrent().getMinHeatInterval() - minutes;
+				int remaining = s.getMinHeatInterval() - minutes;
 				String message = "Waiting to heat - " + String.valueOf(remaining) + " minute(s) remaining.";
 				Utils.logInfo(message, "utils.FurnaceController.setMode");
 				Conditions.getCurrent().setMessage(message);
@@ -138,16 +140,17 @@ public class FurnaceController {
 			
 		} else if (mode.equals("Cool")) {
 			int minutes = (int)(new Date().getTime() - lastCoolTime.getTime().getTime()) / 1000 / 60;
-			if (minutes > Settings.getCurrent().getMinCoolInterval())
+			if (minutes > s.getMinCoolInterval())
 			{
 				//Utils.debugText = "Setting Mode to Cool";
 				Conditions.getCurrent().setMessage("Cooling");
 				forcingFan = false;
-				if (!fanOn) toggleFan(true);
-				if (heatOn) toggleHeat(false);
-				if (!coolOn) toggleCool(true);
+				//toggleFan(true);
+				toggleFan(s.getFanOnCool());
+				toggleHeat(false);
+				toggleCool(true);
 			} else {
-				int remaining = Settings.getCurrent().getMinCoolInterval() - minutes;
+				int remaining = s.getMinCoolInterval() - minutes;
 				String message = "Waiting to cool - " + String.valueOf(remaining) + " minute(s) remaining.";
 				Utils.logInfo(message, "utils.FurnaceController.setMode");
 				Conditions.getCurrent().setMessage(message);
@@ -156,47 +159,81 @@ public class FurnaceController {
 			//Utils.debugText = "Setting Mode to Fan";
 			Conditions.getCurrent().setMessage("Running fan");
 			forcingFan = false;
-			if (!fanOn) toggleFan(true);
-			if (heatOn) toggleHeat(false);
-			if (coolOn) toggleCool(false);
+			toggleFan(true);
+			toggleHeat(false);
+			toggleCool(false);
 		}
-		cycleStartTime = new Date();
+		cycleStartTime = Calendar.getInstance();
+		lastMode = mode;
 	}
 	
 	private void toggleFan(boolean on)
 	{
-		//arduinoHelper.toggleFan(on);
-		if (!on && fanOn) this.offTime = Calendar.getInstance();
-		IOIOHelper.getCurrent().toggleFan(on);
-		this.fanOn=on;
+		if (this.fanOn!=on)
+		{
+			if (!on && fanOn) this.offTime = Calendar.getInstance();
+			this.fanOn=on;
+			IOIOHelper.getCurrent().toggleFan(on);
+		}
 	}
 	
 	public void toggleHeat(boolean on)
 	{
-		//arduinoHelper.toggleHeat(on);
-		if (!on && heatOn) this.lastHeatTime = Calendar.getInstance();
-		IOIOHelper.getCurrent().toggleHeat(on);
-		this.heatOn=on;
+		if (this.heatOn!=on)
+		{
+			if (!on && heatOn) this.lastHeatTime = Calendar.getInstance();
+			this.heatOn=on;
+			IOIOHelper.getCurrent().toggleHeat(on);
+		}
 	}
 	
 	public void toggleCool(boolean on)
 	{
-		if (!on && coolOn) this.lastCoolTime = Calendar.getInstance();
-		//arduinoHelper.toggleCool(on);
-		IOIOHelper.getCurrent().toggleCool(on);
-		this.coolOn=on;
+		if (this.coolOn!=on)
+		{
+			if (!on && coolOn) this.lastCoolTime = Calendar.getInstance();
+			this.coolOn=on;
+			IOIOHelper.getCurrent().toggleCool(on);
+		}
 	}
 	
-	public double getTemperature()
+	public double getEffectiveCalibration(double calibrationIdle, double calibrationRunning, int calibrationSeconds)
 	{
-		double tempSample = IOIOHelper.getCurrent().getTemperature();
-		if (tempSample!=-99)
+		double calibration = calibrationIdle;
+		if (fanOn || coolOn || heatOn) {
+			calibration = calibrationRunning;
+			int seconds = (int)(new Date().getTime() - cycleStartTime.getTime().getTime()) / 1000;
+			if (seconds<calibrationSeconds)
+			{
+				int offSeconds = calibrationSeconds - seconds;
+				calibration = (calibrationIdle * (double)offSeconds + calibrationRunning * (double)seconds) / (double)calibrationSeconds;
+			}
+		} else 
 		{
-//			Utils.logInfo(String.valueOf(tempSample), "getTemperature");
-			temps[tempIndex] = tempSample;
-			if (tempSamples<tempMaxSamples) tempSamples++;
-			tempIndex ++;
-			if (tempIndex>=tempMaxSamples) tempIndex = 0;
+			int seconds = (int)(new Date().getTime() - offTime.getTime().getTime()) / 1000;
+			if (seconds<calibrationSeconds)
+			{
+				int onSeconds = calibrationSeconds - seconds;
+				calibration = (calibrationIdle * (double)seconds + calibrationRunning * (double)onSeconds) / (double)calibrationSeconds;
+			}
+		}
+		return calibration;
+	}
+	
+	public double getTemperature(double calibration)
+	{
+		try{
+			double tempSample = IOIOHelper.getCurrent().getTemperature();
+			if (tempSample!=-99)
+			{
+				tempSample += calibration;
+				temps[tempIndex] = tempSample;
+				if (tempSamples<tempMaxSamples) tempSamples++;
+				tempIndex ++;
+				if (tempIndex>=tempMaxSamples) tempIndex = 0;
+			}
+		} catch (Exception e) {
+			Utils.logError(e.toString(), "utils.FurnaceController.getTemperature");
 		}
 		
 		double result = 0;

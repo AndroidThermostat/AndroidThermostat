@@ -2,6 +2,7 @@ package com.androidthermostat.server.data;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,7 +35,7 @@ public class Conditions {
 	private Bitmap weatherImage = null;
 	public int insideTempRaw=0;
 	public double lastLoggedInsideTemp = 0;
-	
+	private Calendar lastTempPingTime = Calendar.getInstance();
 	
 	public String debugMessage = "";
 
@@ -76,6 +77,7 @@ public class Conditions {
 		arduinoTimer = new Timer();
 		//arduinoTimer.schedule(new ConditionsTimerTask(), 5000, 5000);
 		arduinoTimer.schedule(new ConditionsTimerTask(), 1000, 1000);
+		
 		
 		weatherTimer = new Timer();
 		weatherTimer.schedule(new WeatherTimerTask(), 2000, 900000);
@@ -145,12 +147,12 @@ public class Conditions {
 	
 	public void updateArduino()
 	{
-		
 		Settings s = Settings.getCurrent();
 		FurnaceController fc = FurnaceController.getCurrent();
 		
 		//double previousTemp = Conditions.getCurrent().insideTemperature;
-		double temp = fc.getTemperature();
+		double calibration = fc.getEffectiveCalibration(s.getTemperatureCalibration(),s.getTemperatureCalibrationRunning(), s.getCalibrationSeconds());
+		double temp = fc.getTemperature(calibration);
 		
 		int effectiveHigh = s.getTargetHigh();
 		int effectiveLow = s.getTargetLow();
@@ -159,17 +161,12 @@ public class Conditions {
 			effectiveHigh = s.getAwayHigh();
 			effectiveLow = s.getAwayLow();
 		}
-		
 
-		
 		//temp patch due to unreliable arduino communication
 		if (temp>0.0)
 		{
-			temp += Settings.getCurrent().getTemperatureCalibration();
-			
+			//temp += Settings.getCurrent().getTemperatureCalibration();
 			this.setInsideTemperature( temp );
-			
-			
 			if (temp > 45 && temp < 100)
 			{
 				if (s.getMode().equals("Auto")) setThermostatState(effectiveLow, effectiveHigh, s.getSwing());
@@ -181,11 +178,17 @@ public class Conditions {
 				//Make sure there's a full 1 degree difference in temperature so it isn't too chatty.
 				if (lastLoggedInsideTemp - temp > 1 || lastLoggedInsideTemp - temp < -1)
 				{
-					lastLoggedInsideTemp = temp;
-					try {
-						if (s.getPingOutUrl()!=null && s.getPingOutUrl()!="" && s.getInsideTempChangeParams()!=null && s.getInsideTempChangeParams()!="") Utils.pingOut(s.getPingOutUrl() + s.getInsideTempChangeParams());
-					} catch (Exception e) {
-						Utils.logError(e.toString(), "data.Conditions.updateArduino");
+					int minutes = (int)(new Date().getTime() - lastTempPingTime.getTime().getTime()) / 1000 / 60;
+					if (minutes>=2)
+					{
+						lastTempPingTime = Calendar.getInstance();
+						//don't ping more often than every 2 minutes
+						lastLoggedInsideTemp = temp;
+						try {
+							if (s.getPingOutUrl()!=null && s.getPingOutUrl()!="" && s.getInsideTempChangeParams()!=null && s.getInsideTempChangeParams()!="") Utils.pingOut(s.getPingOutUrl() + s.getInsideTempChangeParams());
+						} catch (Exception e) {
+							Utils.logError(e.toString(), "data.Conditions.updateArduino");
+						}
 					}
 				}
 			} else {
@@ -194,9 +197,8 @@ public class Conditions {
 				if (temp<=45) fc.setMode("Heat");
 				if (temp>=100) fc.setMode("Cool");
 			}
-			
 		}
-		
+	
 	}
 	
 	private void setThermostatState(int minTemp, int maxTemp, double swing)
@@ -204,7 +206,7 @@ public class Conditions {
 		FurnaceController fc = FurnaceController.getCurrent();
 		
 		String previousMode=fc.getMode();
-		Date cycleStartTime = fc.getCycleStartTime();
+		Calendar cycleStartTime = fc.getCycleStartTime();
 		
 		if (insideTemperature < minTemp - swing) fc.setMode("Heat");
 		else if (insideTemperature > maxTemp + swing) fc.setMode("Cool");
@@ -224,7 +226,7 @@ public class Conditions {
 					String url = s.getPingOutUrl() + s.getCycleCompleteParams();
 					if (url.contains("[mode]")) url = url.replace("[mode]", previousMode );
 					if (url.contains("[duration]")) {
-						int duration = (int)(new Date().getTime() - cycleStartTime.getTime()) / 1000;
+						int duration = (int)(new Date().getTime() - cycleStartTime.getTime().getTime()) / 1000;
 						url = url.replace("[duration]", String.valueOf(duration) );
 					}
 					Utils.pingOut(url);

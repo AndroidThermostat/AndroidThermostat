@@ -16,13 +16,11 @@
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href="#">Android Thermostat</a>
-          <div class="nav-collapse collapse">
             <ul class="nav">
               <li id="setTemperatureNav"><a href="#temperature" onclick="showSetTemperature();">Set Temperature</a></li>
               <li id="schedulesNav"><a href="#schedules" onclick="showSchedules();">Schedules</a></li>
               <li id="settingsNav"><a href="#settings" onclick="showSettings();">Settings</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
@@ -198,17 +196,41 @@
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                	
+                
+                
                 <div class="tab-pane" id="furnaceSettingsTab">
+                	<div class="row">
+                    	<div class="span6">Hardware Revision</div>
+                    	<div class="span6">Temperature Swing</div>
+                    </div>
+                    <div class="controls-row">
+               			<label class="radio span3"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareA" value="A" checked>A</label>
+ 						<label class="radio span3"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareB" value="B">B</label>
+ 						<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing1" value="1" checked>1&deg;</label>
+ 						<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing2" value="2">2&deg;</label>
+ 						<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing3" value="3">3&deg;</label>
+                	</div>
                     <div class="row">
                         <div class="span6">Temperature Calibration</div>
-                        <div class="span6">Temperature Swing</div>
+                        <div class="span6">Temperature Calibration Running</div>
                     </div>
                     <div class="controls-row">
                     	<input type="text" id="settingsFurnaceCalibration" placeholder="0" class="span6" />
-               			<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing1" value="1" checked>1&deg;</label>
- 						<label class="radio span2"><input type="radio" name="swingRadio" id="settingsFurnaceSwing2" value="2">2&deg;</label>
- 						<label class="radio span1"><input type="radio" name="swingRadio" id="settingsFurnaceSwing3" value="3">3&deg;</label>
+               			<input type="text" id="settingsFurnaceCalibrationRunning" placeholder="0" class="span6" />
                 	</div>
+                	
+                	<div class="row">
+                        <div class="span6">Temperature Calibration Seconds</div>
+                    </div>
+                    <div class="controls-row">
+                    	<input type="text" id="settingsFurnaceCalibrationSeconds" placeholder="0" class="span6" />
+                	</div>
+                	
                     <div class="row">
                         <div class="span6">Min. Cool Cycle</div>
                         <div class="span6">Min. Heat Cycle</div>
@@ -232,12 +254,11 @@
                     </div>
                     
                     <div class="row">
-                    	<div class="span6">Hardware Revision</div>
+                        <div class="span6">Turn Fan On with Cool</div>
                     </div>
                     <div class="controls-row">
-               			<label class="radio span2"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareA" value="A" checked>A</label>
- 						<label class="radio span1"><input type="radio" name="hardwareRevisionRadio" id="settingsFurnaceHardwareB" value="B">B</label>
-                	</div>
+                    	<select id="settingsFurnaceFanOnCool" class="span6"><option value="false">Off</option><option value="true">On</option></select>
+                    </div>
                 	
                 </div>
                 
