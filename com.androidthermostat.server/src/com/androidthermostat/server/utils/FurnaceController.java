@@ -101,7 +101,10 @@ public class FurnaceController {
 	{
 		Settings s = Settings.getCurrent();
 		//if (!mode.equals(Conditions.getCurrent().getState()) && !forcingFan) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
-		if (!mode.equals(lastMode)) Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
+		if (!mode.equals(lastMode)) {
+			Utils.logInfo("Setting mode to " + mode, "utils.FurnaceController.setMode");
+			cycleStartTime = Calendar.getInstance();
+		}
 		
 		if (mode.equals("Off")) {
 			
@@ -163,7 +166,6 @@ public class FurnaceController {
 			toggleHeat(false);
 			toggleCool(false);
 		}
-		cycleStartTime = Calendar.getInstance();
 		lastMode = mode;
 	}
 	
@@ -200,9 +202,10 @@ public class FurnaceController {
 	public double getEffectiveCalibration(double calibrationIdle, double calibrationRunning, int calibrationSeconds)
 	{
 		double calibration = calibrationIdle;
-		if (fanOn || coolOn || heatOn) {
+		if (this.fanOn || this.coolOn || this.heatOn) {
 			calibration = calibrationRunning;
 			int seconds = (int)(new Date().getTime() - cycleStartTime.getTime().getTime()) / 1000;
+			//Utils.logInfo(String.valueOf(seconds) + " - " + new Date().toString() + " - " + cycleStartTime.getTime().toString(), "utils.FurnaceController.getEffectiveCalibration");
 			if (seconds<calibrationSeconds)
 			{
 				int offSeconds = calibrationSeconds - seconds;

@@ -27,10 +27,12 @@ public class Conditions {
 	private static Conditions current;
 	@Expose public double insideTemperature = 0;
 	@Expose private double outsideTemperature = 65;
+	@Expose private double calibration = 0;
 	@Expose private String weatherImageUrl = "";
 	@Expose private String weatherForecastUrl = "";
 	@Expose private String message = "";
 	@Expose private String state = "Off";
+	
 	
 	private Bitmap weatherImage = null;
 	public int insideTempRaw=0;
@@ -44,6 +46,7 @@ public class Conditions {
 	
 	public double getInsideTemperature() { return insideTemperature; }
 	public double getOutsideTemperature() { return outsideTemperature; }
+	public double getCalibration() { return calibration; }
 	public String getWeatherImageUrl() { return weatherImageUrl; }
 	public Bitmap getWeatherImage() { return weatherImage; }
 	public String getWeatherForecastUrl() { return weatherForecastUrl; }
@@ -52,6 +55,7 @@ public class Conditions {
 	
 	public void setInsideTemperature(double insideTemperature) { this.insideTemperature = insideTemperature; }
 	public void setOutsideTemperature(double outsideTemperature) { this.outsideTemperature = outsideTemperature; }
+	public void setCalibration(double calibration) { this.calibration = calibration; }
 	public void setMessage(String message) { this.message=message; }
 	
 
@@ -151,7 +155,7 @@ public class Conditions {
 		FurnaceController fc = FurnaceController.getCurrent();
 		
 		//double previousTemp = Conditions.getCurrent().insideTemperature;
-		double calibration = fc.getEffectiveCalibration(s.getTemperatureCalibration(),s.getTemperatureCalibrationRunning(), s.getCalibrationSeconds());
+		calibration = fc.getEffectiveCalibration(s.getTemperatureCalibration(),s.getTemperatureCalibrationRunning(), s.getCalibrationSeconds());
 		double temp = fc.getTemperature(calibration);
 		
 		int effectiveHigh = s.getTargetHigh();

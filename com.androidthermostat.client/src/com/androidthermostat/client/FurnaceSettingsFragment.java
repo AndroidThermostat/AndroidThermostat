@@ -114,7 +114,7 @@ public class FurnaceSettingsFragment extends SherlockFragment {
 		
 		b = (RadioButton) root.findViewById(fanOnCoolRadio.getCheckedRadioButtonId());
 		try{
-			if (b.getText().equals("Yes")) s.setFanOnCool(true); else s.setFanOnCool(true);
+			if (b.getText().equals("Yes")) s.setFanOnCool(true); else s.setFanOnCool(false);
 		} catch (Exception ex)
 		{
 			s.setFanOnCool(true);
