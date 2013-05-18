@@ -15,12 +15,12 @@ An Android based home thermostat project.  For full details see AndroidThermosta
 *These instructions assume a Windows environment using the Eclipse IDE.*
 
 <dl>
-  <dt>1. Download and install the [JRE]  [1]</dt>
-  <dt>2. Download and install the [Android SDK]  [2]</dt>
+  <dt>1. Download and install the [JRE]  [1] </dt>
+  <dt>2. Download and install the [Android SDK]  [2] </dt>
   <dd>In the SDK Manager, install Android Tools, Version 2.2 (8) and 4.03 (15), Google USB driver and Android Support Library.</dd>
-  <dt>3. Download and extract [Eclipse Classic]  [3]</dt>
-  <dt>4. Install the [Android Development Tools]  [4] Eclipse Plugin</dt>
-  <dt>5. Install [GitHub for Windows]  [5]</dt>
+  <dt>3. Download and extract [Eclipse Classic]  [3] </dt>
+  <dt>4. Install the [Android Development Tools]  [4] Eclipse Plugin </dt>
+  <dt>5. Install [GitHub for Windows]  [5] </dt>
   <dd>Create a new folder (c:\github) for your Github repositories and set it as the default storage directory</dd>
   <dd>Clone the Android Thermostat repository to this folder</dd>
   <dd>Copy the server and client apps to your development directory (c:\sourcecode\android)</dd>
