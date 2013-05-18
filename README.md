@@ -14,37 +14,66 @@ An Android based home thermostat project.  For full details see AndroidThermosta
 
 *These instructions assume a Windows environment using the Eclipse IDE.*
 
-<dl>
-  <dt>1. Download and install the [JRE]  [1] </dt>
-  <dt>2. Download and install the [Android SDK]  [2] </dt>
-  <dd>In the SDK Manager, install Android Tools, Version 2.2 (8) and 4.03 (15), Google USB driver and Android Support Library.</dd>
-  <dt>3. Download and extract [Eclipse Classic]  [3] </dt>
-  <dt>4. Install the [Android Development Tools]  [4] Eclipse Plugin </dt>
-  <dt>5. Install [GitHub for Windows]  [5] </dt>
-  <dd>Create a new folder (c:\github) for your Github repositories and set it as the default storage directory</dd>
-  <dd>Clone the Android Thermostat repository to this folder</dd>
-  <dd>Copy the server and client apps to your development directory (c:\sourcecode\android)</dd>
-  <dt>6. Download the necessary libraries</dt>
-  <dd>In Eclipse, choose File -> New -> Project -> Android -> From existing code</dd>
-  <dd>For [ActionBarSherlock]  [6] choose the library project</dd>
-  <dd>For [HoloEverywhere]  [7], choose the library project</dd>
-  <dd>For [IOIO]  [8] choose the IOIOLib project</dd>
-  <dd>Make sure each of these compile. If you have problems, make sure the java version is 1.6 in the properties and check for broken references</dd>
-  <dt>7. Load the Android Thermostat client and server</dt>
-  <dd>In Eclipse, choose File -> New -> Project -> Android -> From existing code</dd>
-  <dd>Browse to the com.androidthermostat.client folder and repeat for server</dd>
-  <dd>If Eclipse names the project com.androidthermostat.client.MainActivity, right click, choose refactor and rename it to com.androidthermostat.client</dd>
-  <dd>If there are compile errors, make sure the java version is set to 1.6 on both projects and fix any broken references</dd>
-  <dt>8. Set up the emulator</dt>
-  <dd>Click the Run button and in the popup add a new virtual machine.</dd>
-  <dd>Name it Froyo and set api version to 2.2 (8)</dd>
-  <dd>Repeat to create one called ICS and set API to 4.0 (15)</dd>
-  <dd>Run the app on one of them!</dd>
-  <dt>9. Set up your phone</dt>
-  <dd>Enable USB debugging on your phone from the advanced settings</dd>
-  <dd>Download the ADB driver for your phone and follow the instructions [here]  [9] to install it.</dd>
-  <dd>Run the app again and it should prompt you to choose a device</dd>
-  <dd>If it doesn't prompt, click the down arrow next to run and choose Run Configuration</dd>
+
+1.  Download and install the [JRE]  [1]
+
+2.  Download and install the [Android SDK]  [2]
+
+    In the SDK Manager, install Android Tools, Version 2.2 (8) and 4.03 (15), Google USB driver and Android Support Library.
+
+3.  Download and extract [Eclipse Classic]  [3]
+
+4.  Install the [Android Development Tools]  [4] Eclipse Plugin
+
+5.  Install [GitHub for Windows]  [5]
+
+    Create a new folder (c:\github) for your Github repositories and set it as the default storage directory
+
+    Clone the Android Thermostat repository to this folder
+
+    Copy the server and client apps to your development directory (c:\sourcecode\android)
+
+6.  Download the necessary libraries
+
+    In Eclipse, choose File -> New -> Project -> Android -> From existing code
+
+    For [ActionBarSherlock]  [6] choose the library project
+
+    For [HoloEverywhere]  [7], choose the library project
+
+    For [IOIO]  [8] choose the IOIOLib project
+
+    Make sure each of these compile. If you have problems, make sure the java version is 1.6 in the properties and check for broken references
+
+7.  Load the Android Thermostat client and server
+
+    In Eclipse, choose File -> New -> Project -> Android -> From existing code
+
+    Browse to the com.androidthermostat.client folder and repeat for server
+
+    If Eclipse names the project com.androidthermostat.client.MainActivity, right click, choose refactor and rename it to com.androidthermostat.client
+
+    If there are compile errors, make sure the java version is set to 1.6 on both projects and fix any broken references
+
+8.  Set up the emulator
+
+    Click the Run button and in the popup add a new virtual machine.
+
+    Name it Froyo and set api version to 2.2 (8)
+
+    Repeat to create one called ICS and set API to 4.0 (15)
+
+    Run the app on one of them!
+
+9.  Set up your phone
+
+    Enable USB debugging on your phone from the advanced settings
+
+    Download the ADB driver for your phone and follow the instructions [here]  [9] to install it.
+
+    Run the app again and it should prompt you to choose a device
+
+    If it doesn't prompt, click the down arrow next to run and choose Run Configuration
 </dl>
 
   [1]: http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1637588.html        "JRE"
