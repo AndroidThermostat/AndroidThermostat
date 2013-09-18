@@ -124,7 +124,7 @@ public class Conditions {
 			if (resp.main.temp>0) 
 			{
 				success = true;
-				double celcius = resp.main.temp - 272.15;
+				double celcius = resp.main.temp - 273.15;
 				this.outsideTemperature = Math.round(celcius * 9.0 / 5.0 + 32);
 				this.weatherForecastUrl = Settings.getCurrent().getForecastUrl().replace("[postalCode]", String.valueOf(Settings.getCurrent().getLocation()) );
 				
